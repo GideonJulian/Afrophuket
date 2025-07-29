@@ -13,7 +13,7 @@ const Home = () => {
         <FeaturedEvents />
       </div>
       <div className="mt-10">
-        {/* <Tickets /> */}
+        <Tickets />
       </div>
     </div>
   )

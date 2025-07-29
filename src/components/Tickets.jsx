@@ -1,6 +1,6 @@
 import React from "react";
 import event4 from "../assets/images/events/event4.png";
-import { Calendar } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
 const Tickets = () => {
   const ticketsData = [
     {
@@ -47,12 +47,26 @@ const Tickets = () => {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 my-5">
             {
                 ticketsData.map(items=> (
                     <div className="bg-[#000] p-4 flex items-center justify-between">
                          <div>
                             <h1 className="font-bold text-white">{items.name}</h1>
+                            <h2 className="flex items-center gap-2">
+                                <span><Calendar /> </span>
+                                {items.date}
+                            </h2>
+                              <h2 className="flex items-center gap-2 py-2">
+                                <span><MapPin /></span>
+                                {items.date}
+                            </h2>
+                            <h2 className="mt-10 text-[#FC6435]">
+                                {items.price }
+                            </h2>
+                         </div>
+                         <div>
+                            <img src={items.img} />
                          </div>
                     </div>
                 ))
