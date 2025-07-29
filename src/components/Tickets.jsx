@@ -44,9 +44,13 @@ const Tickets = () => {
 
   const filteredEvents = allEvents.filter((event) => {
     const matchesLocation =
-      locationFilter === "All" || locationFilter === "" || event.location === locationFilter;
+      locationFilter === "All" ||
+      locationFilter === "" ||
+      event.location === locationFilter;
     const matchesDate =
-      dateFilter === "All" || dateFilter === "" || event.date.startsWith(dateFilter);
+      dateFilter === "All" ||
+      dateFilter === "" ||
+      event.date.startsWith(dateFilter);
     return matchesLocation && matchesDate;
   });
 
@@ -63,7 +67,9 @@ const Tickets = () => {
         <div>
           <p className="text-[#F7F6F2]">Browse Events</p>
           <h1 className="font-bold text-2xl py-3">
-            {locationFilter === "All" || locationFilter === "" ? "All Locations" : locationFilter}
+            {locationFilter === "All" || locationFilter === ""
+              ? "All Locations"
+              : locationFilter}
           </h1>
 
           <div className="flex items-center gap-4 flex-wrap">
@@ -133,13 +139,18 @@ const Tickets = () => {
 
         {/* Show More Button */}
         {!showAll && filteredEvents.length > 3 && (
-          <div className="text-center mb-10">
-            <button
-              onClick={() => setShowAll(true)}
-              className="text-white border border-white px-4 py-1 rounded-full hover:bg-white hover:text-black transition"
-            >
-              Show All
-            </button>
+          <div className="flex items-center justify-center mt-10">
+            <div className="relative inline-block m">
+              <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
+              <button
+                onClick={() => {
+                    setShowAll(true)
+                }}
+                className="relative text-sm font-semibold uppercase px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
+              >
+                VIEW ALL EVENTS
+              </button>
+            </div>
           </div>
         )}
 
