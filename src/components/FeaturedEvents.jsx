@@ -1,9 +1,9 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import EventCard from "./ui/EventCard";
-import event1 from '../../public/events/event1.png'
-import event2 from '../../public/events/event2.png'
-import event3 from '../../public/events/event3.png'
+import event1 from '../assets/images/events/event1.png'
+import event2 from '../assets/images/events/event2.png'
+import event3 from '../assets/images/events/event3.png'
 const FeaturedEvents = () => {
   const eventData = [
     {
