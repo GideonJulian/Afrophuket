@@ -1,13 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
-
+import heroImg from '../../../public/heroimg.png'
 const Hero = () => {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-3">
       <div className="max-w-[1296px] mx-auto relative">
         {/* Background Image */}
         <img
-          src="/heroimg.png"
+          src={heroImg}
           alt=""
           className="w-full h-[400px] sm:h-[600px] md:h-auto lg:h-auto object-cover object-top rounded-2xl"
         />
