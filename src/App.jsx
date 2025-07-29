@@ -1,7 +1,7 @@
-import { Home, Layout } from "lucide-react";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layouts from "./layouts/Layouts";
-import Home from './pages/Home'
+import Home from "./pages/Home";
 
 const route = createBrowserRouter([
 {
