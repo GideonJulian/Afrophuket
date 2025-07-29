@@ -24,7 +24,7 @@ const FeaturedEvents = () => {
   ];
 
   // Duplicate items for looping effect
-  const loopedEvents = [...eventData, ...eventData];
+
 
   return (
     <div className="w-full p-4 py-10">
@@ -52,7 +52,7 @@ const FeaturedEvents = () => {
               animate-scroll-slow md:animate-none
             `}
           >
-            {loopedEvents.map((item, idx) => (
+            {eventData.map((item, idx) => (
               <div
                 key={idx}
                 className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[calc(33.333%-16px)] snap-start"

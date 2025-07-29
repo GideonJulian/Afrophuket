@@ -8,30 +8,31 @@ const Navbar = () => {
   return (
     <>
       {/* Top Navbar */}
-      <div className="w-full p-8 flex items-center justify-between  text-white">
-        <div>
-          <img src="/afrologo.png" alt="Logo" className="w-16" />
-        </div>
+    <div className="fixed top-0 left-0 right-0 z-50 w-full p-8 py-3 flex items-center justify-between text-white  bg-opacity-80 backdrop-blur-md">
+  <div>
+    <img src="/afrologo.png" alt="Logo" className="w-16" />
+  </div>
 
-        {/* Desktop Links */}
-        <ul className="hidden md:flex items-center gap-6">
-          <li><Link to="#">Discover Events</Link></li>
-          <li><Link to="#">About Us</Link></li>
-          <li><Link to="#">Contact Us</Link></li>
-        </ul>
+  {/* Desktop Links */}
+  <ul className="hidden md:flex items-center gap-6">
+    <li><Link to="#">Discover Events</Link></li>
+    <li><Link to="#">About Us</Link></li>
+    <li><Link to="#">Contact Us</Link></li>
+  </ul>
 
-        {/* Desktop Button */}
-        <div className="hidden md:block">
-          <button className="px-3 py-3 rounded-lg border border-[#F7F6F2] text-white">
-            Find events
-          </button>
-        </div>
+  {/* Desktop Button */}
+  <div className="hidden md:block">
+    <button className="px-3 py-3 rounded-lg border border-[#F7F6F2] text-white">
+      Find events
+    </button>
+  </div>
 
-        {/* Mobile Hamburger */}
-        <div className="md:hidden">
-          <Menu className="w-6 h-6 cursor-pointer" onClick={() => setMenuOpen(true)} />
-        </div>
-      </div>
+  {/* Mobile Hamburger */}
+  <div className="md:hidden">
+    <Menu className="w-6 h-6 cursor-pointer" onClick={() => setMenuOpen(true)} />
+  </div>
+</div>
+
 
       {/* Backdrop */}
       {menuOpen && (
