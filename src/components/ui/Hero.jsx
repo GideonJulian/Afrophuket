@@ -1,7 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import heroImg from '../../../public/heroimg.png'
+import heroImg from "../../../public/heroimg.png";
+import { useNavigate } from "react-router-dom";
 const Hero = () => {
+    const navigate = useNavigate()
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-3">
       <div className="max-w-[1296px] mx-auto relative">
@@ -45,6 +47,10 @@ const Hero = () => {
           >
             World's best Afrobeat and Amapiano events
           </motion.p>
+          <button onClick={()=> navigate()} className="mt-10 relative text-sm font-semibold uppercase px-6 py-3 bg-white text-black rounded-lg border-2 border-black  shadow-md scale-105   hover:scale-110 cursor-pointer transition-all duration-300">
+            Discover Events
+            <span className="absolute inset-0 rounded-lg border-2 border-white translate-x-2 translate-y-2  z-10"></span>
+          </button>
         </motion.div>
       </div>
     </div>
