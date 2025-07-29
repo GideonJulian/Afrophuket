@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import event4 from "../assets/images/events/event4.png";
+import event5 from "../assets/images/events/event5.png";
+import event6 from "../assets/images/events/event6.png";
+import event7 from "../assets/images/events/event7.png";
 import { Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -17,21 +20,21 @@ const allEvents = [
     date: "2025-09-05T16:00",
     location: "Abuja",
     price: "$5,100",
-    img: event4,
+    img: event5,
   },
   {
-    name: "Tribe Pool Party",
-    date: "2025-08-15T14:00",
-    location: "Lagos",
+    name: "Halfmoon Festival",
+    date: "Fri, Aug 15th, 3PM",
+    location: "HalfMoon Club",
     price: "$7,000",
-    img: event4,
+    img: event6,
   },
   {
-    name: "Tribe Pool Party",
-    date: "2025-08-25T10:00",
-    location: "Port Harcourt",
+    name: "ZOO DEL MAR",
+    date: "Sat, Aug 2nd, 12PM",
+    location: "Cafe Del Mar Phuket",
     price: "$6,250",
-    img: event4,
+    img: event7,
   },
 ];
 
@@ -72,12 +75,12 @@ const Tickets = () => {
               : locationFilter}
           </h1>
 
-          <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-4 w-full">
             {/* Change Location */}
             <select
               value={locationFilter}
               onChange={(e) => setLocationFilter(e.target.value)}
-              className="rounded-full border px-3 py-1 bg-black text-white"
+              className="rounded-full border px-3 py-2 bg-black text-white"
             >
               <option value="" disabled>
                 Change Location
@@ -95,7 +98,7 @@ const Tickets = () => {
               type="date"
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
-              className="rounded-full border px-3 py-1 bg-black text-white"
+              className="rounded-full border px-2 py-2 bg-black text-white"
             />
           </div>
         </div>
