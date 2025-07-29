@@ -22,7 +22,7 @@ const FeaturedEvents = () => {
   ];
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-4 py-10">
       <div className="max-w-[1296px] mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between">
