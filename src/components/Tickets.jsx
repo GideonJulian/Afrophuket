@@ -1,44 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import event4 from "../assets/images/events/event4.png";
 import { Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
+const allEvents = [
+  {
+    name: "Tribe Pool Party",
+    date: "2025-08-02T12:00",
+    location: "Lagos",
+    price: "$6,580",
+    img: event4,
+  },
+  {
+    name: "Tribe Pool Party",
+    date: "2025-09-05T16:00",
+    location: "Abuja",
+    price: "$5,100",
+    img: event4,
+  },
+  {
+    name: "Tribe Pool Party",
+    date: "2025-08-15T14:00",
+    location: "Lagos",
+    price: "$7,000",
+    img: event4,
+  },
+  {
+    name: "Tribe Pool Party",
+    date: "2025-08-25T10:00",
+    location: "Port Harcourt",
+    price: "$6,250",
+    img: event4,
+  },
+];
+
 const Tickets = () => {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
+
+  const [locationFilter, setLocationFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+  const [showAll, setShowAll] = useState(false);
+
+  const filteredEvents = allEvents.filter((event) => {
+    const matchesLocation =
+      locationFilter === "All" || locationFilter === "" || event.location === locationFilter;
+    const matchesDate =
+      dateFilter === "All" || dateFilter === "" || event.date.startsWith(dateFilter);
+    return matchesLocation && matchesDate;
   });
 
-  const ticketsData = [
-    {
-      name: "Tribe Pool Party",
-      date: "Sat, Aug 2nd, 12PM",
-      location: "TRIBE Sky Beach Club",
-      price: "$6,580",
-      img: event4,
-    },
-    {
-      name: "Tribe Pool Party",
-      date: "Sat, Aug 2nd, 12PM",
-      location: "TRIBE Sky Beach Club",
-      price: "$6,580",
-      img: event4,
-    },
-    {
-      name: "Tribe Pool Party",
-      date: "Sat, Aug 2nd, 12PM",
-      location: "TRIBE Sky Beach Club",
-      price: "$6,580",
-      img: event4,
-    },
-    {
-      name: "Tribe Pool Party",
-      date: "Sat, Aug 2nd, 12PM",
-      location: "TRIBE Sky Beach Club",
-      price: "$6,580",
-      img: event4,
-    },
+  const eventsToShow = showAll ? filteredEvents : filteredEvents.slice(0, 3);
+
+  const uniqueLocations = [
+    "All",
+    ...Array.from(new Set(allEvents.map((e) => e.location))),
   ];
 
   return (
@@ -46,14 +62,35 @@ const Tickets = () => {
       <div className="max-w-[1296px] mx-auto px-4">
         <div>
           <p className="text-[#F7F6F2]">Browse Events</p>
-          <h1 className="font-bold text-2xl py-3">Lagos</h1>
+          <h1 className="font-bold text-2xl py-3">
+            {locationFilter === "All" || locationFilter === "" ? "All Locations" : locationFilter}
+          </h1>
+
           <div className="flex items-center gap-4 flex-wrap">
-            <button className="rounded-full border px-3 py-1">
-              Change Location
-            </button>
-            <button className="rounded-full border px-3 py-1">
-              Filter by Date
-            </button>
+            {/* Change Location */}
+            <select
+              value={locationFilter}
+              onChange={(e) => setLocationFilter(e.target.value)}
+              className="rounded-full border px-3 py-1 bg-black text-white"
+            >
+              <option value="" disabled>
+                Change Location
+              </option>
+              <option value="All">All</option>
+              {uniqueLocations.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </select>
+
+            {/* Filter by Date */}
+            <input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="rounded-full border px-3 py-1 bg-black text-white"
+            />
           </div>
         </div>
 
@@ -64,35 +101,51 @@ const Tickets = () => {
           transition={{ duration: 1 }}
           className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6"
         >
-          {ticketsData.map((items, index) => (
+          {eventsToShow.map((event, index) => (
             <div
               key={index}
               className="bg-[#000] p-4 flex items-center justify-between gap-4"
             >
               <div className="flex-1">
-                <h1 className="font-bold text-white">{items.name}</h1>
+                <h1 className="font-bold text-white">{event.name}</h1>
                 <h2 className="flex items-center gap-2 text-white text-sm mt-1">
                   <Calendar className="w-4 h-4" />
-                  {items.date}
+                  {new Date(event.date).toLocaleString()}
                 </h2>
                 <h2 className="flex items-center gap-2 text-white text-sm mt-1">
                   <MapPin className="w-4 h-4" />
-                  {items.location}
+                  {event.location}
                 </h2>
                 <h2 className="mt-6 text-[#FC6435] text-sm font-medium">
-                  {items.price}
+                  {event.price}
                 </h2>
               </div>
-              <div className="w-34 h-34 flex-shrink-0">
+              <div className="w-24 h-24 flex-shrink-0">
                 <img
-                  src={items.img}
-                  alt={items.name}
+                  src={event.img}
+                  alt={event.name}
                   className="w-full h-full object-cover rounded-md"
                 />
               </div>
             </div>
           ))}
         </motion.div>
+
+        {/* Show More Button */}
+        {!showAll && filteredEvents.length > 3 && (
+          <div className="text-center mb-10">
+            <button
+              onClick={() => setShowAll(true)}
+              className="text-white border border-white px-4 py-1 rounded-full hover:bg-white hover:text-black transition"
+            >
+              Show All
+            </button>
+          </div>
+        )}
+
+        {filteredEvents.length === 0 && (
+          <p className="text-white text-center py-10">No events found.</p>
+        )}
       </div>
     </div>
   );
