@@ -12,3 +12,10 @@ body {
   color: transparent;
   -webkit-text-stroke: 1px white;
 }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
