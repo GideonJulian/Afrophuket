@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div>
       <Hero />
-      <div>
+      <div className='mt-10'>
         <FeaturedEvents />
       </div>
     </div>
