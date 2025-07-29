@@ -10,14 +10,14 @@ const FeaturedEvents = () => {
       img: "/events/event1.png",
     },
     {
-      name: "Sunset Yacht Vibes",
-      date: "Sun, Aug 24th, 6PM",
-      img: "/events/event1.png",
+      name: "Don't Tell Mami - Ladies Night",
+      date: "Sat, Aug 23rd, 5PM",
+      img: "/events/event2.png",
     },
     {
-      name: "Afro Beach Bash",
-      date: "Mon, Aug 25th, 2PM",
-      img: "/events/event1.png",
+      name: "Flame Dining Show Phuket Town",
+      date: "Sat, Aug 23rd, 5PM",
+      img: "/events/event3.png",
     },
   ];
 
