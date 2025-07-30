@@ -40,6 +40,9 @@ const Navbar = () => {
             <X
               className="w-6 h-6 cursor-pointer md:hidden"
               onClick={() => setMenuOpen(false)}
+                color="#ffffff"
+              strokeWidth={3}
+              absoluteStrokeWidth
             />
           ) : (
             <Menu
@@ -63,9 +66,9 @@ const Navbar = () => {
 
       {/* Mobile Menu (Drop from top, center-aligned, 50% width) */}
       <div
-        className={`fixed left-1/2 top-0  z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white p-6 transform transition-transform duration-300 ${
+        className={`fixed left-1/2 top-0 z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white p-6 py-7 transition-all duration-300 ease-in-out ${
           menuOpen
-            ? "translate-y-0 opacity-100 mt-24"
+            ? "translate-y-0 opacity-100 mt-24 "
             : "-translate-y-full opacity-0"
         }`}
       >
@@ -77,7 +80,7 @@ const Navbar = () => {
             className="w-full px-3 py-3 pl-10 rounded-full border border-white text-white placeholder:text-[19px] placeholder:text-white "
           />
         </div>
-        <ul className="flex flex-col gap-3 text-lg pt-4">
+        <ul className="flex flex-col gap-4 text-lg pt-4 pb-7">
           <li>
             <Link
               className="font-bold text-2xl"
