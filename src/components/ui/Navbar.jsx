@@ -67,7 +67,7 @@ const Navbar = () => {
       {/* Mobile Menu (Drop from top, center-aligned, 50% width) */}
    <div
   className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
-    menuOpen ? "h-[400px] opacity-100 -mt-10" : "h-0 opacity-0"
+    menuOpen ? "h-[400px] opacity-100 -mt-7" : "h-0 opacity-0"
   }`}
 >
   {/* Inner Content fades in */}
