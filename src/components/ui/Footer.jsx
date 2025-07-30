@@ -5,7 +5,7 @@ import { BsTiktok } from "react-icons/bs";
 
 export const Footer = () => {
   return (
-    <div className="w-full mt-30 px-4">
+    <div className="w-full mt-30 px-4 ">
       {/* Top section */}
       <div className="max-w-[1296px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between border-b-2 pb-7 gap-8">
         <div>

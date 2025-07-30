@@ -3,6 +3,7 @@ import Hero from '../components/ui/Hero'
 import EventCard from '../components/ui/EventCard'
 import FeaturedEvents from '../components/FeaturedEvents'
 import Tickets from '../components/Tickets'
+import Mission from '../components/Mission'
 
 
 const Home = () => {
@@ -15,7 +16,11 @@ const Home = () => {
       <div className="mt-10">
         <Tickets />
       </div>
+      <div>
+        <Mission />
+      </div>
     </div>
+
   )
 }
 
