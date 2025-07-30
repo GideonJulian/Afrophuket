@@ -1,3 +1,4 @@
+// Enhanced with animations for a party vibe
 import React, { useState } from "react";
 import event4 from "../assets/images/events/event4.png";
 import event5 from "../assets/images/events/event5.png";
@@ -38,6 +39,11 @@ const allEvents = [
   },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
 const Tickets = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
@@ -67,7 +73,11 @@ const Tickets = () => {
   return (
     <div className="w-full">
       <div className="max-w-[1296px] mx-auto px-4">
-        <div>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+        >
           <p className="text-[#F7F6F2]">Browse Events</p>
           <h1 className="font-bold text-2xl py-3">
             {locationFilter === "All" || locationFilter === ""
@@ -76,11 +86,10 @@ const Tickets = () => {
           </h1>
 
           <div className="flex items-center gap-4 w-full">
-            {/* Change Location */}
             <select
               value={locationFilter}
               onChange={(e) => setLocationFilter(e.target.value)}
-              className="rounded-full border px-3 py-2 bg-black text-white"
+              className="rounded-full border px-3 py-2 bg-black text-white transition-all duration-300 hover:border-white"
             >
               <option value="" disabled>
                 Change Location
@@ -93,15 +102,14 @@ const Tickets = () => {
               ))}
             </select>
 
-            {/* Filter by Date */}
             <input
               type="date"
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
-              className="rounded-full border px-2 py-2 bg-black text-white"
+              className="rounded-full border px-2 py-2 bg-black text-white transition-all duration-300 hover:border-white"
             />
           </div>
-        </div>
+        </motion.div>
 
         <motion.div
           ref={ref}
@@ -111,9 +119,11 @@ const Tickets = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6"
         >
           {eventsToShow.map((event, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-[#000] p-4 flex items-center justify-between gap-4"
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3 }}
+              className="bg-[#000] p-4 flex items-center justify-between gap-4 rounded-xl shadow-xl"
             >
               <div className="flex-1">
                 <h1 className="font-bold text-white">{event.name}</h1>
@@ -129,32 +139,41 @@ const Tickets = () => {
                   {event.price}
                 </h2>
               </div>
-              <div className="w-24 h-24 flex-shrink-0">
+              <motion.div
+                className="w-24 h-24 flex-shrink-0"
+                initial={{ scale: 0.9 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
                 <img
                   src={event.img}
                   alt={event.name}
                   className="w-full h-full object-cover rounded-md"
                 />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           ))}
         </motion.div>
 
-        {/* Show More Button */}
         {!showAll && filteredEvents.length > 3 && (
-          <div className="flex items-center justify-center mt-10">
+          <motion.div
+            className="flex items-center justify-center mt-10"
+            initial="hidden"
+            whileInView="visible"
+            variants={fadeUp}
+          >
             <div className="relative inline-block m">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
               <button
                 onClick={() => {
-                    setShowAll(true)
+                  setShowAll(true);
                 }}
                 className="relative text-sm font-semibold uppercase px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
               >
                 VIEW ALL EVENTS
               </button>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {filteredEvents.length === 0 && (

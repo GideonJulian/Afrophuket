@@ -2,12 +2,12 @@ import React from "react";
 
 const EventCard = ({ name, img, date }) => {
   return (
-    <div className="w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px] rounded-2xl overflow-hidden shadow-lg bg-black relative mx-auto">
+    <div className="w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px] cursor-pointer rounded-2xl overflow-hidden shadow-lg bg-black relative mx-auto transition-transform duration-300 hover:scale-102 hover:shadow-xl">
       {/* Background Image */}
       <div className="relative h-[300px] sm:h-[350px] md:h-[400px]">
         <img
           src={img}
-          alt="Foam Boat Party"
+          alt={name}
           className="w-full h-full object-cover"
         />
 
