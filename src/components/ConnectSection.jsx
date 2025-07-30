@@ -4,6 +4,7 @@ import ig from "../assets/images/ig.png";
 import { MoveUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import contactbg from '../assets/images/contactbg.jpg'
 
 const ConnectSection = () => {
   const { ref, inView } = useInView({
@@ -79,9 +80,9 @@ const ConnectSection = () => {
         {/* Contact Box */}
         <div className="relative rounded-xl overflow-hidden h-full">
           <img
-            src="/path-to-your-image.jpg"
+            src={contactbg}
             alt="Party"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute opacity-30 inset-0 w-full h-full object-cover"
           />
           <div className="relative z-10 h-full p-10 flex flex-col justify-between ">
             <div>
