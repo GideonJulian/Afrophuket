@@ -66,7 +66,7 @@ const Navbar = () => {
 
       {/* Mobile Menu (Drop from top, center-aligned, 50% width) */}
       <div
-        className={`fixed left-1/2 top-0 z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white p-6 py-7 transition-all duration-300 ease-in-out ${
+        className={`fixed left-1/2 top-0 z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white p-6 py-7 transition-all duration-570 ease-in-out ${
           menuOpen
             ? "translate-y-0 opacity-100 mt-24 "
             : "-translate-y-full opacity-0"
