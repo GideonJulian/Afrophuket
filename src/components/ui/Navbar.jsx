@@ -23,6 +23,8 @@ const Navbar = () => {
           </li>
           <li>
             <Link to="#">Contact Us</Link>
+          </li>  <li>
+            <Link to="#">Shop</Link>
           </li>
         </ul>
 
