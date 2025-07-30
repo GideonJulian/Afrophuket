@@ -4,6 +4,7 @@ import EventCard from '../components/ui/EventCard'
 import FeaturedEvents from '../components/FeaturedEvents'
 import Tickets from '../components/Tickets'
 import Mission from '../components/Mission'
+import ConnectSection from '../components/ConnectSection'
 
 
 const Home = () => {
@@ -18,6 +19,9 @@ const Home = () => {
       </div>
       <div>
         <Mission />
+      </div>
+      <div>
+        <ConnectSection />
       </div>
     </div>
 

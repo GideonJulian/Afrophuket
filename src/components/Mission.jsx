@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import orange from "../assets/images/OrangeLink.png";
+import EventCarousel from "./ui/EventCarousel";
 
 const Mission = () => {
   return (
@@ -47,6 +48,9 @@ const Mission = () => {
           </p>
           <img src={orange} className="mt-10 w-auto" alt="Orange Link" />
         </div>
+      </div>
+      <div>
+        {/* <EventCarousel /> */}
       </div>
     </motion.div>
   );
