@@ -24,7 +24,7 @@ export const Footer = () => {
         </div>
 
         {/* Navigation Links */}
-        <ul className="flex flex-col sm:flex-row sm:gap-20 gap-6 md:gap-40 text-center md:text-left">
+        <ul className="flex flex-col sm:flex-row sm:gap-20 gap-6 md:gap-40 text-left md:text-left">
           <div>
             <li>
               <Link className="font-semibold text-sm">Home</Link>
@@ -45,11 +45,11 @@ export const Footer = () => {
       </div>
 
       {/* Bottom section */}
-      <div className="max-w-[1296px] mx-auto flex flex-col md:flex-row items-center justify-between py-6 text-sm text-center gap-4">
+      <div className="max-w-[1296px] mx-auto flex flex-col-reverse  md:flex-row items-left justify-between py-6 text-sm  gap-4">
         <h1>© 2025 AfroPhuket. All rights reserved.</h1>
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-3 items-left md:items-left flex-col md:flex-row">
           <Link className="hover:underline">Privacy Policy</Link>
-          <span>|</span>
+      
           <Link className="hover:underline">Terms & Conditions</Link>
         </div>
       </div>
