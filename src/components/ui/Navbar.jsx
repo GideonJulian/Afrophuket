@@ -5,6 +5,12 @@ import { Menu, Search, ShoppingCart, X } from "lucide-react";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+const navLinks = [
+  { text: "DISCOVER EVENTS", path: "/events" },
+  { text: "ABOUT US", path: "/about" },
+  { text: "CONTACT US", path: "/contact" },
+  { text: "SHOP", path: "/shop" },
+];
   return (
     <>
       {/* Top Navbar */}
@@ -94,21 +100,21 @@ const Navbar = () => {
             />
           </div>
 
-          <ul className="flex flex-col gap-4 text-lg pt-4 pb-7">
-            {["DISCOVER EVENTS", "ABOUT US", "CONTACT US", "SHOP"].map(
-              (text) => (
-                <li key={text}>
-                  <Link
-                    to="#"
-                    className="font-bold text-2xl"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {text}
-                  </Link>
-                </li>
-              )
-            )}
-          </ul>
+         
+<ul className="flex flex-col gap-4 text-lg pt-4 pb-7">
+  {navLinks.map(({ text, path }) => (
+    <li key={text}>
+      <Link
+        to={path}
+        className="font-bold text-2xl"
+        onClick={() => setMenuOpen(false)}
+      >
+        {text}
+      </Link>
+    </li>
+  ))}
+</ul>
+
         </div>
       </div>
     </>
