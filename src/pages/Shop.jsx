@@ -78,14 +78,16 @@ const Shop = () => {
         {/* Controls */}
         <div className="mt-10">
           <h1 className="font-bold text-3xl py-3">Browse Items</h1>
-          <div className="flex flex-wrap gap-4 items-center">
+          <div className="flex gap-4 items-center">
             {/* Sort */}
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="rounded-full px-6 py-2 bg-black text-white border cursor-pointer"
             >
-              <option value="default">Sort by: T-shirt</option>
+              <option value="default">
+                Sort by: <span className="text-[#E55934]">T-shirt</span>
+              </option>
               <option value="lowToHigh">Price: Low to High</option>
               <option value="highToLow">Price: High to Low</option>
             </select>
@@ -96,7 +98,9 @@ const Shop = () => {
               onChange={(e) => setFilterBy(e.target.value)}
               className="rounded-full px-6 py-2 bg-black text-white border cursor-pointer"
             >
-              <option value="All">Filter by: All</option>
+              <option value="All">
+                Filter by: <span className="text-[#E55934]">All</span>
+              </option>
               <option value="T-shirt">T-shirt</option>
               <option value="Hoodie">Hoodie</option>
             </select>
@@ -134,8 +138,6 @@ const Shop = () => {
               ))}
             </Slider>
           </div>
-
-     
         </div>
       </div>
     </div>
