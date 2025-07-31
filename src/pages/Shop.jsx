@@ -57,19 +57,19 @@ const Shop = () => {
     <div className="w-full">
       <div className="mx-auto max-w-[1296px] p-4">
         {/* Header */}
-        <div className="text-center mt-20 flex flex-col items-center">
+        <div className="text-center mt-0 md:mt-20 flex flex-col items-center">
           <h1 className="text-[42px] sm:text-[55px] md:text-[67.13px] font-[300] font-sans">
             AFROPHUKET
           </h1>
-          <h2
-            className="text-[30px] sm:text-[40px] md:text-[58px] font-sans font-[300] bg-clip-text text-transparent"
+          <h1
+            className="text-[42px] sm:text-[55px] md:text-[67.13px] font-[300] bg-clip-text text-transparent"
             style={{
               backgroundImage:
                 "linear-gradient(to right, rgba(234, 67, 11, 1), rgba(79, 61, 236, 1))",
             }}
           >
             PRINTS
-          </h2>
+          </h1>
           <p className="text-center text-sm w-full max-w-[409px] mt-4">
             A wearable celebration of movement, sound and ancestral connection
           </p>
@@ -135,22 +135,7 @@ const Shop = () => {
             </Slider>
           </div>
 
-          {/* View All Button */}
-          <motion.div
-            className="flex items-center justify-center mt-10"
-            initial="hidden"
-            whileInView="visible"
-            variants={fadeUp}
-          >
-            <div className="relative inline-block">
-              <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
-              <button
-                className="relative text-sm font-semibold uppercase px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
-              >
-                VIEW ALL PRODUCTS
-              </button>
-            </div>
-          </motion.div>
+     
         </div>
       </div>
     </div>
