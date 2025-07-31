@@ -11,15 +11,25 @@ const Navbar = () => {
       <div className="fixed top-0 left-0 right-0 z-50 w-full p-8 py-3 flex items-center justify-between text-white bg-opacity-80 backdrop-blur-md">
         {/* Logo */}
         <div>
-          <img src="/afrologo.png" alt="Logo" className="w-16" />
+          <Link to='/'>
+            <img src="/afrologo.png" alt="Logo" className="w-16" />
+          </Link>
         </div>
 
         {/* Desktop Links */}
         <ul className="hidden md:flex items-center gap-6">
-          <li><Link to="#">Discover Events</Link></li>
-          <li><Link to="#">About Us</Link></li>
-          <li><Link to="#">Contact Us</Link></li>
-          <li><Link to="#">Shop</Link></li>
+          <li>
+            <Link to="#">Discover Events</Link>
+          </li>
+          <li>
+            <Link to="#">About Us</Link>
+          </li>
+          <li>
+            <Link to="#">Contact Us</Link>
+          </li>
+          <li>
+            <Link to="/shop">Shop</Link>
+          </li>
         </ul>
 
         {/* Right Side Buttons */}
@@ -85,17 +95,19 @@ const Navbar = () => {
           </div>
 
           <ul className="flex flex-col gap-4 text-lg pt-4 pb-7">
-            {["DISCOVER EVENTS", "ABOUT US", "CONTACT US", "SHOP"].map((text) => (
-              <li key={text}>
-                <Link
-                  to="#"
-                  className="font-bold text-2xl"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {text}
-                </Link>
-              </li>
-            ))}
+            {["DISCOVER EVENTS", "ABOUT US", "CONTACT US", "SHOP"].map(
+              (text) => (
+                <li key={text}>
+                  <Link
+                    to="#"
+                    className="font-bold text-2xl"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {text}
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </div>
       </div>
