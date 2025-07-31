@@ -83,7 +83,7 @@ const Shop = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="rounded-full px-6 py-2 bg-black text-white border cursor-pointer"
+              className="rounded-full px-4 py-2 bg-black text-white border cursor-pointer"
             >
               <option value="default">
                 Sort by: <span className="text-[#E55934]">T-shirt</span>
@@ -96,7 +96,7 @@ const Shop = () => {
             <select
               value={filterBy}
               onChange={(e) => setFilterBy(e.target.value)}
-              className="rounded-full px-6 py-2 bg-black text-white border cursor-pointer"
+              className="rounded-full px-3 py-2 bg-black text-white border cursor-pointer"
             >
               <option value="All">
                 Filter by: <span className="text-[#E55934]">All</span>
