@@ -6,6 +6,10 @@ body {
     background-color: #111111;
     color: white;
 }
+/* index.css or App.css */
+html, body {
+  overflow-x: hidden;
+}
 
 /* In your index.css */
 .outlined-text {
