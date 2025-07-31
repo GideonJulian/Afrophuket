@@ -1,4 +1,3 @@
-// Enhanced with animations for a party vibe
 import React, { useState } from "react";
 import event4 from "../assets/images/events/event4.png";
 import event5 from "../assets/images/events/event5.png";
@@ -7,6 +6,7 @@ import event7 from "../assets/images/events/event7.png";
 import { Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useNavigate } from "react-router-dom";
 
 const allEvents = [
   {
@@ -25,14 +25,14 @@ const allEvents = [
   },
   {
     name: "Halfmoon Festival",
-    date: "Fri, Aug 15th, 3PM",
+    date: "2025-08-15T15:00",
     location: "HalfMoon Club",
     price: "$7,000",
     img: event6,
   },
   {
     name: "ZOO DEL MAR",
-    date: "Sat, Aug 2nd, 12PM",
+    date: "2025-08-02T12:00",
     location: "Cafe Del Mar Phuket",
     price: "$6,250",
     img: event7,
@@ -46,6 +46,7 @@ const fadeUp = {
 
 const Tickets = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
+  const navigate = useNavigate();
 
   const [locationFilter, setLocationFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
@@ -70,14 +71,16 @@ const Tickets = () => {
     ...Array.from(new Set(allEvents.map((e) => e.location))),
   ];
 
+  const handleCardClick = (eventName) => {
+    const slug = eventName.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/ticket/${slug}`);
+    console.log(eventName)
+  };
+
   return (
     <div className="w-full">
       <div className="max-w-[1296px] mx-auto px-4">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-        >
+        <motion.div initial="hidden" animate="visible" variants={fadeUp}>
           <p className="text-[#F7F6F2]">Browse Events</p>
           <h1 className="font-bold text-2xl py-3">
             {locationFilter === "All" || locationFilter === ""
@@ -85,7 +88,7 @@ const Tickets = () => {
               : locationFilter}
           </h1>
 
-          <div className="flex items-center gap-4 w-full">
+          <div className="flex flex-wrap gap-4 w-full">
             <select
               value={locationFilter}
               onChange={(e) => setLocationFilter(e.target.value)}
@@ -123,7 +126,8 @@ const Tickets = () => {
               key={index}
               whileHover={{ scale: 1.03 }}
               transition={{ duration: 0.3 }}
-              className="bg-[#000] p-4 flex items-center justify-between gap-4 rounded-xl shadow-xl"
+              onClick={() => handleCardClick(event.name)}
+              className="cursor-pointer bg-[#000] p-4 flex items-center justify-between gap-4 rounded-xl shadow-xl"
             >
               <div className="flex-1">
                 <h1 className="font-bold text-white">{event.name}</h1>
@@ -165,9 +169,7 @@ const Tickets = () => {
             <div className="relative inline-block m">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
               <button
-                onClick={() => {
-                  setShowAll(true);
-                }}
+                onClick={() => setShowAll(true)}
                 className="relative text-sm font-semibold uppercase px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
               >
                 VIEW ALL EVENTS
