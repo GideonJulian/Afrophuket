@@ -5,19 +5,19 @@ import { Menu, Search, ShoppingCart, X } from "lucide-react";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-const navLinks = [
-  { text: "DISCOVER EVENTS", path: "/events" },
-  { text: "ABOUT US", path: "/about" },
-  { text: "CONTACT US", path: "/contact" },
-  { text: "SHOP", path: "/shop" },
-];
+  const navLinks = [
+    { text: "DISCOVER EVENTS", path: "/events" },
+    { text: "ABOUT US", path: "/about" },
+    { text: "CONTACT US", path: "/contact" },
+    { text: "SHOP", path: "/shop" },
+  ];
   return (
     <>
       {/* Top Navbar */}
       <div className="fixed top-0 left-0 right-0 z-50 w-full p-8 py-3 flex items-center justify-between text-white bg-opacity-80 backdrop-blur-md">
         {/* Logo */}
         <div>
-          <Link to='/'>
+          <Link to="/">
             <img src="/afrologo.png" alt="Logo" className="w-16" />
           </Link>
         </div>
@@ -44,9 +44,13 @@ const navLinks = [
           <div className="hidden md:flex items-center gap-3">
             <ShoppingCart color="#ffffff" strokeWidth={3} absoluteStrokeWidth />
 
-            <button className="px-3 py-3 rounded-lg border border-[#F7F6F2] text-white">
-              Find events
-            </button>
+            <div className="relative">
+              <Search className="absolute top-[13px] left-3"  size={18}/>
+              <input
+                className="px-2 py-2 rounded-full border pl-10 placeholder:text-white border-[#F7F6F2] text-white"
+                placeholder="Find events..."
+              />
+            </div>
           </div>
 
           {/* Mobile: Cart + Menu Toggle */}
@@ -100,21 +104,19 @@ const navLinks = [
             />
           </div>
 
-         
-<ul className="flex flex-col gap-4 text-lg pt-4 pb-7">
-  {navLinks.map(({ text, path }) => (
-    <li key={text}>
-      <Link
-        to={path}
-        className="font-bold text-2xl"
-        onClick={() => setMenuOpen(false)}
-      >
-        {text}
-      </Link>
-    </li>
-  ))}
-</ul>
-
+          <ul className="flex flex-col gap-4 text-lg pt-4 pb-7">
+            {navLinks.map(({ text, path }) => (
+              <li key={text}>
+                <Link
+                  to={path}
+                  className="font-bold text-2xl"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {text}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>
