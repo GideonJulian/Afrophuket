@@ -25,16 +25,16 @@ const Navbar = () => {
         {/* Desktop Links */}
         <ul className="hidden md:flex items-center gap-6">
           <li>
-            <Link to="#">Discover Events</Link>
+            <Link to="#" className="hover:text-[#E55934] transition-colors duration-300">Discover Events</Link>
           </li>
           <li>
-            <Link to="#">About Us</Link>
+            <Link to="/about" className="hover:text-[#E55934] transition-colors duration-300">About Us</Link>
           </li>
           <li>
-            <Link to="#">Contact Us</Link>
+            <Link to="#" className="hover:text-[#E55934] transition-colors duration-300">Contact Us</Link>
           </li>
           <li>
-            <Link to="/shop">Shop</Link>
+            <Link to="/shop" className="hover:text-[#E55934] transition-colors duration-300">Shop</Link>
           </li>
         </ul>
 
