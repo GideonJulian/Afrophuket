@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <>
       {/* Top Navbar */}
-      <div className="fixed top-0 left-0 right-0 z-50 w-full p-8 py-3 flex items-center justify-between text-white bg-opacity-80 backdrop-blur-md">
+      <div className="fixed top-0 left-0 right-0 z-50 w-full p-10 py-6 flex items-center justify-between text-white bg-opacity-80 backdrop-blur-md">
         {/* Logo */}
         <div>
           <Link to="/">

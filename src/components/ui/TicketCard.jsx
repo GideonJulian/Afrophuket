@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 const TicketCard = ({ event }) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    const slug = event.event_title.toLowerCase().replace(/\s+/g, "-");
-    navigate(`/ticket/${slug}`);
-  };
+const handleClick = () => {
+  navigate(`/ticket/${event.id}`);
+};
+
 
   return (
     <motion.div
