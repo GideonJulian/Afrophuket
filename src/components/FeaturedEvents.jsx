@@ -76,6 +76,8 @@ const FeaturedEvents = () => {
                     name={item.event_title}
                     date={item.event_date}
                     img={item.event_thumbnail}
+                    event={event}
+                    id={item.id}
                   />
                 </div>
               ))}
@@ -101,6 +103,7 @@ const FeaturedEvents = () => {
                         name={item.event_title}
                         date={item.event_date}
                         img={item.event_thumbnail}
+
                       />
                     </div>
                   ))}

@@ -1,8 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+const EventCard = ({ name, img, date , event, id}) => {
+    const navigate = useNavigate();
+  const handleClick = () => {
+  navigate(`/ticket/${event.id}`);
+};
 
-const EventCard = ({ name, img, date }) => {
+
   return (
-    <div className="w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px] cursor-pointer rounded-2xl overflow-hidden shadow-lg bg-black relative mx-auto transition-transform duration-300 hover:scale-102 hover:shadow-xl">
+    <div onClick={handleClick} className="w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px] cursor-pointer rounded-2xl overflow-hidden shadow-lg bg-black relative mx-auto transition-transform duration-300 hover:scale-102 hover:shadow-xl">
       {/* Background Image */}
       <div className="relative h-[300px] sm:h-[350px] md:h-[400px]">
         <img
