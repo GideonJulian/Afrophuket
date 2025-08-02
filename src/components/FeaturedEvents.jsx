@@ -20,7 +20,7 @@ const FeaturedEvents = () => {
         }
       })
       .catch((err) => console.error("Fetch error:", err))
-      .finally(() => setLoading(false)); 
+      .finally(() => setLoading(false));
   }, []);
 
   const totalPages = Math.ceil(eventData.length / eventsPerPage);
@@ -58,37 +58,56 @@ const FeaturedEvents = () => {
           )}
         </div>
 
-        {/* OnLoad Spinner or Carousel */}
+        {/* Loader or Events */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <p className="text-white animate-pulse">Loading featured events...</p>
           </div>
         ) : (
-          <div className="mt-10 relative overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentPage}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5 }}
-                className="flex gap-6 md:flex-nowrap"
-              >
-                {currentEvents.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[calc(33.333%-16px)]"
-                  >
-                    <EventCard
-                      name={item.event_title}
-                      date={item.event_date}
-                      img={item.event_thumbnail}
-                    />
-                  </div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          <>
+            {/* ✅ Mobile Carousel */}
+            <div className="md:hidden mt-10 flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth">
+              {eventData.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex-shrink-0 snap-start w-[80%]"
+                >
+                  <EventCard
+                    name={item.event_title}
+                    date={item.event_date}
+                    img={item.event_thumbnail}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* ✅ Desktop Pagination */}
+            <div className="mt-10 hidden md:block overflow-hidden relative">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentPage}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.5 }}
+                  className="flex gap-6"
+                >
+                  {currentEvents.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex-shrink-0 w-[calc(33.333%-16px)]"
+                    >
+                      <EventCard
+                        name={item.event_title}
+                        date={item.event_date}
+                        img={item.event_thumbnail}
+                      />
+                    </div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </>
         )}
       </div>
     </div>
