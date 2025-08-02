@@ -29,7 +29,7 @@ const SingleTicket = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <p className="text-white text-center py-20">Loading event...</p>;
+  if (loading) return <p className="text-white text-center py-20">Loading Details...</p>;
   if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
   if (!event) return <p className="text-white text-center py-20">Event not found.</p>;
 
@@ -98,7 +98,7 @@ const SingleTicket = () => {
             {/* About the Event */}
             <div className="mt-8">
               <h1 className="text-lg font-semibold mb-4">About Event</h1>
-              <div className="space-y-5 text-sm leading-relaxed">
+              <div className="space-y-5 text-sm leading-relaxed border-t pt-4">
                 <p>
                   We're thrilled to announce the return of your favorite Griots and Bards (GAB) – an evolving village square where Arts, Spoken Word and Poetry meet deep intellectual conversations on social issues.
                 </p>
@@ -116,13 +116,13 @@ const SingleTicket = () => {
               <h1 className="text-sm md:text-base">
                 <span className="text-[#E55934] font-bold">NOTE</span>: there will be an after party. Click below for the location!
               </h1>
-              <div className="flex gap-4 items-center mt-4">
-                <div className="px-3 py-3 rounded-lg border">
+              <div className="flex gap-4 items-center mt-4 cursor-pointer ">
+                <div className="px-3 py-3 rounded-lg border ">
                   <MapPin />
                 </div>
-                <div>
-                  <h1 className="flex items-center gap-2 text-white text-base">
-                    Eco Hotel <ArrowUpRight className="w-4 h-4" />
+                <div >
+                  <h1 className="flex items-center gap-2 text-white text-base hover:text-[#E55934] transition-colors duration-300">
+                    Eco Hotel <ArrowUpRight className="w-4 h-4 " />
                   </h1>
                   <p className="text-sm">{event.event_location}</p>
                 </div>
@@ -147,7 +147,8 @@ const SingleTicket = () => {
           </motion.div>
         </div>
         <div className="mt-20">
-           <BrowseTickets />
+          <h1 className="border-b pb-5 text-[#ffffff]"> Other events you may like</h1>
+          <h1 className="text-center mt-17">Recommended events will show here </h1>
         </div>
       </div>
     </div>
