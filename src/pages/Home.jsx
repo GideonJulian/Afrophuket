@@ -2,7 +2,7 @@ import React from 'react'
 import Hero from '../components/ui/Hero'
 import EventCard from '../components/ui/EventCard'
 import FeaturedEvents from '../components/FeaturedEvents'
-import Tickets from '../components/Tickets'
+import BrowseTickets from '../components/BrowseTickets'
 import Mission from '../components/Mission'
 import ConnectSection from '../components/ConnectSection'
 
@@ -15,7 +15,7 @@ const Home = () => {
         <FeaturedEvents />
       </div>
       <div className="mt-10">
-        <Tickets />
+        <BrowseTickets />
       </div>
       <div>
         <Mission />

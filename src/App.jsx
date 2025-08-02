@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import About from "./pages/About";
 import SingleTicket from "./pages/SingleTicket";
+import Events from "./pages/Events";
 
 const route = createBrowserRouter([
   {
@@ -24,6 +25,9 @@ const route = createBrowserRouter([
       },{
         path: 'ticket/:id',
         element: <SingleTicket />
+      },{
+        path: 'event',
+        element: <Events />
       }
     ],
   },

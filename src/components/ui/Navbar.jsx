@@ -6,7 +6,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
-    { text: "DISCOVER EVENTS", path: "/events" },
+    { text: "DISCOVER EVENTS", path: "/event" },
     { text: "ABOUT US", path: "/about" },
     { text: "CONTACT US", path: "/contact" },
     { text: "SHOP", path: "/shop" },
@@ -25,7 +25,7 @@ const Navbar = () => {
         {/* Desktop Links */}
         <ul className="hidden md:flex items-center gap-6">
           <li>
-            <Link to="#" className="hover:text-[#E55934] transition-colors duration-300">Discover Events</Link>
+            <Link to="/event" className="hover:text-[#E55934] transition-colors duration-300">Discover Events</Link>
           </li>
           <li>
             <Link to="/about" className="hover:text-[#E55934] transition-colors duration-300">About Us</Link>
