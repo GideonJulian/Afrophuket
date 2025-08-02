@@ -73,11 +73,10 @@ const FeaturedEvents = () => {
                   className="flex-shrink-0 snap-start w-[80%]"
                 >
                   <EventCard
-                    name={item.event_title}
-                    date={item.event_date}
-                    img={item.event_thumbnail}
-                    event={event}
-                    id={item.id}
+                  name={item.event_title}
+  date={item.event_date}
+  img={item.event_thumbnail}
+  id={item.id}
                   />
                 </div>
               ))}
@@ -100,10 +99,10 @@ const FeaturedEvents = () => {
                       className="flex-shrink-0 w-[calc(33.333%-16px)]"
                     >
                       <EventCard
-                        name={item.event_title}
-                        date={item.event_date}
-                        img={item.event_thumbnail}
-
+                       name={item.event_title}
+  date={item.event_date}
+  img={item.event_thumbnail}
+  id={item.id}
                       />
                     </div>
                   ))}
