@@ -46,13 +46,21 @@ const FeaturedEvents = () => {
           {totalPages > 1 && (
             <div className="border border-white rounded-full px-3 py-2 md:flex items-center justify-between hidden">
               <button onClick={goToPrev} disabled={currentPage === 1}>
-                <ChevronLeft className={`cursor-pointer ${currentPage === 1 ? "opacity-30" : ""}`} />
+                <ChevronLeft
+                  className={`cursor-pointer ${
+                    currentPage === 1 ? "opacity-30" : ""
+                  }`}
+                />
               </button>
               <span className="text-sm">
                 {currentPage} of {totalPages}
               </span>
               <button onClick={goToNext} disabled={currentPage === totalPages}>
-                <ChevronRight className={`cursor-pointer ${currentPage === totalPages ? "opacity-30" : ""}`} />
+                <ChevronRight
+                  className={`cursor-pointer ${
+                    currentPage === totalPages ? "opacity-30" : ""
+                  }`}
+                />
               </button>
             </div>
           )}
@@ -61,22 +69,21 @@ const FeaturedEvents = () => {
         {/* Loader or Events */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <p className="text-white animate-pulse">Loading featured events...</p>
+            <p className="text-white animate-pulse">
+              Loading featured events...
+            </p>
           </div>
         ) : (
           <>
             {/* ✅ Mobile Carousel */}
             <div className="md:hidden mt-10 flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth">
               {eventData.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex-shrink-0 snap-start w-[80%]"
-                >
+                <div key={idx} className="flex-shrink-0 snap-start w-[80%]">
                   <EventCard
-                  name={item.event_title}
-  date={item.event_date}
-  img={item.event_thumbnail}
-  id={item.id}
+                    name={item.event_title}
+                    date={item.event_date}
+                    img={item.event_thumbnail}
+                    id={item.id}
                   />
                 </div>
               ))}
@@ -99,10 +106,10 @@ const FeaturedEvents = () => {
                       className="flex-shrink-0 w-[calc(33.333%-16px)]"
                     >
                       <EventCard
-                       name={item.event_title}
-  date={item.event_date}
-  img={item.event_thumbnail}
-  id={item.id}
+                        name={item.event_title}
+                        date={item.event_date}
+                        img={item.event_thumbnail}
+                        id={item.id}
                       />
                     </div>
                   ))}
