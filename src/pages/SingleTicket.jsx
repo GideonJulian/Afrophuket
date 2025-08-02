@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import hostimg from "../assets/images/hostimg.png";
 import Button from "../components/ui/Button";
 import map from "../assets/images/map.png";
+import BrowseTickets from "../components/BrowseTickets";
 
 const SingleTicket = () => {
   const { id } = useParams();
@@ -144,6 +145,9 @@ const SingleTicket = () => {
               </div>
             </div>
           </motion.div>
+        </div>
+        <div className="mt-20">
+           <BrowseTickets />
         </div>
       </div>
     </div>
