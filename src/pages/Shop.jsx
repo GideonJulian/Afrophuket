@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
-import pro1 from "../assets/images/pro1.png";
-import pro2 from "../assets/images/pro2.png";
-import pro3 from "../assets/images/pro3.png";
+
 import ProductCard from "../components/ui/ProductCard";
 import { motion } from "framer-motion";
 
@@ -16,18 +14,22 @@ const fadeUp = {
 };
 
 const Shop = () => {
-  const allProducts = [
-    {
-      img: pro1,
-      name: "Black Genius Sweatshirt",
-      price: 36.5,
-      category: "T-shirt",
-    },
-    { img: pro2, name: "Afro Hoodie", price: 50, category: "Hoodie" },
-    { img: pro3, name: "Tribal T-shirt", price: 25, category: "T-shirt" },
-    { img: pro1, name: "Heritage Hoodie", price: 70, category: "Hoodie" },
-    { img: pro2, name: "Classic Tee", price: 15, category: "T-shirt" },
-  ];
+  const [allProducts, setAllProducts]  = useState([])
+   useEffect(() => {
+      fetch("https://afrophuket-backend.onrender.com/products/")
+        .then((res) => res.json())
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setAllProducts(data);
+          } else {
+            console.error("Expected array, got:", data);
+          }
+        })
+        .catch((err) => console.error("Fetch error:", err))
+        .finally(() => setLoading(false));
+        console.log(allProducts)
+    }, []);
+  
 
   const [sortBy, setSortBy] = useState("default");
   const [filterBy, setFilterBy] = useState("All");
@@ -117,8 +119,8 @@ const Shop = () => {
             {displayedProducts.map((item, index) => (
               <ProductCard
                 key={index}
-                imgSrc={item.img}
-                name={item.name}
+                imgSrc={item.image}
+                name={item.title}
                 price={item.price}
               />
             ))}
@@ -130,8 +132,8 @@ const Shop = () => {
               {displayedProducts.map((item, index) => (
                 <div key={index} className="px-2">
                   <ProductCard
-                    imgSrc={item.img}
-                    name={item.name}
+                    imgSrc={item.image_url}
+                    name={item.title}
                     price={item.price}
                   />
                 </div>
