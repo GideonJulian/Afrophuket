@@ -4,6 +4,8 @@ import { CalendarDays, MapPin, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import hostimg from "../assets/images/hostimg.png";
 import Button from "../components/ui/Button";
+import map from "../assets/images/map.png";
+
 const SingleTicket = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
@@ -18,9 +20,7 @@ const SingleTicket = () => {
         }
         return res.json();
       })
-      .then((data) => {
-        setEvent(data);
-      })
+      .then((data) => setEvent(data))
       .catch((err) => {
         console.error("Fetch error:", err);
         setError(err.message);
@@ -28,106 +28,122 @@ const SingleTicket = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading)
-    return <p className="text-white text-center py-20">Loading event...</p>;
+  if (loading) return <p className="text-white text-center py-20">Loading event...</p>;
   if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
-  if (!event)
-    return <p className="text-white text-center py-20">Event not found.</p>;
+  if (!event) return <p className="text-white text-center py-20">Event not found.</p>;
 
   return (
     <div className="w-full text-white">
       <div className="mx-auto max-w-[1296px] p-4">
-        <div>
-          <h1 className="text-white text-lg">
-            Discover/<span className="text-[#E55934]">{event.event_title}</span>
-          </h1>
-        </div>
-        <div className="flex gap-7 mt-7">
-          <div className="left">
-            <img src={event.event_thumbnail_url} className="w-[505px]" />
-            <div>
-              <Button txt={"GET A TICKET"} width={500} />
-            </div>
-            <div className="py-4">
-              <h1>Hosted By </h1>
+        {/* Breadcrumb */}
+        <h1 className="text-white text-lg">
+          Discover / <span className="text-[#E55934]">{event.event_title}</span>
+        </h1>
+
+        {/* Layout */}
+        <div className="mt-10 flex flex-col lg:flex-row gap-10">
+          {/* Left Sticky Panel */}
+          <div className="lg:w-[40%] w-full lg:sticky lg:top-10 h-fit space-y-6">
+            <motion.img
+              src={event.event_thumbnail_url}
+              alt={event.event_title}
+              className="rounded-xl w-full"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+            />
+
+            <Button txt="GET A TICKET" width="300" />
+
+            <div className="pt-6">
+              <h1 className="text-lg font-semibold">Hosted By</h1>
               <div className="flex items-center gap-3 py-4">
-                <img src={hostimg} />
+                <img src={hostimg} className="w-10 h-10 rounded-full" />
                 <h1>GAB USA</h1>
-                <Link className="ml-30 text-[#E55934]">Contact the Host</Link>
+                <Link className="ml-auto text-[#E55934] text-sm">Contact the Host</Link>
               </div>
             </div>
-            <div className="border border-white rounded-full px-3 py-2 inline">
-              # Arts & Culture{" "}
+
+            <div className="border border-white rounded-full px-3 py-2 inline-block text-sm">
+              # Arts & Culture
             </div>
           </div>
-          <div className="right">
-            <div>
-              <h1 className="font-bold text-4xl text-white">
-                {event.event_title}
+
+          {/* Right Content Section */}
+          <motion.div
+            className="lg:w-[60%] w-full text-left"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="font-bold text-3xl md:text-4xl">{event.event_title}</h1>
+
+            {/* Date & Location */}
+            <div className="mt-7 space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-lg bg-white/10">
+                  <CalendarDays />
+                </div>
+                <h1 className="text-lg">{event.event_date}</h1>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-lg bg-white/10">
+                  <MapPin />
+                </div>
+                <h1 className="text-lg">{event.event_location}</h1>
+              </div>
+            </div>
+
+            {/* About the Event */}
+            <div className="mt-8">
+              <h1 className="text-lg font-semibold mb-4">About Event</h1>
+              <div className="space-y-5 text-sm leading-relaxed">
+                <p>
+                  We're thrilled to announce the return of your favorite Griots and Bards (GAB) – an evolving village square where Arts, Spoken Word and Poetry meet deep intellectual conversations on social issues.
+                </p>
+                <p>
+                  Get ready for a night of soul-stirring performances, social conversations and networking.
+                </p>
+                <p>
+                  Please RSVP to join us on the last Thursday of every month for an unforgettable experience. See you soon!
+                </p>
+              </div>
+            </div>
+
+            {/* After Party Note */}
+            <div className="mt-10">
+              <h1 className="text-sm md:text-base">
+                <span className="text-[#E55934] font-bold">NOTE</span>: there will be an after party. Click below for the location!
               </h1>
-              <div className="mt-7">
-                <div className="flex gap-4 items-center">
-                  <div className="px-3 py-3 rounded-lg bg-[]">
-                    {" "}
-                    <CalendarDays />
-                  </div>
-                  <div>
-                    <h1 className="text-lg text-white ">{event.event_date}</h1>
-                  </div>
+              <div className="flex gap-4 items-center mt-4">
+                <div className="px-3 py-3 rounded-lg border">
+                  <MapPin />
                 </div>
-                <div className="flex gap-4 items-center">
-                  <div className="px-3 py-3 rounded-lg bg-[]">
-                    {" "}
-                    <MapPin />
-                  </div>
-                  <div>
-                    <h1 className="text-lg text-white ">
-                      {event.event_location}
-                    </h1>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="mt-6">
-                  <h1 className="text-lg">About Event</h1>
-                  <div className="mt-4">
-                    <p className="py-5">
-                      We're thrilled to announce the return of your favorite
-                      Griots and Bards (GAB) - an evolving village square where
-                      Arts, Spoken Word and Poetry meets opens deep intellectual
-                      conversations on social issues.
-                    </p>{" "}
-                    <p className="py-5">
-                      Get ready for a night of soul-stirring performances,
-                      social conversations and networking.
-                    </p>{" "}
-                    <p className="py-5">
-                      Please RSVP to join us on the last thursday of every month
-                      for an unforgettable experience. See you soon!
-                    </p>
-                  </div>
-                  <div className="mt-7">
-                    <h1>
-                      <span className="text-[#E55934]">NOTE</span>: there will
-                      be and after party, click below for the location!
-                    </h1>
-                    <div className="flex gap-4 items-center mt-4">
-                      <div className="px-3 py-3 rounded-lg border">
-                        {" "}
-                        <MapPin />
-                      </div>
-                      <div>
-                        <h1 className="flex items-center gap-2">Eco Hotel <ArrowUpRight /></h1>
-                        <h1 className="text-lg text-white ">
-                          {event.event_location}
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
+                <div>
+                  <h1 className="flex items-center gap-2 text-white text-base">
+                    Eco Hotel <ArrowUpRight className="w-4 h-4" />
+                  </h1>
+                  <p className="text-sm">{event.event_location}</p>
                 </div>
               </div>
             </div>
-          </div>
+
+            {/* Event Location */}
+            <div className="mt-10">
+              <h1 className="text-lg font-semibold mb-4">Event Location</h1>
+              <p className="font-semibold mb-2">Rapjointlagos</p>
+              <p className="mb-3">
+                4 Norman Williams St, Ikoyi, Lagos 101233, Lagos, Nigeria
+              </p>
+              <p className="text-sm">
+                Please park your vehicle in the Foodco mall opposite if you'll be driving. Mention 'RapJoint' at the gate and you'll be admitted. Thanks!
+              </p>
+
+              <div className="mt-4">
+                <img src={map} alt="map" className="rounded-lg w-full" />
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
