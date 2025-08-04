@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search, ShoppingCart, X } from "lucide-react";
 
-const Navbar = () => {
+const Navbar = ({ openCart }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
@@ -25,16 +25,36 @@ const Navbar = () => {
         {/* Desktop Links */}
         <ul className="hidden md:flex items-center gap-6">
           <li>
-            <Link to="/event" className="hover:text-[#E55934] transition-colors duration-300">Discover Events</Link>
+            <Link
+              to="/event"
+              className="hover:text-[#E55934] transition-colors duration-300"
+            >
+              Discover Events
+            </Link>
           </li>
           <li>
-            <Link to="/about" className="hover:text-[#E55934] transition-colors duration-300">About Us</Link>
+            <Link
+              to="/about"
+              className="hover:text-[#E55934] transition-colors duration-300"
+            >
+              About Us
+            </Link>
           </li>
           <li>
-            <Link to="#" className="hover:text-[#E55934] transition-colors duration-300">Contact Us</Link>
+            <Link
+              to="#"
+              className="hover:text-[#E55934] transition-colors duration-300"
+            >
+              Contact Us
+            </Link>
           </li>
           <li>
-            <Link to="/shop" className="hover:text-[#E55934] transition-colors duration-300">Shop</Link>
+            <Link
+              to="/shop"
+              className="hover:text-[#E55934] transition-colors duration-300"
+            >
+              Shop
+            </Link>
           </li>
         </ul>
 
@@ -42,10 +62,16 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           {/* Desktop: Button + Cart */}
           <div className="hidden md:flex items-center gap-3">
-            <ShoppingCart color="#ffffff" strokeWidth={3} absoluteStrokeWidth />
+            <ShoppingCart
+              color="#ffffff"
+              strokeWidth={3}
+              absoluteStrokeWidth
+              onClick={openCart}
+              className="cursor-pointer"
+            />
 
             <div className="relative">
-              <Search className="absolute top-[13px] left-3"  size={18}/>
+              <Search className="absolute top-[13px] left-3" size={18} />
               <input
                 className="px-2 py-2 rounded-full border pl-10 placeholder:text-white border-[#F7F6F2] text-white"
                 placeholder="Find events..."

@@ -1,17 +1,20 @@
-import React from 'react'
-import Hero from '../components/ui/Hero'
-import EventCard from '../components/ui/EventCard'
-import FeaturedEvents from '../components/FeaturedEvents'
-import BrowseTickets from '../components/BrowseTickets'
-import Mission from '../components/Mission'
-import ConnectSection from '../components/ConnectSection'
-
+import React from "react";
+import { useState } from "react";
+import Hero from "../components/ui/Hero";
+import EventCard from "../components/ui/EventCard";
+import FeaturedEvents from "../components/FeaturedEvents";
+import BrowseTickets from "../components/BrowseTickets";
+import Mission from "../components/Mission";
+import ConnectSection from "../components/ConnectSection";
+import CartModal from "../components/CartModal";
 
 const Home = () => {
+  const [showModal, setShowModal] = useState(false);
   return (
     <div>
+    
       <Hero />
-      <div className='mt-10'>
+      <div className="mt-10">
         <FeaturedEvents />
       </div>
       <div className="mt-10">
@@ -23,9 +26,9 @@ const Home = () => {
       <div>
         <ConnectSection />
       </div>
+     
     </div>
+  );
+};
 
-  )
-}
-
-export default Home
+export default Home;
