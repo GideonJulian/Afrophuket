@@ -21,88 +21,76 @@ const CartModal = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-black text-white p-6 rounded-xl w-[90%] max-w-xl shadow-lg"
+            className="bg-black text-white p-4 rounded-2xl w-full max-w-md shadow-lg"
             onClick={(e) => e.stopPropagation()}
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.25 }}
           >
-            <div className="mb-6">
-              <h2 className="text-2xl font-semibold">Your Cart</h2>
-            </div>
+            <h2 className="text-xl font-bold mb-4">Your Cart</h2>
 
             {cartItems.length === 0 ? (
               <p className="text-gray-400">Your cart is currently empty.</p>
             ) : (
               <>
-                {/* ✅ Scrollable but scrollbar hidden */}
-                <div className="max-h-[320px] overflow-y-auto pr-1 custom-scroll">
+                <div className="space-y-6 max-h-[320px] overflow-y-auto pr-1 custom-scroll">
                   {cartItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex gap-4 items-center justify-between mb-6"
-                    >
+                    <div key={item.id} className="flex gap-4">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-20 h-20 rounded-md object-cover"
+                        className="w-20 h-20 object-cover rounded-md"
                       />
-                      <div className="flex-1">
-                        <div className="flex flex-col">
-                          <h3 className="text-lg font-medium">{item.name}</h3>
-                          <p>
-                            {item.quantity} × ₦{Number(item.price).toFixed(2)}
+                      <div className="flex-1 flex flex-col gap-2">
+                        <div>
+                          <h3 className="font-medium">{item.name}</h3>
+                          <p className="text-sm">
+                            {item.quantity} x ${Number(item.price).toFixed(2)}
                           </p>
                         </div>
 
-                        <div className="flex items-center w-[110px] gap-4 border border-white rounded-full px-6 py-2 mt-2">
-                          <button
-                            className="cursor-pointer text-white"
-                            onClick={() =>
-                              dispatch(decreaseQuantity(item.id))
-                            }
-                          >
-                            –
-                          </button>
-                          <span>{item.quantity}</span>
-                          <button
-                            className="cursor-pointer text-white"
-                            onClick={() =>
-                              dispatch(increaseQuantity(item.id))
-                            }
-                          >
-                            +
-                          </button>
-                        </div>
-
-                        {item.size && (
-                          <div className="mt-2">
-                            <label className="text-sm">Size:</label>
+                        <div className="flex items-center gap-2 text-sm">
+                          {item.size && (
                             <select
-                              className="ml-2 bg-black border border-gray-600 rounded px-2 py-1 text-white text-sm"
+                              className="bg-black border border-gray-600 rounded px-2 py-1 text-white"
                               value={item.size}
                               readOnly
                             >
                               <option>{item.size}</option>
                             </select>
+                          )}
+                          <div className="flex items-center border border-white rounded-full px-4 py-1 gap-2">
+                            <button
+                              onClick={() =>
+                                dispatch(decreaseQuantity(item.id))
+                              }
+                            >
+                              −
+                            </button>
+                            <span>{item.quantity}</span>
+                            <button
+                              onClick={() =>
+                                dispatch(increaseQuantity(item.id))
+                              }
+                            >
+                              +
+                            </button>
                           </div>
-                        )}
-                      </div>
+                        </div>
 
-                      <div className="flex flex-col items-end gap-2">
                         <button
                           className="text-[#E55934] text-sm flex items-center gap-1"
                           onClick={() => dispatch(removeFromCart(item.id))}
                         >
-                          <Trash />
+                          <Trash size={14} />
                           <span>Remove</span>
                         </button>
                       </div>
@@ -110,26 +98,16 @@ const CartModal = ({ isOpen, onClose }) => {
                   ))}
                 </div>
 
-                {/* ✅ Footer always visible */}
+                {/* Footer */}
                 <div className="mt-6">
-            
-                  <div className="flex justify-between items-center gap-4">
+                  <div className="w-full relative">
+                    <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 border-white"></span>
                     <button
-                      onClick={onClose}
-                      className="w-1/2 border border-white py-3 rounded-md hover:bg-white hover:text-black transition hidden md:inline"
+                      onClick={() => navigate("/checkout")}
+                      className="relative w-full text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-105 transition-all duration-300"
                     >
-                      Cancel
+                      Checkout (${getSubtotal().toFixed(2)})
                     </button>
-
-                    <div className="relative md:w-1/2 w-full">
-                      <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
-                      <button
-                        onClick={() => navigate("/checkout")}
-                        className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md w-full hover:scale-105 transition-all duration-300"
-                      >
-                        Checkout (₦{getSubtotal().toFixed(2)})
-                      </button>
-                    </div>
                   </div>
                 </div>
               </>
