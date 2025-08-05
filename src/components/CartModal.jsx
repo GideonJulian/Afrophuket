@@ -52,13 +52,28 @@ const CartModal = ({ isOpen, onClose }) => {
                       className="w-20 h-20 rounded-md object-cover"
                     />
                     <div className="flex-1">
-                     <div className="flex flex-col">
-                       <h3 className="text-lg font-medium">{item.name}</h3>
-                       <p>
-                        {item.quantity} x {item.price}
-                       </p>
-                     </div>
-                  
+                      <div className="flex flex-col">
+                        <h3 className="text-lg font-medium">{item.name}</h3>
+                        <p>
+                          {item.quantity} x {item.price}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center w-[110px] gap-4 border border-white rounded-full px-6 py-2">
+                        <button
+                          className="cursor-pointer text-white"
+                          onClick={() => dispatch(decreaseQuantity(item.id))}
+                        >
+                          –
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button
+                          className=" cursor-pointer   text-white"
+                          onClick={() => dispatch(increaseQuantity(item.id))}
+                        >
+                          +
+                        </button>
+                      </div>
 
                       {/* Size Dropdown (optional) */}
                       {item.size && (
@@ -86,39 +101,22 @@ const CartModal = ({ isOpen, onClose }) => {
                         </span>{" "}
                         <span>Remove</span>
                       </button>
-
-                      <div className="flex items-center gap-2 border p-4 rounded-full">
-                        <button
-                          className=" text-white"
-                          onClick={() => dispatch(decreaseQuantity(item.id))}
-                        >
-                          –
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button
-                          className="    text-white"
-                          onClick={() => dispatch(increaseQuantity(item.id))}
-                        >
-                          +
-                        </button>
-                      </div>
                     </div>
                   </div>
                 ))}
 
                 {/* Footer: Total + Buttons */}
                 <div className="mt-8">
-               
                   <div className="flex justify-between items-center gap-4 mt-8 p-5">
                     <button
                       onClick={onClose}
-                      className="w-1/2 border border-white py-3 rounded-md hover:bg-white hover:text-black transition"
+                      className="w-1/2 border border-white py-3 cursor-pointer rounded-md hover:bg-white hover:text-black transition"
                     >
                       Cancel
                     </button>
 
                     <div className="relative w-1/2">
-                      <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
+                      <span className="absolute inset-0 bg-black cursor-pointer rounded-lg translate-x-2 translate-y-2 border-2"></span>
                       <button
                         onClick={() => navigate()}
                         className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md w-full hover:scale-105 transition-all duration-300"
