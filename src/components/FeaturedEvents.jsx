@@ -80,8 +80,8 @@ const FeaturedEvents = () => {
               {eventData.map((item, idx) => (
                 <div key={idx} className="flex-shrink-0 snap-start w-[80%]">
                   <EventCard
-                    name={item.event_title}
-                    date={item.event_date}
+                    name={item.title}
+                    date={item.date}
                     img={item.event_thumbnail}
                     id={item.id}
                   />

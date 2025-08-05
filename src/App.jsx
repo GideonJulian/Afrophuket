@@ -5,6 +5,7 @@ import Shop from "./pages/Shop";
 import About from "./pages/About";
 import SingleTicket from "./pages/SingleTicket";
 import Events from "./pages/Events";
+import ScrollToTop from "./components/ScrollToTop";
 
 const route = createBrowserRouter([
   {
@@ -22,18 +23,25 @@ const route = createBrowserRouter([
       {
         path: "about",
         element: <About />,
-      },{
-        path: 'ticket/:id',
-        element: <SingleTicket />
-      },{
-        path: 'event',
-        element: <Events />
-      }
+      },
+      {
+        path: "ticket/:id",
+        element: <SingleTicket />,
+      },
+      {
+        path: "event",
+        element: <Events />,
+      },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={route} />;
+  return (
+    <>
+    {/* <ScrollToTop/> */}
+      <RouterProvider router={route} />
+    </>
+  );
 }
 export default App;
