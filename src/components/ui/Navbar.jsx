@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search, ShoppingCart, X } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const Navbar = ({ openCart }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const cartItems = useSelector((state) => state.cart.items);
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const navLinks = [
     { text: "DISCOVER EVENTS", path: "/event" },
@@ -62,13 +65,20 @@ const Navbar = ({ openCart }) => {
         <div className="flex items-center gap-4">
           {/* Desktop: Button + Cart */}
           <div className="hidden md:flex items-center gap-3">
-            <ShoppingCart
-              color="#ffffff"
-              strokeWidth={3}
-              absoluteStrokeWidth
-              onClick={openCart}
-              className="cursor-pointer"
-            />
+            <div className="relative">
+              <ShoppingCart
+                color="#ffffff"
+                strokeWidth={3}
+                absoluteStrokeWidth
+                onClick={openCart}
+                className="cursor-pointer"
+              />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </div>
 
             <div className="relative">
               <Search className="absolute top-[13px] left-3" size={18} />
@@ -81,12 +91,21 @@ const Navbar = ({ openCart }) => {
 
           {/* Mobile: Cart + Menu Toggle */}
           <div className="md:hidden flex items-center gap-3">
-            <ShoppingCart
-              color="#ffffff"
-              strokeWidth={3}
-              absoluteStrokeWidth
-              onClick={openCart}
-            />
+        <div className="relative">
+  <ShoppingCart
+    color="#ffffff"
+    strokeWidth={3}
+    absoluteStrokeWidth
+    onClick={openCart}
+    className="cursor-pointer"
+  />
+  {totalItems > 0 && (
+    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+      {totalItems}
+    </span>
+  )}
+</div>
+
             {menuOpen ? (
               <X
                 className="w-6 h-6 cursor-pointer"

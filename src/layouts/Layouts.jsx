@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Footer } from "../components/ui/Footer";
 import CartModal from "../components/CartModal";
+
 const Layouts = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -18,10 +19,10 @@ const Layouts = () => {
   return (
     <div>
       <div>
-        <Navbar openCart={openCart} />
+        <Navbar openCart={openCart}  />
       </div>
       <div>
-        <CartModal isOpen={isCartOpen} onClose={closeCart} />
+        <CartModal isOpen={isCartOpen} onClose={closeCart}  />
       </div>
       <div className="mt-24">
         <Outlet />

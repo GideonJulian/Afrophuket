@@ -8,12 +8,13 @@ import {
 } from "../Slice/cartSlice";
 import { Trash } from "lucide-react";
 
-const CartModal = ({ isOpen, onClose }) => {
+const CartModal = ({ isOpen, onClose, cartLenght }) => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
   const getSubtotal = () =>
     cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
 
   return (
     <AnimatePresence>
