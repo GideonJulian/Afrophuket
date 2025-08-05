@@ -74,7 +74,10 @@ const Navbar = ({ openCart }) => {
                 className="cursor-pointer"
               />
               {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                <span
+                  onClick={openCart}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
+                >
                   {totalItems}
                 </span>
               )}
@@ -91,20 +94,23 @@ const Navbar = ({ openCart }) => {
 
           {/* Mobile: Cart + Menu Toggle */}
           <div className="md:hidden flex items-center gap-3">
-        <div className="relative">
-  <ShoppingCart
-    color="#ffffff"
-    strokeWidth={3}
-    absoluteStrokeWidth
-    onClick={openCart}
-    className="cursor-pointer"
-  />
-  {totalItems > 0 && (
-    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-      {totalItems}
-    </span>
-  )}
-</div>
+            <div className="relative">
+              <ShoppingCart
+                color="#ffffff"
+                strokeWidth={3}
+                absoluteStrokeWidth
+                onClick={openCart}
+                className="cursor-pointer"
+              />
+              {totalItems > 0 && (
+                <span
+                  onClick={openCart}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
+                >
+                  {totalItems}
+                </span>
+              )}
+            </div>
 
             {menuOpen ? (
               <X

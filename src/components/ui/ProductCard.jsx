@@ -7,14 +7,17 @@ const ProductCard = ({ imgSrc, name, price, id }) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
+   
+
     const product = {
-      id,         // make sure each product has a unique id
+      id,
       name,
       price: Number(price),
       image: imgSrc,
     };
 
     dispatch(addToCart(product));
+     console.log("Adding to cart:", product);
   };
 
   return (

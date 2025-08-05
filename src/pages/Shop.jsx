@@ -119,6 +119,7 @@ const Shop = () => {
             {displayedProducts.map((item, index) => (
               <ProductCard
                 key={index}
+                id={item.id}
                 imgSrc={item.image}
                 name={item.title}
                 price={item.price}
@@ -133,6 +134,7 @@ const Shop = () => {
                 <div key={index} className="px-2">
                   <ProductCard
                     imgSrc={item.image_url}
+                    id={item.id}
                     name={item.title}
                     price={item.price}
                   />
