@@ -81,7 +81,12 @@ const Navbar = ({ openCart }) => {
 
           {/* Mobile: Cart + Menu Toggle */}
           <div className="md:hidden flex items-center gap-3">
-            <ShoppingCart color="#ffffff" strokeWidth={3} absoluteStrokeWidth />
+            <ShoppingCart
+              color="#ffffff"
+              strokeWidth={3}
+              absoluteStrokeWidth
+              onClick={openCart}
+            />
             {menuOpen ? (
               <X
                 className="w-6 h-6 cursor-pointer"

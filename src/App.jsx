@@ -5,7 +5,9 @@ import Shop from "./pages/Shop";
 import About from "./pages/About";
 import SingleTicket from "./pages/SingleTicket";
 import Events from "./pages/Events";
-import ScrollToTop from "./components/ScrollToTop";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "./Slice/cartSlice";
 
 const route = createBrowserRouter([
   {
@@ -37,11 +39,19 @@ const route = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const cartFromStorage = JSON.parse(localStorage.getItem("cart")) || [];
+    cartFromStorage.forEach((item) => dispatch(addToCart(item)));
+  }, [dispatch]);
+
   return (
     <>
-    {/* <ScrollToTop/> */}
+    
       <RouterProvider router={route} />
     </>
   );
 }
+
 export default App;
