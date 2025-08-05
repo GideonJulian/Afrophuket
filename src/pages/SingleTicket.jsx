@@ -40,7 +40,7 @@ const SingleTicket = () => {
       <div className="mx-auto max-w-[1296px] p-4">
         {/* Breadcrumb */}
         <h1 className="text-white text-lg">
-          Discover / <span className="text-[#E55934]">{event.event_title}</span>
+          Discover / <span className="text-[#E55934]">{event.title}</span>
         </h1>
 
         {/* Layout */}
@@ -48,8 +48,8 @@ const SingleTicket = () => {
           {/* Left Sticky Panel */}
           <div className="lg:w-[40%] w-full lg:sticky lg:top-10 h-fit space-y-6">
             <motion.img
-              src={event.event_thumbnail_url}
-              alt={event.event_title}
+              src={event.thumbnail_url}
+              alt={event.title}
               className="rounded-xl w-full"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -78,7 +78,7 @@ const SingleTicket = () => {
             </div>
 
             <div className="border border-white rounded-full px-3 py-2 inline-block text-sm">
-              # Arts & Culture
+              # {event.tags.name}
             </div>
           </div>
 
@@ -95,17 +95,24 @@ const SingleTicket = () => {
 
             {/* Date & Location */}
             <div className="mt-7 space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-white/10">
-                  <CalendarDays />
+              <div>
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-lg bg-white/10">
+                    <CalendarDays />
+                  </div>
+                 <div className="flex flex-col">
+                   <h1 className="text-lg">{event.date}</h1>
+                    <p>{event.start_time} - {event.end_time}</p> 
+                 </div>
                 </div>
-                <h1 className="text-lg">{event.event_date}</h1>
+                
               </div>
+            
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-lg bg-white/10">
                   <MapPin />
                 </div>
-                <h1 className="text-lg">{event.event_location}</h1>
+                <h1 className="text-lg">{event.location}</h1>
               </div>
             </div>
 
@@ -113,20 +120,15 @@ const SingleTicket = () => {
             <div className="mt-8">
               <h1 className="text-lg font-semibold mb-4">About Event</h1>
               <div className="space-y-5 text-sm leading-relaxed border-t pt-4">
-                <p>
-                  We're thrilled to announce the return of your favorite Griots
-                  and Bards (GAB) – an evolving village square where Arts,
-                  Spoken Word and Poetry meet deep intellectual conversations on
-                  social issues.
-                </p>
+                <p>{event.description}</p>
                 <p>
                   Get ready for a night of soul-stirring performances, social
                   conversations and networking.
                 </p>
-                <p>
+                {/* <p>
                   Please RSVP to join us on the last Thursday of every month for
                   an unforgettable experience. See you soon!
-                </p>
+                </p> */}
               </div>
             </div>
 
@@ -140,27 +142,26 @@ const SingleTicket = () => {
                 <div className="px-3 py-3 rounded-lg border ">
                   <MapPin />
                 </div>
-                <div>
-                  <h1 className="flex items-center gap-2 text-white text-base hover:text-[#E55934] transition-colors duration-300">
-                    Eco Hotel <ArrowUpRight className="w-4 h-4 " />
-                  </h1>
-                  <p className="text-sm">{event.event_location}</p>
-                </div>
+                {event.after_party && (
+                  <div>
+                    <h1 className="flex items-center gap-2 text-white text-base hover:text-[#E55934] transition-colors duration-300">
+                      {event.after_party_location}{" "}
+                      <ArrowUpRight className="w-4 h-4 " />
+                    </h1>
+                    <p className="text-sm">{event.location}</p>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Event Location */}
             <div className="mt-10">
               <h1 className="text-lg font-semibold mb-4">Event Location</h1>
-              <p className="font-semibold mb-2">Rapjointlagos</p>
+              <p className="font-semibold mb-2">{event.location}</p>
               <p className="mb-3">
                 4 Norman Williams St, Ikoyi, Lagos 101233, Lagos, Nigeria
               </p>
-              <p className="text-sm">
-                Please park your vehicle in the Foodco mall opposite if you'll
-                be driving. Mention 'RapJoint' at the gate and you'll be
-                admitted. Thanks!
-              </p>
+              <p className="text-sm">{event.location_notes}</p>
 
               <div className="mt-4">
                 <img src={map} alt="map" className="rounded-lg w-full" />

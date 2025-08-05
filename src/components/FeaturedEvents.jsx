@@ -82,7 +82,7 @@ const FeaturedEvents = () => {
                   <EventCard
                     name={item.title}
                     date={item.date}
-                    img={item.event_thumbnail}
+                    img={item.thumbnail}
                     id={item.id}
                   />
                 </div>
@@ -106,9 +106,9 @@ const FeaturedEvents = () => {
                       className="flex-shrink-0 w-[calc(33.333%-16px)]"
                     >
                       <EventCard
-                        name={item.event_title}
-                        date={item.event_date}
-                        img={item.event_thumbnail}
+                        name={item.title}
+                        date={item.date}
+                        img={item.thumbnail}
                         id={item.id}
                       />
                     </div>
