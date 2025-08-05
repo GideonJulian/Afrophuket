@@ -6,6 +6,7 @@ import {
   increaseQuantity,
   decreaseQuantity,
 } from "../Slice/cartSlice";
+import { Trash } from "lucide-react";
 
 const CartModal = ({ isOpen, onClose }) => {
   const cartItems = useSelector((state) => state.cart.items);
@@ -18,7 +19,7 @@ const CartModal = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -51,10 +52,13 @@ const CartModal = ({ isOpen, onClose }) => {
                       className="w-20 h-20 rounded-md object-cover"
                     />
                     <div className="flex-1">
-                      <h3 className="text-lg font-medium">{item.name}</h3>
-                      <p className="text-right text-lg font-semibold mb-6">
-                        Subtotal: ${Number(getSubtotal()).toFixed(2)}
-                      </p>
+                     <div className="flex flex-col">
+                       <h3 className="text-lg font-medium">{item.name}</h3>
+                       <p>
+                        {item.quantity} x {item.price}
+                       </p>
+                     </div>
+                  
 
                       {/* Size Dropdown (optional) */}
                       {item.size && (
@@ -74,22 +78,25 @@ const CartModal = ({ isOpen, onClose }) => {
                     {/* Controls */}
                     <div className="flex flex-col items-end gap-2">
                       <button
-                        className="text-red-500 text-sm flex items-center gap-1"
+                        className="text-[#E55934] text-sm flex items-center gap-1"
                         onClick={() => dispatch(removeFromCart(item.id))}
                       >
-                        <span>🗑</span> <span>Remove</span>
+                        <span>
+                          <Trash />
+                        </span>{" "}
+                        <span>Remove</span>
                       </button>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 border p-4 rounded-full">
                         <button
-                          className="w-7 h-7 border border-gray-500 rounded text-white"
+                          className=" text-white"
                           onClick={() => dispatch(decreaseQuantity(item.id))}
                         >
                           –
                         </button>
                         <span>{item.quantity}</span>
                         <button
-                          className="w-7 h-7 border border-gray-500 rounded text-white"
+                          className="    text-white"
                           onClick={() => dispatch(increaseQuantity(item.id))}
                         >
                           +
@@ -101,10 +108,8 @@ const CartModal = ({ isOpen, onClose }) => {
 
                 {/* Footer: Total + Buttons */}
                 <div className="mt-8">
-                  <p className="text-right text-lg font-semibold mb-6">
-                    Subtotal: ${getSubtotal().toFixed(2)}
-                  </p>
-                  <div className="flex justify-between items-center gap-4 mt-8">
+               
+                  <div className="flex justify-between items-center gap-4 mt-8 p-5">
                     <button
                       onClick={onClose}
                       className="w-1/2 border border-white py-3 rounded-md hover:bg-white hover:text-black transition"
