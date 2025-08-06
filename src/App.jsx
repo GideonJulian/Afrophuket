@@ -8,6 +8,8 @@ import Events from "./pages/Events";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "./Slice/cartSlice";
+import CheckLayout from "./layouts/CheckLayout";
+import CheckoutTickets from "./pages/CheckoutTickets";
 
 const route = createBrowserRouter([
   {
@@ -33,6 +35,16 @@ const route = createBrowserRouter([
       {
         path: "event",
         element: <Events />,
+      },
+    ],
+  },
+  {
+    path: "checkout",
+    element: <CheckLayout />,
+    children: [
+      {
+        index: true,
+        element: <CheckoutTickets />,
       },
     ],
   },

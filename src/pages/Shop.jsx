@@ -109,7 +109,7 @@ const Shop = () => {
 
           {/* Desktop view - only 3 items */}
           <motion.div
-            className="hidden md:flex gap-4 flex-wrap mt-10"
+            className="hidden sm:flex gap-4 justify-center mt-10"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
