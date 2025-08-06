@@ -7,8 +7,6 @@ const ProductCard = ({ imgSrc, name, price, id }) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
-   
-
     const product = {
       id,
       name,
@@ -17,7 +15,7 @@ const ProductCard = ({ imgSrc, name, price, id }) => {
     };
 
     dispatch(addToCart(product));
-     console.log("Adding to cart:", product);
+    console.log("Adding to cart:", product);
   };
 
   return (
