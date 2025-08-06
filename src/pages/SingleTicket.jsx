@@ -100,14 +100,15 @@ const SingleTicket = () => {
                   <div className="p-3 rounded-lg bg-white/10">
                     <CalendarDays />
                   </div>
-                 <div className="flex flex-col">
-                   <h1 className="text-lg">{event.date}</h1>
-                    <p>{event.start_time} - {event.end_time}</p> 
-                 </div>
+                  <div className="flex flex-col">
+                    <h1 className="text-lg">{event.date}</h1>
+                    <p>
+                      {event.start_time} - {event.end_time}
+                    </p>
+                  </div>
                 </div>
-                
               </div>
-            
+
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-lg bg-white/10">
                   <MapPin />
