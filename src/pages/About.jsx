@@ -13,7 +13,6 @@ const About = () => {
   return (
     <div className="w-full">
       <div className="max-w-[1296px] mx-auto px-4 sm:px-6 md:px-10 py-10 sm:py-16">
-
         {/* Top Section */}
         <motion.div
           className="text-center sm:text-left"
