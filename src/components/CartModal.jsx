@@ -21,57 +21,67 @@ const CartModal = ({ isOpen, onClose }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-50 flex items-center md:justify-center bg-black/60 p-4"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-black text-white p-4 rounded-2xl w-full max-w-md shadow-lg"
+            className="bg-black text-white p-6 rounded-2x md:m-0 mb-20 l w-full max-w-2xl shadow-xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.3 }}
           >
-            <h2 className="text-xl font-bold mb-4">Your Cart</h2>
+            <h2 className="text-xl font-bold mb-6">Your Cart</h2>
 
             {cartItems.length === 0 ? (
               <p className="text-gray-400">Your cart is currently empty.</p>
             ) : (
               <>
-                <div className="space-y-6 max-h-[320px] overflow-y-auto pr-1 custom-scroll">
+                <div className="space-y-6 max-h-[320px] overflow-y-auto pr-2">
                   {cartItems.map((item) => (
-                    <div key={item.id} className="flex gap-4">
+                    <div
+                      key={item.id}
+                      className="flex justify-between items-start gap-4"
+                    >
+                      {/* Product Image */}
                       <img
                         src={item.image}
                         alt={item.name}
                         className="w-20 h-20 object-cover rounded-md"
                       />
-                      <div className="flex-1 flex flex-col gap-2">
-                        <div>
-                          <h3 className="font-medium">{item.name}</h3>
-                          <p className="text-sm">
-                            {item.quantity} x ${Number(item.price).toFixed(2)}
-                          </p>
-                        </div>
 
-                        <div className="flex items-center gap-2 text-sm">
+                      {/* Product Details */}
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold">
+                          {item.name}
+                        </h3>
+                        <p className="text-sm mt-1">
+                          {item.quantity} x ${Number(item.price).toFixed(2)}
+                        </p>
+
+                        {/* Size and Quantity */}
+                        <div className="flex items-center gap-3 mt-3 flex-wrap">
                           {item.size && (
                             <select
-                              className="bg-black border border-gray-600 rounded px-2 py-1 text-white"
                               value={item.size}
                               readOnly
+                              className="bg-black border border-white rounded px-3 py-1 text-white text-sm"
                             >
                               <option>{item.size}</option>
                             </select>
                           )}
-                          <div className="flex items-center border border-white rounded-full px-4 py-1 gap-2">
+
+                          {/* Quantity Control */}
+                          <div className="flex items-center border border-white rounded-full px-4 py-1 gap-4">
                             <button
                               onClick={() =>
                                 dispatch(decreaseQuantity(item.id))
                               }
+                              className="text-white"
                             >
                               −
                             </button>
@@ -80,14 +90,16 @@ const CartModal = ({ isOpen, onClose }) => {
                               onClick={() =>
                                 dispatch(increaseQuantity(item.id))
                               }
+                              className="text-white"
                             >
                               +
                             </button>
                           </div>
                         </div>
 
+                        {/* Remove Button */}
                         <button
-                          className="text-[#E55934] text-sm flex items-center gap-1"
+                          className="text-[#E55934] cursor-pointer text-sm flex items-center gap-1 mt-3"
                           onClick={() => dispatch(removeFromCart(item.id))}
                         >
                           <Trash size={14} />
@@ -98,9 +110,18 @@ const CartModal = ({ isOpen, onClose }) => {
                   ))}
                 </div>
 
-                {/* Footer */}
-                <div className="mt-6">
-                  <div className="w-full relative">
+                {/* Footer: Buttons */}
+                <div className="mt-8 flex justify-between gap-4">
+                  {/* Cancel Button */}
+                  <button
+                    onClick={onClose}
+                    className="w-1/2 py-3 border border-white rounded-md hover:bg-white hover:text-black transition hidden md:block"
+                  >
+                    Cancel
+                  </button>
+
+                  {/* Checkout Button with Shadow */}
+                  <div className="relative md:w-1/2 w-full ">
                     <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 border-white"></span>
                     <button
                       onClick={() => navigate("/checkout")}

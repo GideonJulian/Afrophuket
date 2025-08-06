@@ -39,12 +39,12 @@ const route = createBrowserRouter([
 ]);
 
 function App() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    const cartFromStorage = JSON.parse(localStorage.getItem("cart")) || [];
-    cartFromStorage.forEach((item) => dispatch(addToCart(item)));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const cartFromStorage = JSON.parse(localStorage.getItem("cart")) || [];
+  //   cartFromStorage.forEach((item) => dispatch(addToCart(item)));
+  // }, [dispatch]);
 
   return (
     <>
