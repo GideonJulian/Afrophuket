@@ -19,10 +19,10 @@ const Layouts = () => {
   return (
     <div>
       <div>
-        <Navbar openCart={openCart}  />
+        <Navbar openCart={openCart} />
       </div>
       <div>
-        <CartModal isOpen={isCartOpen} onClose={closeCart}  />
+        <CartModal isOpen={isCartOpen} onClose={closeCart} />
       </div>
       <div className="mt-24">
         <Outlet />
