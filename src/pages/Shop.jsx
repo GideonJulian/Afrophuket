@@ -14,22 +14,21 @@ const fadeUp = {
 };
 
 const Shop = () => {
-  const [allProducts, setAllProducts]  = useState([])
-   useEffect(() => {
-      fetch("https://afrophuket-backend.onrender.com/products/")
-        .then((res) => res.json())
-        .then((data) => {
-          if (Array.isArray(data)) {
-            setAllProducts(data);
-          } else {
-            console.error("Expected array, got:", data);
-          }
-        })
-        .catch((err) => console.error("Fetch error:", err))
-        .finally(() => setLoading(false));
-        console.log(allProducts)
-    }, []);
-  
+  const [allProducts, setAllProducts] = useState([]);
+  useEffect(() => {
+    fetch("https://afrophuket-backend.onrender.com/products/")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setAllProducts(data);
+        } else {
+          console.error("Expected array, got:", data);
+        }
+      })
+      .catch((err) => console.error("Fetch error:", err))
+      .finally(() => setLoading(false));
+    console.log(allProducts);
+  }, []);
 
   const [sortBy, setSortBy] = useState("default");
   const [filterBy, setFilterBy] = useState("All");
