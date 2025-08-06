@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TicketCard from "../components/ui/TicketCard";
-import FeaturedEvents from '../components/FeaturedEvents'
+import FeaturedEvents from "../components/FeaturedEvents";
 const Events = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ const Events = () => {
           </p>
         </div>
         <div>
-        <FeaturedEvents />
+          <FeaturedEvents />
         </div>
 
         <div className="mt-10">
