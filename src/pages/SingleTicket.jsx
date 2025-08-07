@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CalendarDays, MapPin, ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
 import hostimg from "../assets/images/hostimg.png";
 import Button from "../components/ui/Button";
 import map from "../assets/images/map.png";
@@ -90,7 +89,7 @@ const SingleTicket = () => {
             transition={{ duration: 0.5 }}
           >
             <h1 className="font-bold text-3xl md:text-4xl">
-              {event.event_title}
+              {event.title}
             </h1>
 
             {/* Date & Location */}
