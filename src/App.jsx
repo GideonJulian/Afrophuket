@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "./Slice/cartSlice";
 import CheckLayout from "./layouts/CheckLayout";
 import CheckoutTickets from "./pages/CheckoutTickets";
+import ContactUs from "./pages/ContactUs";
 
 const route = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const route = createBrowserRouter([
       {
         path: "about",
         element: <About />,
+      },
+      {
+        path: "about",
+        element: <ContactUs />,
       },
       {
         path: "ticket/:id",
