@@ -45,7 +45,7 @@ const Navbar = ({ openCart }) => {
           </li>
           <li>
             <Link
-              to="#"
+              to="/contact"
               className="hover:text-[#E55934] transition-colors duration-300"
             >
               Contact Us

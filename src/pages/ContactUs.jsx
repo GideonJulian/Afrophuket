@@ -1,5 +1,5 @@
 import React from "react";
-import contactimg from '../assets/images/contactimg.png'
+import contactimg from "../assets/images/contactimg.png";
 const ContactUs = () => {
   return (
     <div className="min-h-screen bg-[#121212] text-white flex items-center justify-center px-4 py-16">
@@ -7,7 +7,7 @@ const ContactUs = () => {
         {/* Left Side - Form */}
         <div>
           <p className="text-sm font-semibold uppercase mb-2">Get in touch</p>
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">
+          <h1 className="text-5xl font-[300] font-sans mb-6 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">
             Contact Us
           </h1>
           <p className="text-sm text-gray-400 mb-8 leading-relaxed">
@@ -45,12 +45,15 @@ const ContactUs = () => {
               className="w-full bg-transparent border-b border-gray-600 py-3 outline-none placeholder:text-gray-500 resize-none"
               rows="4"
             ></textarea>
-            <button
-              type="submit"
-              className="bg-white text-black font-semibold py-3 px-6 rounded-md border-2 border-black hover:bg-black hover:text-white transition-all"
-            >
-              SUBMIT
-            </button>
+            <div className="relative inline-block mt-10">
+              <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
+              <button
+                onClick={() => navigate()}
+                className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
+              >
+                Submit
+              </button>
+            </div>
           </form>
         </div>
 
@@ -60,7 +63,7 @@ const ContactUs = () => {
             <img
               src={contactimg} // Replace with actual image path
               alt="Contact Visual"
-              className="w-full h-auto object-cover rounded-[80px_80px_0_0]"
+              className="w-full h-[1000px] object-cover rounded-[80px_80px_0_0]"
             />
           </div>
         </div>
