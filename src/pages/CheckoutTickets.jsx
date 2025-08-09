@@ -53,7 +53,7 @@ const CheckoutTickets = () => {
                         : decreaseQuantity(item.id)
                     )
                   }
-                  className="bg-black border border-gray-500 rounded px-3 py-1 text-white"
+                  className="bg-black border border-gray-500 rounded px-3 py-1 text-white "
                 >
                   {[...Array(10)].map((_, i) => (
                     <option key={i} value={i}>
