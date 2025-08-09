@@ -36,7 +36,7 @@ const CheckoutTickets = () => {
           )}
 
           {cartItems.map((item) => (
-            <div key={item.id} className="border-b border-gray-700 py-4">
+            <div key={item.id} className="border-b border-gray-700 py-8">
               <h3 className="font-bold">{item.name}</h3>
               <p className="text-[#FC6435] font-bold">
                 ${item.price.toLocaleString()}{" "}
@@ -74,13 +74,13 @@ const CheckoutTickets = () => {
         </div>
 
         {/* Summary Section */}
-        <div className="w-1/3 bg-zinc-900 rounded-xl p-6">
+        <div className="w-1/3 bg-[#000000] rounded-xl p-6">
           <h3 className="text-lg font-bold mb-4">
             {cartItems[0]?.eventName || "Your Event"}
           </h3>
 
           {cartItems.map((item) => (
-            <div key={item.id} className="flex justify-between mb-2">
+            <div key={item.id} className="flex justify-between mb-14">
               <span>
                 {item.quantity} × {item.name}
               </span>
@@ -90,7 +90,7 @@ const CheckoutTickets = () => {
 
           <hr className="my-4 border-gray-700" />
 
-          <div className="flex justify-between mb-2">
+          <div className="flex justify-between mb-6">
             <span>Subtotal</span>
             <span>${subtotal.toLocaleString()}</span>
           </div>
