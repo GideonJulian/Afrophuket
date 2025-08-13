@@ -11,6 +11,7 @@ import { addToCart } from "./Slice/cartSlice";
 import CheckLayout from "./layouts/CheckLayout";
 import CheckoutTickets from "./pages/CheckoutTickets";
 import ContactUs from "./pages/ContactUs";
+import Payment from "./pages/Payment";
 
 const route = createBrowserRouter([
   {
@@ -50,7 +51,10 @@ const route = createBrowserRouter([
       {
         index: true,
         element: <CheckoutTickets />,
-      },
+      },{
+        path: 'payment', 
+      element: <Payment />
+      }
     ],
   },
 ]);

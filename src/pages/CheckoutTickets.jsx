@@ -7,8 +7,10 @@ import {
   decreaseQuantity,
   removeFromCart,
 } from "../Slice/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutTickets = () => {
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items || []);
   const dispatch = useDispatch();
 
@@ -18,16 +20,19 @@ const CheckoutTickets = () => {
   );
 
   return (
-    <div className="p-8">
-      <div className="mx-auto max-w-[1296px] p-4 flex  justify-between mt-20">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto max-w-[1296px] mt-20 flex flex-col lg:flex-row gap-8">
         {/* Tickets Section */}
-        <div className="w-2/3 pr-8">
+        <div className="w-full lg:w-2/3">
           <h1 className="text-xl font-bold mb-6">Checkout</h1>
 
-          <h2 className="flex items-center text-2xl font-bold mb-4">
-            <span className="mr-2 bg-[#FC6435] p-1 rounded-md cursor-pointer">
+          <h2 className="flex items-center text-xl sm:text-2xl font-bold mb-4">
+            <span
+              className="mr-2 bg-[#FC6435] p-1 rounded-md cursor-pointer"
+              onClick={() => navigate("/shop")}
+            >
               <ArrowLeft />
-            </span>{" "}
+            </span>
             Choose Tickets
           </h2>
 
@@ -36,14 +41,19 @@ const CheckoutTickets = () => {
           )}
 
           {cartItems.map((item) => (
-            <div key={item.id} className="border-b border-gray-700 py-8">
-              <h3 className="font-bold">{item.name}</h3>
-              <p className="text-[#FC6435] font-bold">
-                ${item.price.toLocaleString()}{" "}
-                <span className="text-sm text-gray-400">Includes fee</span>
-              </p>
+            <div
+              key={item.id}
+              className="border-b border-gray-700 py-6 sm:py-8 flex justify-between items-start"
+            >
+              <div>
+                <h3 className="font-bold">{item.name}</h3>
+                <p className="text-[#FC6435] font-bold">
+                  ${item.price.toLocaleString()}{" "}
+                  <span className="text-sm text-gray-400">Includes fee</span>
+                </p>
+              </div>
 
-              <div className="flex items-center mt-2">
+              <div className="flex flex-col gap-3">
                 <select
                   value={item.quantity}
                   onChange={(e) =>
@@ -53,7 +63,7 @@ const CheckoutTickets = () => {
                         : decreaseQuantity(item.id)
                     )
                   }
-                  className="bg-black border border-gray-500 rounded px-3 py-1 text-white "
+                  className="bg-black border border-gray-500 rounded px-3 py-1 text-white"
                 >
                   {[...Array(10)].map((_, i) => (
                     <option key={i} value={i}>
@@ -63,7 +73,7 @@ const CheckoutTickets = () => {
                 </select>
 
                 <button
-                  className="ml-4 text-sm text-[#FC6435]"
+                  className="text-sm text-[#FC6435]"
                   onClick={() => dispatch(removeFromCart(item.id))}
                 >
                   Remove
@@ -74,13 +84,13 @@ const CheckoutTickets = () => {
         </div>
 
         {/* Summary Section */}
-        <div className="w-1/3 bg-[#000000] rounded-xl p-6">
+        <div className="w-full lg:w-1/3 bg-[#000000] rounded-xl p-6">
           <h3 className="text-lg font-bold mb-4">
             {cartItems[0]?.eventName || "Your Event"}
           </h3>
 
           {cartItems.map((item) => (
-            <div key={item.id} className="flex justify-between mb-14">
+            <div key={item.id} className="flex justify-between mb-6 sm:mb-14">
               <span>
                 {item.quantity} × {item.name}
               </span>
@@ -90,7 +100,7 @@ const CheckoutTickets = () => {
 
           <hr className="my-4 border-gray-700" />
 
-          <div className="flex justify-between mb-6">
+          <div className="flex justify-between mb-4">
             <span>Subtotal</span>
             <span>${subtotal.toLocaleString()}</span>
           </div>
@@ -100,9 +110,15 @@ const CheckoutTickets = () => {
             <span>${subtotal.toLocaleString()}</span>
           </div>
 
-          <button className="w-full mt-6 bg-white text-black font-bold py-3 rounded-lg">
-            CONTINUE
-          </button>
+          <div className="relative inline-block mt-8 w-full">
+            <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
+            <button
+              onClick={() => navigate("/payment")}
+              className="relative text-sm font-semibold uppercase w-full px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-105 transition-all duration-300"
+            >
+              Continue
+            </button>
+          </div>
         </div>
       </div>
     </div>
