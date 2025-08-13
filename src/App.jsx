@@ -11,7 +11,8 @@ import { addToCart } from "./Slice/cartSlice";
 import CheckLayout from "./layouts/CheckLayout";
 import CheckoutTickets from "./pages/CheckoutTickets";
 import ContactUs from "./pages/ContactUs";
-import Payment from "./pages/Payment";
+import DashboardLayout from "./layouts/DashboardLayout";
+
 
 const route = createBrowserRouter([
   {
@@ -44,28 +45,32 @@ const route = createBrowserRouter([
       },
     ],
   },
+  // {
+  //   path: "checkout",
+  //   element: <CheckLayout />,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <CheckoutTickets />,
+  //     },{
+  //       path: 'payment', 
+  //     element: <Payment />
+  //     }
+  //   ],
+  // },
   {
-    path: "checkout",
-    element: <CheckLayout />,
+    path: 'dashboard',
+    element: <DashboardLayout />,
     children: [
       {
         index: true,
-        element: <CheckoutTickets />,
-      },{
-        path: 'payment', 
-      element: <Payment />
+        element: ''
       }
-    ],
-  },
+    ]
+  }
 ]);
 
 function App() {
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const cartFromStorage = JSON.parse(localStorage.getItem("cart")) || [];
-  //   cartFromStorage.forEach((item) => dispatch(addToCart(item)));
-  // }, [dispatch]);
 
   return (
     <>
