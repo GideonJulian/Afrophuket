@@ -18,9 +18,9 @@ const DashboardLayout = () => {
         <div className="sticky top-0 z-10  border-b">
           <Header  />
         </div>
-        {/* <div className="flex-1 overflow-auto md:p-5 p-3">
+        <div className="flex-1 overflow-auto md:p-5 p-3">
           <Outlet />
-        </div> */}
+        </div>
       </div>
     </div>
   );
