@@ -1,26 +1,32 @@
 import React from "react";
 import { Funnel } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <div className="flex justify-between items-center pt-14 px-5">
-        <h1 className="font-bold text-[23px] ">Events</h1>
-        <div className="relative inline-block ">
-          <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
+    <div className="w-full">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-8 px-4 sm:pt-14 sm:px-5 gap-4">
+        <h1 className="font-bold text-xl sm:text-2xl md:text-[23px]">Events</h1>
+        <div className="relative inline-block w-full sm:w-auto">
+          <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
           <button
-            onClick={() => navigate()}
-            className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-103 transition-all duration-300"
+            onClick={() => navigate("/create-event")}
+            className="relative w-full sm:w-auto text-xs sm:text-sm md:text-base font-semibold uppercase cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-[1.03] transition-all duration-300"
           >
             CREATE NEW EVENT
           </button>
         </div>
       </div>
-      <div className="flex justify-between items-center pt-20 pb-4  px-5">
-        <h1 className="text-[#E55934]">All Events</h1>
-        <div className="flex items-center gap-3">
-          <Funnel />
-          <h1>Filter</h1>
+
+      {/* Sub Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-8 sm:pt-20 pb-4 px-4 sm:px-5 gap-3">
+        <h1 className="text-[#E55934] text-sm sm:text-base md:text-lg">All Events</h1>
+        <div className="flex items-center gap-2 sm:gap-3 cursor-pointer">
+          <Funnel size={18}  />
+          <h1 className="text-sm sm:text-base">Filter</h1>
         </div>
       </div>
     </div>
