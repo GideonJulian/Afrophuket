@@ -1,29 +1,55 @@
 import React from "react";
+import { Calendar, MapPin, SquarePen, Ticket } from "lucide-react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+const Events = ({ event }) => {
+  const navigate = useNavigate();
 
-const Events = ({ name, img, date, id }) => {
-      const handleClick = () => {
-    navigate(`${id}`);
+  const handleClick = () => {
+    navigate(`/ticket/${event.id}`);
   };
 
   return (
-    <div
+    <motion.div
+      whileHover={{ scale: 1.03 }}
+      transition={{ duration: 0.3 }}
       onClick={handleClick}
-      className="w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px] cursor-pointer rounded-2xl overflow-hidden shadow-lg bg-black relative mx-auto transition-transform duration-300 hover:scale-102 hover:shadow-xl"
+      className="cursor-pointer bg-[#000] p-4 flex  justify-between gap-4 rounded-xl shadow-xl"
     >
-      <div className="relative h-[300px] sm:h-[350px] md:h-[400px]">
-        <img src={img} alt={name} className="w-full h-full object-cover" />
+      <motion.div
+        className="w-34 h-34 flex-shrink-0"
+        initial={{ scale: 0.9 }}
+        whileInView={{ scale: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <img
+          src={event.thumbnail_url}
+          alt={event.title}
+          className="w-full h-full object-cover rounded-md"
+        />
+      </motion.div>
+      <div className="flex-1">
+        <div className="flex justify-between">
+          <div>
+            <h1 className="font-bold text-white">{event.title}</h1>
+            <h2 className="flex items-center gap-2 text-white text-sm mt-1">
+              <Calendar className="w-4 h-4" />
+              {new Date(event.event_date).toLocaleString()}
+            </h2>
+          </div>
+          <div className="text-gray-600 ">
+            <SquarePen />
+          </div>
+        </div>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-black/10 z-10" />
+        <h2 className="mt-16 text-[#FC6435] text-sm font-medium flex items-center gap-2">
+          <span className="text-gray-600 ">
+            <Ticket />
+          </span>
+          {event.ticket_sold}
+        </h2>
       </div>
-
-      <div className="absolute bottom-0 left-0 right-0 p-4 z-20 text-white">
-        <p className="text-xs sm:text-sm text-white/70 mb-1 text-center">18+</p>
-        <h3 className="font-bold text-center text-base sm:text-lg leading-tight">
-          {name}
-        </h3>
-        <p className="text-sm text-white/70 mt-1 text-center">{date}</p>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
