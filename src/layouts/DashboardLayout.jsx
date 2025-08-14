@@ -15,7 +15,7 @@ const DashboardLayout = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-screen">
-        <div className="sticky top-0 z-10">
+        <div className="sticky top-0 z-10  border-b">
           <Header  />
         </div>
         {/* <div className="flex-1 overflow-auto md:p-5 p-3">
