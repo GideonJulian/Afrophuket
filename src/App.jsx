@@ -12,6 +12,7 @@ import CheckLayout from "./layouts/CheckLayout";
 import CheckoutTickets from "./pages/CheckoutTickets";
 import ContactUs from "./pages/ContactUs";
 import DashboardLayout from "./layouts/DashboardLayout";
+import Dashboard from "./pages/Dashboard";
 
 
 const route = createBrowserRouter([
@@ -64,7 +65,10 @@ const route = createBrowserRouter([
     children: [
       {
         index: true,
-        element: ''
+        element: <Dashboard />
+      },{
+        path: 'account',
+        element: 'Accont'
       }
     ]
   }
