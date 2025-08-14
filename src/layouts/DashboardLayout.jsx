@@ -14,7 +14,7 @@ const DashboardLayout = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col h-screen md:ml-[280px]">
+      <div className="flex-1 flex flex-col h-screen">
         <div className="sticky top-0 z-10">
           <Header  />
         </div>
