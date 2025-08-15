@@ -11,12 +11,20 @@ const DashboardLayout = () => {
     <div className="flex h-screen overflow-hidden">
       {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-40 w-[280px] bg-[#111111]  transform transition-transform duration-300 md:hidden
-          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-40 w-[280px]   transform transition-transform duration-300 hidden
+        `}
       >
         <div className="h-screen py-20 pl-2">
           <DashboadSidebar />
         </div>
+      </div>
+
+     <div
+        className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
+          isSidebarOpen ? "h-[400px] opacity-100 -mt-14" : "h-0 opacity-0"
+        }`}
+      >
+
       </div>
 
       {/* Background Drop for Mobile */}
