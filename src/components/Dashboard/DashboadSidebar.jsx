@@ -32,13 +32,13 @@ const DashboadSidebar = ({ activePath }) => {
               end
               className={({ isActive }) =>
                 `
-    flex items-center gap-6 text-[17px] py-3 px-2 rounded-lg
+    flex items-center gap-6 text-[17px] py-3 px-2
     transition-all duration-200
-    backdrop-blur-md bg-white/10
+   
     ${
       isActive
-        ? "border-r-[5px] border-[#E55934] text-[#E55934] bg-white/20 shadow-lg"
-        : "border-r-0 text-gray-600 hover:text-[#E55934] hover:bg-white/10"
+        ? "border-r-[5px] border-[#E55934] text-[#E55934]"
+        : "border-r-0 text-gray-600 hover:text-[#E55934]"
     }
     `
               }
