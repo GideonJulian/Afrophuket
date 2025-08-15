@@ -37,13 +37,8 @@ const DashboardLayout = () => {
         {/* Header with Menu Button for Mobile */}
         <div className="sticky top-0 z-10 border-b-[0.3px] border-gray-600 flex items-center">
           <div className="flex justify-between w-full items-center relative">
-            <Header />
-            <button
-              className="p-3 md:hidden absolute z-40 bottom-36 left-[330px]"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            >
-              {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <Header isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
+         
           </div>
         </div>
 

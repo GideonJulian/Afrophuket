@@ -1,16 +1,26 @@
 import React from "react";
 import { Funnel } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-const Header = () => {
+import { Menu, X } from "lucide-react";
+const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const navigate = useNavigate();
 
   return (
     <div className="w-full">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-8 px-4 sm:pt-14 sm:px-5 gap-4">
-        <h1 className="font-bold text-xl sm:text-2xl md:text-[23px]">Events</h1>
-        <div className="relative inline-block w-full sm:w-auto">
+        <div className="flex items-center justify-between w-full">
+          <h1 className="font-bold text-xl sm:text-2xl md:text-[23px]">
+            Events
+          </h1>
+          <button
+            className="p-3 md:hidden "
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+        <div className="relative hidden md:inline-block w-full sm:w-auto ">
           <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
           <button
             onClick={() => navigate("/create-event")}
@@ -22,10 +32,12 @@ const Header = () => {
       </div>
 
       {/* Sub Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-8 sm:pt-20 pb-4 px-4 sm:px-5 gap-3">
-        <h1 className="text-[#E55934] text-sm sm:text-base md:text-lg">All Events</h1>
+      <div className="flex   justify-between items-center pt-8 sm:pt-20 pb-4 px-4 sm:px-5 gap-3">
+        <h1 className="text-[#E55934] text-sm sm:text-base md:text-lg">
+          All Events
+        </h1>
         <div className="flex items-center gap-2 sm:gap-3 cursor-pointer">
-          <Funnel size={18}  />
+          <Funnel size={18} />
           <h1 className="text-sm sm:text-base">Filter</h1>
         </div>
       </div>
