@@ -3,10 +3,11 @@ import { Outlet } from "react-router-dom";
 import DashboadSidebar from "../components/Dashboard/DashboadSidebar";
 import Header from "../components/Dashboard/Header";
 import { Calendar, Menu, User, X, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const location = useLocation();
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Mobile Sidebar */}
@@ -15,12 +16,12 @@ const DashboardLayout = () => {
         `}
       >
         <div className="h-screen py-20 pl-2">
-          <DashboadSidebar />
+          <DashboadSidebar activePath={location.pathname} />
         </div>
       </div>
 
       <div
-        className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-[#111111] rounded-2xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
+        className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-[#111111] rounded-4xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
           isSidebarOpen ? "h-[300px] opacity-100 -mt-14" : "h-0 opacity-0"
         }`}
       >
@@ -28,18 +29,36 @@ const DashboardLayout = () => {
           <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
             <Calendar size={33} />
             <li>
-              <Link to={""} className="font-[800] text-2xl text-[#E55934]">
+              <NavLink
+                to=""
+                end
+                className={({ isActive }) =>
+                  `font-[800] text-2xl ${
+                    isActive
+                      ? "  text-[#E55934]"
+                      : " text-gray-600"
+                  }`
+                }
+              >
                 EVENTS
-              </Link>
+              </NavLink>
             </li>
           </div>{" "}
           <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
             <User size={33} />
-            <li>
-              <Link to={""} className="font-[800] text-2xl text-[#E55934]">
-                Accounts
-              </Link>
-            </li>
+            <NavLink
+              to="account"
+              end
+              className={({ isActive }) =>
+                `font-[800] text-2xl ${
+                  isActive
+                    ? "  text-[#E55934]"
+                    : " text-gray-600"
+                }`
+              }
+            >
+              ACCOUNTS
+            </NavLink>
           </div>
           <button className="flex items-center gap-3 text-[#E55934] text-[25px] font-[800] cursor-pointer hover:text-[#E55934] transition-colors duration-200 mt-14 pt-4 pb-7 pl-5">
             <LogOut size={33} color="#E55934" />
@@ -58,7 +77,7 @@ const DashboardLayout = () => {
 
       {/* Desktop Sidebar */}
       <div className="h-screen border-r-[0.3px]  border-gray-600 py-20 pl-10 w-[280px] hidden md:block">
-        <DashboadSidebar />
+        <DashboadSidebar activePath={location.pathname} />
       </div>
 
       {/* Main Content */}
