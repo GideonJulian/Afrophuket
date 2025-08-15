@@ -15,11 +15,11 @@ const Events = ({ event }) => {
       whileHover={{ scale: 1.03 }}
       transition={{ duration: 0.3 }}
       onClick={handleClick}
-      className="cursor-pointer bg-black p-4 flex flex-col sm:flex-row justify-between gap-4 rounded-xl shadow-xl"
+      className="cursor-pointer bg-black p-4 flex flex-row-reverse justify-between gap-4 rounded-xl shadow-xl"
     >
       {/* Event Image */}
       <motion.div
-        className="w-full sm:w-36 h-40 sm:h-36 flex-shrink-0"
+        className="w-36 h-40 sm:h-36 flex-shrink-0"
         initial={{ scale: 0.9 }}
         whileInView={{ scale: 1 }}
         transition={{ duration: 0.5 }}
@@ -40,19 +40,22 @@ const Events = ({ event }) => {
             </h1>
             <h2 className="flex items-center gap-2 text-white text-sm mt-1">
               <Calendar className="w-4 h-4" />
-              {new Date(event.event_date).toLocaleString()}
+              {event.event_date}
             </h2>
           </div>
-          <div className="text-gray-600 hover:text-[#FC6435] transition-colors duration-300">
+          <div className="text-gray-600 hover:text-[#FC6435] transition-colors duration-300 hidden md:block">
             <SquarePen className="w-5 h-5" />
           </div>
         </div>
 
         {/* Ticket Sold */}
-        <h2 className="mt-4 sm:mt-16 text-[#FC6435] text-sm font-medium flex items-center gap-2">
+      <div>
+          <h2 className="mt-4 sm:mt-16 text-[#FC6435] text-sm font-medium flex items-center gap-2">
           <Ticket className="text-gray-600 w-4 h-4" />
           {event.ticket_sold}
         </h2>
+        <h2>Ticket sold</h2>
+      </div>
       </div>
     </motion.div>
   );

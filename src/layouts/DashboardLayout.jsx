@@ -46,7 +46,7 @@ const DashboardLayout = () => {
 
         <div className="flex-1 overflow-auto md:p-5 p-3">
           <Outlet />
-          <div className="mt-12 flex items-center justify-center md:hidden">
+          <div className="mt-4 flex items-center justify-center md:hidden p-7" >
             <div className="relative  md:inline-block w-full sm:w-auto ">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
               <button
