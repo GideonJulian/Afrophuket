@@ -2,7 +2,7 @@ import React from "react";
 import { Calendar, User, LogOut } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-const DashboadSidebar = () => {
+const DashboadSidebar = ({}) => {
   const menuitems = [
     {
       name: "Event",

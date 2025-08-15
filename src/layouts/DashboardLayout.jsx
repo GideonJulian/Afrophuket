@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import DashboadSidebar from "../components/Dashboard/DashboadSidebar";
 import Header from "../components/Dashboard/Header";
-import { Menu, X } from "lucide-react";
-
+import { Calendar, Menu, User, X, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -19,12 +19,33 @@ const DashboardLayout = () => {
         </div>
       </div>
 
-     <div
-        className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
-          isSidebarOpen ? "h-[400px] opacity-100 -mt-14" : "h-0 opacity-0"
+      <div
+        className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-[#111111] rounded-2xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
+          isSidebarOpen ? "h-[300px] opacity-100 -mt-14" : "h-0 opacity-0"
         }`}
       >
-
+        <ul className="flex flex-col gap-2 text-lg pt-4 pb-7 pl-5">
+          <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
+            <Calendar size={33} />
+            <li>
+              <Link to={""} className="font-[800] text-2xl text-[#E55934]">
+                EVENTS
+              </Link>
+            </li>
+          </div>{" "}
+          <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
+            <User size={33} />
+            <li>
+              <Link to={""} className="font-[800] text-2xl text-[#E55934]">
+                Accounts
+              </Link>
+            </li>
+          </div>
+          <button className="flex items-center gap-3 text-[#E55934] text-[25px] font-[800] cursor-pointer hover:text-[#E55934] transition-colors duration-200 mt-14 pt-4 pb-7 pl-5">
+            <LogOut size={33} color="#E55934" />
+            Logout
+          </button>
+        </ul>
       </div>
 
       {/* Background Drop for Mobile */}
@@ -54,7 +75,7 @@ const DashboardLayout = () => {
 
         <div className="flex-1 overflow-auto md:p-5 p-3">
           <Outlet />
-          <div className="mt-4 flex items-center justify-center md:hidden p-7" >
+          <div className="mt-4 flex items-center justify-center md:hidden p-7">
             <div className="relative  md:inline-block w-full sm:w-auto ">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
               <button
