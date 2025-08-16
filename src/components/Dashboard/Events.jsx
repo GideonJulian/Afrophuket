@@ -35,7 +35,7 @@ const Events = ({ event }) => {
       <div className="flex-1 flex flex-col justify-between ">
         <div className="flex justify-between items-start flex-wrap gap-y-1">
           <div className="space-y-1">
-            <h1 className="font-bold text-white text-sm sm:text-lg leading-tight">
+            <h1 className="font-[700] text-white text-md leading-tight">
               {event.title}
             </h1>
             <h2 className="flex items-center gap-2 text-white text-xs sm:text-sm">
@@ -52,7 +52,7 @@ const Events = ({ event }) => {
         <div className="mt-3 sm:mt-6">
           <h2 className="text-[#FC6435] text-xs sm:text-sm font-medium flex items-center gap-2">
             <Ticket className="text-gray-600 w-4 h-4" />
-            {event.ticket_sold}
+            {event.tickets.length}
           </h2>
           <h2 className="text-xs sm:text-sm text-white">Ticket sold</h2>
         </div>

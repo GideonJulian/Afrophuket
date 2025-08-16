@@ -38,7 +38,7 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-3">
         {eventData.map((item, index) => (
           <Events key={index} event={item}  />
         ))}
