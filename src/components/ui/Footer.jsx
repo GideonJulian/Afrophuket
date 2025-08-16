@@ -35,7 +35,7 @@ export const Footer = () => {
           </div>
           <div>
             <li>
-              <Link className="font-semibold text-sm">About us</Link>
+              <Link className="font-semibold text-sm"  to={'/dashboard'}>About us</Link>
             </li>
             <li className="pt-3">
               <Link className="font-semibold text-sm">Contact Us</Link>

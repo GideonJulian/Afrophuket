@@ -39,7 +39,8 @@ const SingleEvent = () => {
           title: data.title || "",
           description: data.description || "",
           location: data.location || "",
-          afterParty: data.after_party || "",
+          after_party: data.after_party || false,
+          after_party_location: data.after_party_location || "",
           startDate: data.date || "",
           endDate: data.end_date || "",
           startTime: data.start_time || "",
@@ -55,6 +56,7 @@ const SingleEvent = () => {
     fetchEvent();
   }, [id]);
 
+  // ✅ Save handler
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -62,7 +64,8 @@ const SingleEvent = () => {
       formData.append("title", editableEvent.title);
       formData.append("description", editableEvent.description);
       formData.append("location", editableEvent.location);
-      formData.append("after_party", editableEvent.afterParty);
+      formData.append("after_party", editableEvent.after_party);
+      formData.append("after_party_location", editableEvent.after_party_location);
       formData.append("date", editableEvent.startDate);
       formData.append("end_date", editableEvent.endDate);
       formData.append("start_time", editableEvent.startTime);
@@ -71,9 +74,6 @@ const SingleEvent = () => {
       if (editableEvent.thumbnail) {
         formData.append("thumbnail", editableEvent.thumbnail);
       }
-
-      const tags = [{ id: 1, name: "Music" }];
-      formData.append("tags", JSON.stringify(tags));
 
       const response = await fetch(
         `https://afrophuket-backend.onrender.com/events/${id}/`,
@@ -88,14 +88,8 @@ const SingleEvent = () => {
       const updated = await response.json();
       setEvent(updated);
       setEditableEvent({
-        title: updated.title || "",
-        description: updated.description || "",
-        location: updated.location || "",
-        afterParty: updated.after_party || "",
-        startDate: updated.date || "",
-        endDate: updated.end_date || "",
-        startTime: updated.start_time || "",
-        endTime: updated.end_time || "",
+        ...editableEvent,
+        ...updated,
         thumbnail: null,
       });
       setEditing(false);
@@ -116,10 +110,10 @@ const SingleEvent = () => {
     return <p className="text-white text-center py-20">Event not found.</p>;
 
   return (
-    <div className="p-4 sm:p-6 max-w-screen-xl mx-auto">
+    <div className="p-2 sm:p-4 max-w-7xl mx-auto">
       {/* Header */}
       <div className="header md:border-b border-gray-400 pb-4">
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex items-center justify-between mt-3">
           <button
             className="flex items-center cursor-pointer"
             onClick={() => navigate("/dashboard")}
@@ -133,9 +127,9 @@ const SingleEvent = () => {
         </div>
 
         {/* Event Title + Checklist */}
-        <div className="w-full flex flex-col lg:flex-row justify-between mt-8 lg:mt-12 gap-6 lg:gap-0">
+        <div className="w-full flex flex-col lg:flex-row justify-between mt-8 lg:mt-12 gap-6">
           <div>
-            <h1 className="font-bold text-lg sm:text-xl lg:text-[21.7px] mb-5 sm:mb-7">
+            <h1 className="font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-7">
               {event.title}
             </h1>
             <ul className="flex flex-col gap-4">
@@ -153,7 +147,7 @@ const SingleEvent = () => {
                 <MapPin size={20} className="text-gray-600" />
                 <input
                   type="text"
-                  className="bg-transparent border-b border-gray-500 focus:outline-none text-sm w-full"
+                  className="bg-transparent border-b border-gray-500 focus:outline-none text-sm w-full max-w-xs"
                   value={editableEvent.location}
                   onChange={(e) =>
                     handleInputChange("location", e.target.value)
@@ -163,7 +157,7 @@ const SingleEvent = () => {
             </ul>
           </div>
 
-          <div className="bg-black text-white px-4 sm:px-6 lg:px-8 rounded-xl lg:rounded-2xl py-4 max-w-full sm:max-w-md">
+          <div className="bg-black text-white px-4 sm:px-6 lg:px-8 rounded-xl lg:rounded-2xl py-4 w-full sm:max-w-md">
             <div className="flex gap-3 mb-3">
               <CircleAlert size={20} />
               <h1 className="text-sm">
@@ -182,8 +176,8 @@ const SingleEvent = () => {
       {/* Content */}
       <div className="mt-10 flex flex-col lg:flex-row items-start gap-10">
         {/* Left */}
-        <div className="w-full lg:w-[442px] flex-shrink-0">
-          <h1 className="font-bold text-2xl">Event image</h1>
+        <div className="w-full lg:w-[442px]">
+          <h1 className="font-bold text-xl sm:text-2xl">Event image</h1>
           <p className="text-sm font-extralight">Upload a JPEG or PNG file</p>
           <div className="mt-6 relative">
             <img
@@ -192,7 +186,7 @@ const SingleEvent = () => {
                   ? URL.createObjectURL(editableEvent.thumbnail)
                   : event.thumbnail_url
               }
-              className="rounded-2xl w-full object-cover max-h-[300px] sm:max-h-[400px] lg:max-h-[500px]"
+              className="rounded-2xl w-full object-cover max-h-80 sm:max-h-[400px]"
               alt="Event thumbnail"
             />
             <input
@@ -202,9 +196,7 @@ const SingleEvent = () => {
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files[0];
-                if (file) {
-                  handleInputChange("thumbnail", file);
-                }
+                if (file) handleInputChange("thumbnail", file);
               }}
             />
             <label
@@ -229,73 +221,77 @@ const SingleEvent = () => {
 
         {/* Right */}
         <div className="w-full flex-1">
+          {/* Editable Title */}
           {editing ? (
             <input
               type="text"
-              className="bg-transparent border-b border-gray-600 focus:outline-none font-bold text-lg sm:text-xl lg:text-[21.7px] mb-5 sm:mb-7 w-full"
+              className="bg-transparent border-b border-gray-600 focus:outline-none font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-7 w-full"
               value={editableEvent.title}
               onChange={(e) => handleInputChange("title", e.target.value)}
             />
           ) : (
-            <h1 className="font-bold text-lg sm:text-xl lg:text-[21.7px] mb-5 sm:mb-7">
+            <h1 className="font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-7">
               {editableEvent.title}
             </h1>
           )}
 
           {/* Timeline + Timezone */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 flex-wrap">
-            <div className="bg-black text-white p-6 rounded-xl w-full sm:w-auto">
-              <div className="flex items-start gap-2">
-                <div className="flex flex-col items-center">
-                  <span className="w-3 h-3 rounded-full bg-gray-400"></span>
-                  <span className="w-px h-8 border-l border-dashed border-gray-400"></span>
-                  <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
-                </div>
-                <div className="flex flex-col gap-6">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                    <span className="text-gray-300 w-12">Start</span>
-                    <input
-                      type="date"
-                      className="bg-transparent border-b border-gray-600 focus:outline-none text-sm"
-                      value={editableEvent.startDate}
-                      onChange={(e) =>
-                        handleInputChange("startDate", e.target.value)
-                      }
-                    />
-                    <input
-                      type="time"
-                      className="bg-transparent border-b border-gray-600 focus:outline-none text-sm"
-                      value={editableEvent.startTime}
-                      onChange={(e) =>
-                        handleInputChange("startTime", e.target.value)
-                      }
-                    />
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                    <span className="text-gray-300 w-12">End</span>
-                    <input
-                      type="date"
-                      className="bg-transparent border-b border-gray-600 focus:outline-none text-sm"
-                      value={editableEvent.endDate}
-                      onChange={(e) =>
-                        handleInputChange("endDate", e.target.value)
-                      }
-                    />
-                    <input
-                      type="time"
-                      className="bg-transparent border-b border-gray-600 focus:outline-none text-sm"
-                      value={editableEvent.endTime}
-                      onChange={(e) =>
-                        handleInputChange("endTime", e.target.value)
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="bg-black text-white p-6 rounded-xl w-full sm:w-fit">
+  <div className="flex items-start gap-2">
+    {/* Timeline dots */}
+    <div className="flex flex-col items-center">
+      <span className="w-3 h-3 rounded-full bg-gray-400"></span>
+      <span className="w-px h-26 md:h-8 border-l border-dashed border-gray-400"></span>
+      <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
+    </div>
 
-            <div className="bg-black text-white px-5 py-3 rounded-2xl w-full sm:w-auto flex flex-col items-start gap-4 shadow-md">
-              <div className="bg-[#E55934] p-2 rounded-full flex items-center justify-center">
+    {/* Inputs */}
+    <div className="flex flex-col gap-6 w-full">
+      {/* Start */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 w-full">
+        <span className="text-gray-300 w-16 shrink-0">Start</span>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full">
+          <input
+            type="date"
+            className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+            value={editableEvent.startDate}
+            onChange={(e) => handleInputChange("startDate", e.target.value)}
+          />
+          <input
+            type="time"
+            className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto mt-4"
+            value={editableEvent.startTime}
+            onChange={(e) => handleInputChange("startTime", e.target.value)}
+          />
+        </div>
+      </div>
+
+      {/* End */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 w-full">
+        <span className="text-gray-300 w-16 shrink-0">End</span>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full">
+          <input
+            type="date"
+            className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+            value={editableEvent.endDate}
+            onChange={(e) => handleInputChange("endDate", e.target.value)}
+          />
+          <input
+            type="time"
+            className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+            value={editableEvent.endTime}
+            onChange={(e) => handleInputChange("endTime", e.target.value)}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+            <div className="bg-black text-white px-5 py-3 rounded-2xl w-full sm:w-fit flex flex-col  items-start  gap-4 shadow-md">
+              <div className="bg-[#E55934] p-2 rounded-full flex">
                 <Globe className="w-4 h-4 text-white" />
               </div>
               <div className="flex flex-col">
@@ -305,7 +301,7 @@ const SingleEvent = () => {
             </div>
           </div>
 
-          {/* Editable Sections */}
+          {/* Description */}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
             <div className="flex items-center gap-3">
               <BookText />
@@ -321,6 +317,7 @@ const SingleEvent = () => {
             </div>
           </div>
 
+          {/* Event Location */}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
             <div className="flex items-center gap-3">
               <MapPin />
@@ -334,8 +331,8 @@ const SingleEvent = () => {
             </div>
           </div>
 
+          {/* After Party */}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
-            {/* Toggle for After Party */}
             <div className="flex items-center gap-3 mb-4">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -349,7 +346,6 @@ const SingleEvent = () => {
                 <span>After Party?</span>
               </label>
             </div>
-
             {editableEvent.after_party && (
               <div className="flex items-center gap-3">
                 <MapPin />
@@ -367,10 +363,10 @@ const SingleEvent = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 mt-6 w-full">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-6 w-full">
             <button
               onClick={() => setEditing(!editing)}
-              className="border rounded-lg px-6 py-3 cursor-pointer font-semibold w-full sm:w-auto text-center"
+              className="border rounded-lg px-6 py-3 cursor-pointer font-semibold text-center w-full sm:w-auto"
             >
               {editing ? "Cancel" : "Edit"}
             </button>
