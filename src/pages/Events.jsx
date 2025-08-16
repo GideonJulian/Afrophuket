@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TicketCard from "../components/ui/TicketCard";
 import FeaturedEvents from "../components/FeaturedEvents";
+import AfroLoader from "../components/AfroLoader";
 const Events = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +49,7 @@ const Events = () => {
         <div className="mt-10">
           {loading ? (
             <div className="text-white text-center py-16 animate-pulse">
-              Loading events...
+             <AfroLoader />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

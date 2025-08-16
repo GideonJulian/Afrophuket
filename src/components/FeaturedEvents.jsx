@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import EventCard from "./ui/EventCard";
+import AfroLoader from "./AfroLoader";
 
 const FeaturedEvents = () => {
   const [eventData, setEventData] = useState([]);
@@ -69,9 +70,7 @@ const FeaturedEvents = () => {
         {/* Loader or Events */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <p className="text-white animate-pulse">
-              Loading featured events...
-            </p>
+          <AfroLoader />
           </div>
         ) : (
           <>
