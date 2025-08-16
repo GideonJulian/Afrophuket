@@ -4,9 +4,11 @@ import {
   CircleAlert,
   Clock,
   MapPin,
+  Menu,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import AfroLoader from "../../components/AfroLoader";
 
 const SingleEvent = () => {
   const { id } = useParams();
@@ -33,7 +35,7 @@ const SingleEvent = () => {
   const navigate = useNavigate();
 
   if (loading)
-    return <p className="text-white text-center py-20">Loading Details...</p>;
+    return <AfroLoader />
   if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
   if (!event)
     return <p className="text-white text-center py-20">Event not found.</p>;
@@ -48,7 +50,7 @@ const SingleEvent = () => {
     <div className="p-4 sm:p-6">
       {/* Header */}
       <div className="header md:border-b border-gray-400 pb-4">
-        <div className="w-full">
+        <div className="w-full flex items-center justify-between">
           <button
             className="flex items-center cursor-pointer"
             onClick={() => navigate("/dashboard")}
@@ -58,6 +60,9 @@ const SingleEvent = () => {
             </span>
             <h1 className="ml-1 text-sm sm:text-base">Back</h1>
           </button>
+          <div className="md:hidden block">
+            <Menu />
+          </div>
         </div>
 
         {/* Event Info + Checklist */}

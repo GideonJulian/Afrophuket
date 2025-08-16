@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import hostimg from "../assets/images/hostimg.png";
 
 import map from "../assets/images/map.png";
+import AfroLoader from "../components/AfroLoader";
 
 
 const SingleTicket = () => {
@@ -30,7 +31,7 @@ const SingleTicket = () => {
   }, [id]);
 
   if (loading)
-    return <p className="text-white text-center py-20">Loading Details...</p>;
+    return <AfroLoader />
   if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
   if (!event)
     return <p className="text-white text-center py-20">Event not found.</p>;
