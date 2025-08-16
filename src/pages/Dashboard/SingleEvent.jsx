@@ -17,29 +17,29 @@ const SingleEvent = () => {
           <h1>Back</h1>
         </button>
       </div>
-      <div className="w-full flex items-center justify between mt-20">
+      <div className="w-full flex items-center justify between mt-12">
         <div>
           <h1 className="font-[700]  text-[21.7px] mb-7">Amapiano Night </h1>
-          <ul>
+          <ul className="flex flex-col gap-4">
             <div className="flex gap-2 items-center">
               <span className="text-gray-600">
                 {" "}
-                <Calendar />
+                <Calendar size={20}/>
               </span>
-              <h1>Friday,Aug 25th, 2025</h1>
+              <h1 className="text-[14px]">Friday,Aug 25th, 2025</h1>
             </div>
             <div className="flex gap-2 items-center">
               <span className="text-gray-600">
                 {" "}
-                <Clock />
+                <Clock size={20}/>
               </span>
-              2:01AM-5:04 PM WAT
+              <h1 className="text-[14px]"> 2:01AM-5:04 PM WAT</h1>
             </div>
             <div className="flex gap-2 items-center">
               <span className="text-gray-600">
-                <MapPin />
+                <MapPin size={20}/>
               </span>
-              Asaba
+              <h1 className="text-[14px]"> Asaba</h1>
             </div>
           </ul>
         </div>
