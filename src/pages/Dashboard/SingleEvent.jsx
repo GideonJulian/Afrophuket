@@ -1,4 +1,4 @@
-import { ArrowLeft, Calendar, ChevronLeft, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, ChevronLeft, Clock, MapPin } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -22,15 +22,24 @@ const SingleEvent = () => {
           <h1 className="font-[700]  text-[21.7px] mb-7">Amapiano Night </h1>
           <ul>
             <div className="flex gap-2 items-center">
-              <Calendar />
+              <span className="text-gray-600">
+                {" "}
+                <Calendar />
+              </span>
               <h1>Friday,Aug 25th, 2025</h1>
             </div>
             <div className="flex gap-2 items-center">
-              <Clock />
+              <span className="text-gray-600">
+                {" "}
+                <Clock />
+              </span>
               2:01AM-5:04 PM WAT
             </div>
             <div className="flex gap-2 items-center">
-                
+              <span className="text-gray-600">
+                <MapPin />
+              </span>
+              Asaba
             </div>
           </ul>
         </div>
