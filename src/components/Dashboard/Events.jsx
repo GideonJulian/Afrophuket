@@ -7,7 +7,7 @@ const Events = ({ event }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/ticket/${event.id}`);
+    navigate(`event/${event.id}`);
   };
 
   return (

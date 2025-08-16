@@ -3,9 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { CalendarDays, MapPin, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import hostimg from "../assets/images/hostimg.png";
-import Button from "../components/ui/Button";
+
 import map from "../assets/images/map.png";
-import BrowseTickets from "../components/BrowseTickets";
+
 
 const SingleTicket = () => {
   const { id } = useParams();

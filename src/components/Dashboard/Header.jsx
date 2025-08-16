@@ -20,7 +20,7 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
             {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-        <div className="relative hidden md:block w-[270px] ">
+        <div className="relative hidden md:block w-[280px] ">
           <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
           <button
             onClick={() => navigate("/create-event")}

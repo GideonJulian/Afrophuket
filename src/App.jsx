@@ -13,6 +13,7 @@ import CheckoutTickets from "./pages/CheckoutTickets";
 import ContactUs from "./pages/ContactUs";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
+import SingleEvent from "./pages/Dashboard/SingleEvent";
 
 
 const route = createBrowserRouter([
@@ -69,6 +70,10 @@ const route = createBrowserRouter([
       },{
         path: 'account',
         element: 'Accont'
+      },
+      {
+        path: 'event/:id',
+        element: <SingleEvent />
       }
     ]
   }
