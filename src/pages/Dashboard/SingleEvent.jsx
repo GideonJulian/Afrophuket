@@ -14,7 +14,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import AfroLoader from "../../components/AfroLoader";
 import hostimg from "../../assets/images/hostimg.png";
 
-const SingleEvent = () => {
+const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,10 @@ const SingleEvent = () => {
       formData.append("description", editableEvent.description);
       formData.append("location", editableEvent.location);
       formData.append("after_party", editableEvent.after_party);
-      formData.append("after_party_location", editableEvent.after_party_location);
+      formData.append(
+        "after_party_location",
+        editableEvent.after_party_location
+      );
       formData.append("date", editableEvent.startDate);
       formData.append("end_date", editableEvent.endDate);
       formData.append("start_time", editableEvent.startTime);
@@ -122,7 +125,14 @@ const SingleEvent = () => {
             <h1 className="ml-1 text-sm sm:text-base">Back</h1>
           </button>
           <div className="md:hidden block">
-            <Menu />
+            <div className="md:hidden block">
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="p-2 "
+              >
+                <Menu  />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -237,58 +247,65 @@ const SingleEvent = () => {
 
           {/* Timeline + Timezone */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 flex-wrap">
-          <div className="bg-black text-white p-6 rounded-xl w-full sm:w-fit">
-  <div className="flex items-start gap-2">
-    {/* Timeline dots */}
-    <div className="flex flex-col items-center">
-      <span className="w-3 h-3 rounded-full bg-gray-400"></span>
-      <span className="w-px h-26 md:h-8 border-l border-dashed border-gray-400"></span>
-      <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
-    </div>
+            <div className="bg-black text-white p-6 rounded-xl w-full sm:w-fit">
+              <div className="flex items-start gap-2">
+                {/* Timeline dots */}
+                <div className="flex flex-col items-center">
+                  <span className="w-3 h-3 rounded-full bg-gray-400"></span>
+                  <span className="w-px h-26 md:h-14 border-l border-dashed border-gray-400"></span>
+                  <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
+                </div>
 
-    {/* Inputs */}
-    <div className="flex flex-col gap-6 w-full">
-      {/* Start */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 w-full">
-        <span className="text-gray-300 w-16 shrink-0">Start</span>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full">
-          <input
-            type="date"
-            className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
-            value={editableEvent.startDate}
-            onChange={(e) => handleInputChange("startDate", e.target.value)}
-          />
-          <input
-            type="time"
-            className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto mt-4"
-            value={editableEvent.startTime}
-            onChange={(e) => handleInputChange("startTime", e.target.value)}
-          />
-        </div>
-      </div>
+                {/* Inputs */}
+                <div className="flex flex-col gap-6 w-full">
+                  {/* Start */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 w-full">
+                    <span className="text-gray-300 w-16 shrink-0">Start</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full">
+                      <input
+                        type="date"
+                        className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+                        value={editableEvent.startDate}
+                        onChange={(e) =>
+                          handleInputChange("startDate", e.target.value)
+                        }
+                      />
+                      <input
+                        type="time"
+                        className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto mt-4"
+                        value={editableEvent.startTime}
+                        onChange={(e) =>
+                          handleInputChange("startTime", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
 
-      {/* End */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 w-full">
-        <span className="text-gray-300 w-16 shrink-0">End</span>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full">
-          <input
-            type="date"
-            className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
-            value={editableEvent.endDate}
-            onChange={(e) => handleInputChange("endDate", e.target.value)}
-          />
-          <input
-            type="time"
-            className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
-            value={editableEvent.endTime}
-            onChange={(e) => handleInputChange("endTime", e.target.value)}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+                  {/* End */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 w-full">
+                    <span className="text-gray-300 w-16 shrink-0">End</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full">
+                      <input
+                        type="date"
+                        className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+                        value={editableEvent.endDate}
+                        onChange={(e) =>
+                          handleInputChange("endDate", e.target.value)
+                        }
+                      />
+                      <input
+                        type="time"
+                        className="bg-transparent border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+                        value={editableEvent.endTime}
+                        onChange={(e) =>
+                          handleInputChange("endTime", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="bg-black text-white px-5 py-3 rounded-2xl w-full sm:w-fit flex flex-col  items-start  gap-4 shadow-md">
               <div className="bg-[#E55934] p-2 rounded-full flex">

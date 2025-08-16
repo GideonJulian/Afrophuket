@@ -23,7 +23,7 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
         <div className="relative hidden md:block w-[280px] ">
           <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
           <button
-            onClick={() => navigate("/create-event")}
+            onClick={() => navigate("create-event")}
             className="relative w-[300px] sm:w-auto text-xs sm:text-sm md:text-base font-semibold uppercase cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-[1.03] transition-all duration-300"
           >
             CREATE NEW EVENT

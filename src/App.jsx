@@ -14,6 +14,7 @@ import ContactUs from "./pages/ContactUs";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import SingleEvent from "./pages/Dashboard/SingleEvent";
+import CreateEvent from "./pages/Dashboard/CreateEvent";
 
 
 const route = createBrowserRouter([
@@ -74,6 +75,9 @@ const route = createBrowserRouter([
       {
         path: 'event/:id',
         element: <SingleEvent />
+      }, {
+        path: 'create-event',
+        element: <CreateEvent />
       }
     ]
   }
