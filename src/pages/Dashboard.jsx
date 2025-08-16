@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Dashboard/Header";
-import img from "../assets/images/events/event1.png";
 import Events from "../components/Dashboard/Events";
-import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import AfroLoader from "../components/AfroLoader"; // ✅ import loader
+
 const Dashboard = () => {
   const { isSidebarOpen, setIsSidebarOpen } = useOutletContext();
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("https://afrophuket-backend.onrender.com/events/")
@@ -28,23 +29,33 @@ const Dashboard = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  // ✅ Show Loader while fetching
+  if (loading) {
+    return <AfroLoader />;
+  }
+
   return (
     <div>
-      <div className="sticky top-0 z-10 border-b-[0.3px] border-gray-600 flex items-center">
-        <div className="flex justify-between w-full items-center relative">
+      {/* Navbar/Header */}
+      <div className="sticky top-0 bg-opacity-80 backdrop-blur-md z-10 border-b-[0.3px] border-gray-600 flex items-center">
+        <div className="flex justify-between w-full items-center relative top-0 p-0">
           <Header
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
           />
         </div>
       </div>
+
+      {/* Events Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-3">
         {eventData.map((item, index) => (
-          <Events key={index} event={item}  />
+          <Events key={index} event={item} />
         ))}
       </div>
+
+      {/* Create Event Button (Mobile only) */}
       <div className="mt-4 flex items-center justify-center md:hidden p-7">
-        <div className="relative  md:inline-block w-full sm:w-auto ">
+        <div className="relative w-full sm:w-auto">
           <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
           <button
             onClick={() => navigate("/create-event")}

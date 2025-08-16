@@ -6,7 +6,7 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full">
+    <div className="w-full  top-0 relative p-0 m-0">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-8 px-4 sm:pt-14 sm:px-5 gap-4">
         <div className="flex items-center justify-between w-full">

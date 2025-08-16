@@ -85,7 +85,7 @@ const DashboardLayout = () => {
         {/* Header with Menu Button for Mobile */}
      
 
-        <div className="flex-1 overflow-auto md:p-5 p-3">
+        <div className="flex-1 overflow-auto px-5">
           <Outlet context={{ isSidebarOpen, setIsSidebarOpen }}/>
     
         </div>
