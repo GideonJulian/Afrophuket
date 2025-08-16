@@ -26,7 +26,7 @@ const SingleEvent = () => {
 
   const navigate = useNavigate();
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchEvent = async () => {
       try {
         const res = await fetch(
@@ -188,13 +188,38 @@ const SingleEvent = () => {
           <h1 className="font-bold text-2xl">Event image</h1>
           <p className="text-sm font-extralight">Upload a JPEG or PNG file</p>
           <div className="mt-6 relative">
+            {/* Preview existing or uploaded image */}
             <img
-              src={event.thumbnail_url}
+              src={
+                editableEvent.thumbnail
+                  ? URL.createObjectURL(editableEvent.thumbnail) // show new upload
+                  : event.thumbnail_url // fallback to existing image
+              }
               className="rounded-2xl w-full object-cover"
+              alt="Event thumbnail"
             />
-            <button className="absolute bottom-4 right-4 bg-[#fff] p-3 rounded-full shadow-md hover:scale-105 transition">
+
+            {/* Hidden file input */}
+            <input
+              type="file"
+              accept="image/*"
+              id="thumbnail-upload"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  handleInputChange("thumbnail", file); // store the file in state
+                }
+              }}
+            />
+
+            {/* Button to trigger file input */}
+            <label
+              htmlFor="thumbnail-upload"
+              className="absolute bottom-4 right-4 bg-[#fff] p-3 rounded-full shadow-md hover:scale-105 transition cursor-pointer"
+            >
               <Upload className="text-[#E55934] w-5 h-5" />
-            </button>
+            </label>
           </div>
 
           <div className="mt-5">
@@ -315,25 +340,44 @@ const SingleEvent = () => {
               />
             </div>
           </div>
-
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
-            <div className="flex items-center gap-3">
-              <MapPin />
-              <input
-                type="text"
-                className="bg-transparent border-b border-gray-600 focus:outline-none flex-1"
-                placeholder="Add After Party Location"
-                value={editableEvent.afterParty}
-                onChange={(e) => handleInputChange("afterParty", e.target.value)}
-              />
+            {/* Toggle for After Party */}
+            <div className="flex items-center gap-3 mb-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={editableEvent.after_party || false}
+                  onChange={(e) =>
+                    handleInputChange("after_party", e.target.checked)
+                  }
+                  className="w-4 h-4 accent-blue-500"
+                />
+                <span>After Party?</span>
+              </label>
             </div>
+
+            {/* Location input (only if after_party is true) */}
+            {editableEvent.after_party && (
+              <div className="flex items-center gap-3">
+                <MapPin />
+                <input
+                  type="text"
+                  className="bg-transparent border-b border-gray-600 focus:outline-none flex-1"
+                  placeholder="Add After Party Location"
+                  value={editableEvent.after_party_location || ""}
+                  onChange={(e) =>
+                    handleInputChange("after_party_location", e.target.value)
+                  }
+                />
+              </div>
+            )}
           </div>
 
           {/* Actions */}
           <div className="flex flex-row items-center gap-4 mt-6 w-full">
             <button
               onClick={() => setEditing(!editing)}
-              className="border rounded-lg px-4 py-2 font-semibold flex-1 sm:flex-initial text-center"
+              className="border rounded-lg px-6 py-3 cursor-pointer font-semibold flex-1 sm:flex-initial text-center"
             >
               {editing ? "Cancel" : "Edit"}
             </button>

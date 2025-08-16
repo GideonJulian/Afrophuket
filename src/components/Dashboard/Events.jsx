@@ -40,7 +40,7 @@ const Events = ({ event }) => {
             </h1>
             <h2 className="flex items-center gap-2 text-white text-xs sm:text-sm">
               <Calendar className="w-4 h-4" />
-              {event.event_date}
+              {event.date}
             </h2>
           </div>
           <div className="text-gray-600 hover:text-[#FC6435] transition-colors duration-300 hidden md:block">
