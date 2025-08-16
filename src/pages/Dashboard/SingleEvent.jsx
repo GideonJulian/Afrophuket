@@ -1,15 +1,20 @@
 import {
+  BookText,
   Calendar,
   ChevronLeft,
   CircleAlert,
   Clock,
+  Earth,
+  Globe,
   MapPin,
   Menu,
+  Notebook,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AfroLoader from "../../components/AfroLoader";
-
+import { Link } from "react-router-dom";
+import hostimg from "../../assets/images/hostimg.png";
 const SingleEvent = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
@@ -34,15 +39,19 @@ const SingleEvent = () => {
 
   const navigate = useNavigate();
 
-  if (loading)
-    return <AfroLoader />
+  if (loading) return <AfroLoader />;
   if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
   if (!event)
     return <p className="text-white text-center py-20">Event not found.</p>;
 
   // Format date nicely
   const formatDate = (dateStr) => {
-    const options = { weekday: "long", year: "numeric", month: "short", day: "numeric" };
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
     return new Date(dateStr).toLocaleDateString("en-US", options);
   };
 
@@ -119,6 +128,115 @@ const SingleEvent = () => {
                 ✅ Tickets available
               </li>
             )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-10 flex items-center gap-10">
+        <div className="left">
+          <div>
+            <h1 className="font-bold text-2xl">Event image</h1>
+            <p className="text-sm font-extralight">upload a JPEG or PNG file</p>
+          </div>
+          <div className="mt-10">
+            <img src={event.thumbnail_url} className="rounded-4xl w-[442px]" />
+          </div>
+          <div className="mt-5">
+            <h1 className="border-b pb-8 ">Hosted By </h1>
+            <div className="flex items-center gap-3 py-4">
+              <img src={hostimg} className="w-10 h-10 rounded-full" />
+              <h1>GAB USA</h1>
+              <Link className="ml-auto text-[#E55934] text-sm">
+                Contact the Host
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <h1 className="text-2xl font-bold">Event Name </h1>
+          </div>
+          <div className="flex items-center gap-5">
+            <div className="bg-black text-white p-6 rounded-xl w-fit">
+              <div className="flex items-start gap-2">
+                {/* Timeline */}
+                <div className="flex flex-col items-center">
+                  {/* Start dot */}
+                  <span className="w-3 h-3 rounded-full bg-gray-400"></span>
+                  {/* Dotted line */}
+                  <span className="w-px h-8 border-l border-dashed border-gray-400"></span>
+                  <span className="w-px h-3 border-l border-dashed border-gray-400"></span>
+                  {/* End dot */}
+                  <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-col gap-6">
+                  {/* Start */}
+                  <div className="flex items-center gap-8">
+                    <span className="text-gray-300 w-12">Start</span>
+                    <span className="text-sm text-gray-200">Tue, 12 Aug</span>
+                    <span className="text-sm text-gray-200">02:00 PM</span>
+                  </div>
+
+                  {/* End */}
+                  <div className="flex items-center gap-8">
+                    <span className="text-gray-300 w-12">End</span>
+                    <span className="text-sm text-gray-200">Tue, 12 Aug</span>
+                    <span className="text-sm text-gray-200">03:00 PM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-black text-white px-5 py-3 rounded-2xl w-fit flex flex-col items-start gap-4 shadow-md">
+              {/* Icon */}
+              <div className="bg-[#E55934] p-2 rounded-full flex items-center justify-center">
+                <Globe className="w-4 h-4 text-white" />
+              </div>
+
+              {/* Text */}
+              <div className="flex flex-col">
+                <h1 className="text-sm text-gray-400">GMT-07:00</h1>
+                <h1 className="text-lg ">Los Angeles</h1>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
+              <div className="flex items-center gap-3">
+                <BookText />
+                Add Event Description
+              </div>
+            </div>{" "}
+            <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
+              <div className="flex items-center gap-3">
+                <MapPin />
+                Add Event Location
+              </div>
+            </div>
+            <div>
+              <h1 className="text-lg mt-3">Event option</h1>
+              <div className="bg-black text-white p-6 rounded-xl w-full mt-2">
+                <div className="flex items-center gap-3">
+                  <MapPin />
+                  Add After party location
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <button className="border rounded-lg px-3 py-2 font-semibold">
+                Edit
+              </button>
+              <div className="relative w-full sm:w-auto">
+                <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
+                <button
+                  onClick={() => navigate("/create-event")}
+                  className="relative w-full sm:w-auto text-xs sm:text-sm md:text-base font-semibold uppercase cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-[1.03] transition-all duration-300"
+                >
+                 SAVE CHANGES
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
