@@ -44,7 +44,7 @@ const SingleEvent = () => {
           endDate: data.end_date || "",
           startTime: data.start_time || "",
           endTime: data.end_time || "",
-          thumbnail: null, // placeholder for file upload
+          thumbnail: null,
         });
       } catch (err) {
         setError(err.message);
@@ -55,7 +55,6 @@ const SingleEvent = () => {
     fetchEvent();
   }, [id]);
 
-  // ✅ Save handler (multipart/form-data)
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -73,7 +72,6 @@ const SingleEvent = () => {
         formData.append("thumbnail", editableEvent.thumbnail);
       }
 
-      // Example tags (backend may expect array of objects)
       const tags = [{ id: 1, name: "Music" }];
       formData.append("tags", JSON.stringify(tags));
 
@@ -81,7 +79,7 @@ const SingleEvent = () => {
         `https://afrophuket-backend.onrender.com/events/${id}/`,
         {
           method: "PATCH",
-          body: formData, // ✅ no Content-Type header
+          body: formData,
         }
       );
 
@@ -118,7 +116,7 @@ const SingleEvent = () => {
     return <p className="text-white text-center py-20">Event not found.</p>;
 
   return (
-    <div className="p-4 sm:p-6">
+    <div className="p-4 sm:p-6 max-w-screen-xl mx-auto">
       {/* Header */}
       <div className="header md:border-b border-gray-400 pb-4">
         <div className="w-full flex items-center justify-between">
@@ -155,7 +153,7 @@ const SingleEvent = () => {
                 <MapPin size={20} className="text-gray-600" />
                 <input
                   type="text"
-                  className="bg-transparent border-b border-gray-500 focus:outline-none text-sm"
+                  className="bg-transparent border-b border-gray-500 focus:outline-none text-sm w-full"
                   value={editableEvent.location}
                   onChange={(e) =>
                     handleInputChange("location", e.target.value)
@@ -184,22 +182,19 @@ const SingleEvent = () => {
       {/* Content */}
       <div className="mt-10 flex flex-col lg:flex-row items-start gap-10">
         {/* Left */}
-        <div className="w-full lg:w-[442px]">
+        <div className="w-full lg:w-[442px] flex-shrink-0">
           <h1 className="font-bold text-2xl">Event image</h1>
           <p className="text-sm font-extralight">Upload a JPEG or PNG file</p>
           <div className="mt-6 relative">
-            {/* Preview existing or uploaded image */}
             <img
               src={
                 editableEvent.thumbnail
-                  ? URL.createObjectURL(editableEvent.thumbnail) // show new upload
-                  : event.thumbnail_url // fallback to existing image
+                  ? URL.createObjectURL(editableEvent.thumbnail)
+                  : event.thumbnail_url
               }
-              className="rounded-2xl w-full object-cover"
+              className="rounded-2xl w-full object-cover max-h-[300px] sm:max-h-[400px] lg:max-h-[500px]"
               alt="Event thumbnail"
             />
-
-            {/* Hidden file input */}
             <input
               type="file"
               accept="image/*"
@@ -208,12 +203,10 @@ const SingleEvent = () => {
               onChange={(e) => {
                 const file = e.target.files[0];
                 if (file) {
-                  handleInputChange("thumbnail", file); // store the file in state
+                  handleInputChange("thumbnail", file);
                 }
               }}
             />
-
-            {/* Button to trigger file input */}
             <label
               htmlFor="thumbnail-upload"
               className="absolute bottom-4 right-4 bg-[#fff] p-3 rounded-full shadow-md hover:scale-105 transition cursor-pointer"
@@ -235,7 +228,7 @@ const SingleEvent = () => {
         </div>
 
         {/* Right */}
-        <div className="w-full">
+        <div className="w-full flex-1">
           {editing ? (
             <input
               type="text"
@@ -250,8 +243,8 @@ const SingleEvent = () => {
           )}
 
           {/* Timeline + Timezone */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-            <div className="bg-black text-white p-6 rounded-xl w-fit">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 flex-wrap">
+            <div className="bg-black text-white p-6 rounded-xl w-full sm:w-auto">
               <div className="flex items-start gap-2">
                 <div className="flex flex-col items-center">
                   <span className="w-3 h-3 rounded-full bg-gray-400"></span>
@@ -259,7 +252,7 @@ const SingleEvent = () => {
                   <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
                 </div>
                 <div className="flex flex-col gap-6">
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <span className="text-gray-300 w-12">Start</span>
                     <input
                       type="date"
@@ -278,7 +271,7 @@ const SingleEvent = () => {
                       }
                     />
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <span className="text-gray-300 w-12">End</span>
                     <input
                       type="date"
@@ -301,7 +294,7 @@ const SingleEvent = () => {
               </div>
             </div>
 
-            <div className="bg-black text-white px-5 py-3 rounded-2xl w-fit flex flex-col items-start gap-4 shadow-md">
+            <div className="bg-black text-white px-5 py-3 rounded-2xl w-full sm:w-auto flex flex-col items-start gap-4 shadow-md">
               <div className="bg-[#E55934] p-2 rounded-full flex items-center justify-center">
                 <Globe className="w-4 h-4 text-white" />
               </div>
@@ -340,6 +333,7 @@ const SingleEvent = () => {
               />
             </div>
           </div>
+
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
             {/* Toggle for After Party */}
             <div className="flex items-center gap-3 mb-4">
@@ -356,7 +350,6 @@ const SingleEvent = () => {
               </label>
             </div>
 
-            {/* Location input (only if after_party is true) */}
             {editableEvent.after_party && (
               <div className="flex items-center gap-3">
                 <MapPin />
@@ -374,14 +367,14 @@ const SingleEvent = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-row items-center gap-4 mt-6 w-full">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mt-6 w-full">
             <button
               onClick={() => setEditing(!editing)}
-              className="border rounded-lg px-6 py-3 cursor-pointer font-semibold flex-1 sm:flex-initial text-center"
+              className="border rounded-lg px-6 py-3 cursor-pointer font-semibold w-full sm:w-auto text-center"
             >
               {editing ? "Cancel" : "Edit"}
             </button>
-            <div className="relative sm:flex-initial">
+            <div className="relative w-full sm:w-auto">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
               <button
                 onClick={handleSave}
