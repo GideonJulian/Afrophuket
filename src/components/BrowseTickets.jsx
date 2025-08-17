@@ -48,7 +48,7 @@ const BrowseTickets = () => {
     return matchesLocation && matchesDate;
   });
 
-  const eventsToShow = showAll ? filteredEvents : filteredEvents.slice(0, 3);
+  const eventsToShow = showAll ? filteredEvents : filteredEvents.slice(0, 4);
 
   const uniqueLocations = [
     "All",
@@ -123,7 +123,7 @@ const BrowseTickets = () => {
             </motion.div>
 
             {/* View All Button */}
-            {!showAll && filteredEvents.length > 3 && (
+            {!showAll && filteredEvents.length > 4 && (
               <motion.div
                 className="flex items-center justify-center mt-10"
                 initial="hidden"
