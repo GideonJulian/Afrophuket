@@ -1,9 +1,11 @@
-import React from "react";
-import { Calendar, SquarePen, Ticket } from "lucide-react";
+import React, { useState } from "react";
+import { Calendar, SquarePen, Ticket, Trash } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import DeleteConfirmModal from "../ui/DeleteConfirmModal";
 
-const Events = ({ event }) => {
+const Events = ({ event, handleDelete }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -11,53 +13,84 @@ const Events = ({ event }) => {
   };
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.03 }}
-      transition={{ duration: 0.3 }}
-      onClick={handleClick}
-      className="cursor-pointer bg-black p-4 sm:p-4 flex flex-row justify-between gap-5 rounded-xl shadow-xl"
-    >
-      {/* Event Image */}
+    <>
       <motion.div
-        className="w-28 h-32 sm:w-36 sm:h-40 flex-shrink-0"
-        initial={{ scale: 0.9 }}
-        whileInView={{ scale: 1 }}
-        transition={{ duration: 0.5 }}
+        whileHover={{ scale: 1.03 }}
+        transition={{ duration: 0.3 }}
+        onClick={handleClick}
+        className="cursor-pointer bg-black p-4 sm:p-4 flex flex-row justify-between gap-3 rounded-xl shadow-xl"
       >
-        <img
-          src={event.thumbnail_url}
-          alt={event.title}
-          className="w-full h-full object-cover rounded-md"
-        />
+        {/* Event Image */}
+        <motion.div
+          className="w-28 h-30 sm:w-36 sm:h-36 flex-shrink-0"
+          initial={{ scale: 0.9 }}
+          whileInView={{ scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <img
+            src={event.thumbnail_url}
+            alt={event.title}
+            className="w-full h-full object-cover rounded-md"
+          />
+        </motion.div>
+
+        {/* Event Info */}
+        <div className="flex-1 flex flex-col justify-between ">
+          <div className="flex justify-between items-start flex-wrap gap-y-1">
+            <div className="space-y-1">
+              <h1 className="font-[700] text-white text-md leading-tight">
+                {event.title}
+              </h1>
+              <h2 className="flex items-center gap-2 text-white text-xs sm:text-sm">
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
+                {event.date}
+              </h2>
+            </div>
+
+            {/* Edit & Delete Icons */}
+            <div className="flex items-center gap-1">
+              {/* Edit Icon */}
+              <div
+                className="hover:text-[#FC6435] text-gray-400 transition-colors duration-300 cursor-pointer"
+                onClick={(e) => e.stopPropagation()} // prevent navigation
+              >
+                <SquarePen className="w-4 h-4 sm:w- sm:h- md:w-5 md:h-5" />
+              </div>
+
+              {/* Delete Icon */}
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsModalOpen(true);
+                }}
+                className="hover:text-[#FC6435] text-white transition-colors duration-300 cursor-pointer"
+              >
+                <Trash className="w-4 h-4 sm:w-6 sm:h-6 md:w-5 md:h-5" />
+              </div>
+            </div>
+          </div>
+
+          {/* Ticket Sold */}
+          <div className="mt-3 sm:mt-6">
+            <h2 className="text-[#FC6435] text-xs sm:text-sm font-medium flex items-center gap-2">
+              <Ticket className="text-gray-600 w-4 h-4 sm:w-5 sm:h-5" />
+              {event.tickets.length}
+            </h2>
+            <h2 className="text-xs sm:text-sm text-white">Ticket sold</h2>
+          </div>
+        </div>
       </motion.div>
 
-      {/* Event Info */}
-      <div className="flex-1 flex flex-col justify-between ">
-        <div className="flex justify-between items-start flex-wrap gap-y-1">
-          <div className="space-y-1">
-            <h1 className="font-[700] text-white text-md leading-tight">
-              {event.title}
-            </h1>
-            <h2 className="flex items-center gap-2 text-white text-xs sm:text-sm">
-              <Calendar className="w-4 h-4" />
-              {event.date}
-            </h2>
-          </div>
-          <div className="text-gray-600 hover:text-[#FC6435] transition-colors duration-300 hidden md:block">
-            <SquarePen className="w-5 h-5" />
-          </div>
-        </div>
-
-        {/* Ticket Sold */}
-        <div className="mt-3 sm:mt-6">
-          <h2 className="text-[#FC6435] text-xs sm:text-sm font-medium flex items-center gap-2">
-            <Ticket className="text-gray-600 w-4 h-4" />
-            {event.tickets.length}
-          </h2>
-          <h2 className="text-xs sm:text-sm text-white">Ticket sold</h2>
-        </div>
-      </div>
-    </motion.div>
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => {
+          handleDelete(event._id);
+          setIsModalOpen(false);
+        }}
+      />
+    </>
   );
 };
 

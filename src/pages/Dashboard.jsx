@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Dashboard/Header";
 import Events from "../components/Dashboard/Events";
 import { useOutletContext, useNavigate } from "react-router-dom";
-import AfroLoader from "../components/AfroLoader"; // ✅ import loader
+import AfroLoader from "../components/AfroLoader";
 
 const Dashboard = () => {
   const { isSidebarOpen, setIsSidebarOpen } = useOutletContext();
@@ -11,28 +11,54 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://afrophuket-backend.onrender.com/events/")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setEventData(data);
-        } else {
-          console.error("Expected array, got:", data);
-        }
-      })
-      .catch((err) => console.error("Fetch error:", err))
-      .finally(() => setLoading(false));
+    fetchEvents();
   }, []);
 
-  // ✅ Show Loader while fetching
-  if (loading) {
-    return <AfroLoader />;
-  }
+  const fetchEvents = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(
+        "https://afrophuket-backend.onrender.com/events/"
+      );
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setEventData(data);
+      } else {
+        console.error("Expected array, got:", data);
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle delete
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(
+        `https://afrophuket-backend.onrender.com/events/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!res.ok) throw new Error("Failed to delete event");
+
+      setEventData((prev) => prev.filter((event) => event._id !== id));
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("Failed to delete event. Try again.");
+    }
+  };
+
+  if (loading) return <AfroLoader />;
 
   return (
     <div>
@@ -49,7 +75,7 @@ const Dashboard = () => {
       {/* Events Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-3">
         {eventData.map((item, index) => (
-          <Events key={index} event={item} />
+          <Events key={index} event={item} handleDelete={handleDelete} />
         ))}
       </div>
 

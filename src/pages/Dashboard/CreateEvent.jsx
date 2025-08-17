@@ -166,70 +166,81 @@ const CreateEvent = () => {
             className="text-2xl sm:text-3xl font-bold focus:outline-none w-full bg-transparent"
           />
 
-         {/* Date & Time */}
-<div className="mt-6">
-  <h2 className="text-lg font-semibold mb-3">Date & Time</h2>
+          {/* Date & Time */}
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold mb-3">Date & Time</h2>
 
-  <div className="bg-black text-white p-6 rounded-xl w-full">
-    <div className="flex flex-col gap-6">
-      {/* Timeline UI */}
-      <div className="flex items-start gap-4">
-        {/* Timeline dots */}
-        <div className="flex flex-col items-center">
-          <span className="w-3 h-3 rounded-full bg-gray-400"></span>
-          <span className="w-px h-22 md:h-12 border-l border-dashed border-gray-400"></span>
-          <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
-        </div>
+            <div className="bg-black text-white p-6 rounded-xl w-full">
+              <div className="flex flex-col gap-6">
+                {/* Timeline UI */}
+                <div className="flex items-start gap-4">
+                  {/* Timeline dots */}
+                  <div className="flex flex-col items-center">
+                    <span className="w-3 h-3 rounded-full bg-gray-400"></span>
+                    <span className="w-px h-22 md:h-12 border-l border-dashed border-gray-400"></span>
+                    <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
+                  </div>
 
-        {/* Inputs */}
-        <div className="flex flex-col gap-6 w-full">
-          {/* Start */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-            <span className="text-sm text-gray-300 w-14 shrink-0">Start</span>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
-              <input
-                type="date"
-                placeholder="Select start date"
-                value={eventData.date}
-                onChange={(e) => handleInputChange("date", e.target.value)}
-                className="bg-transparent text-white border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
-              />
-              <input
-                type="time"
-                placeholder="Start time"
-                value={eventData.start_time}
-                onChange={(e) => handleInputChange("start_time", e.target.value)}
-                className="bg-transparent text-white border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
-              />
+                  {/* Inputs */}
+                  <div className="flex flex-col gap-6 w-full">
+                    {/* Start */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+                      <span className="text-sm text-gray-300 w-14 shrink-0">
+                        Start
+                      </span>
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
+                        <input
+                          type="date"
+                          placeholder="Select start date"
+                          value={eventData.date}
+                          onChange={(e) =>
+                            handleInputChange("date", e.target.value)
+                          }
+                          className="bg-transparent text-white border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+                        />
+                        <input
+                          type="time"
+                          placeholder="Start time"
+                          value={eventData.start_time}
+                          onChange={(e) =>
+                            handleInputChange("start_time", e.target.value)
+                          }
+                          className="bg-transparent text-white border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+                        />
+                      </div>
+                    </div>
+
+                    {/* End */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+                      <span className="text-sm text-gray-300 w-14 shrink-0">
+                        End
+                      </span>
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
+                        <input
+                          type="date"
+                          placeholder="Select end date"
+                          value={eventData.date}
+                          onChange={(e) =>
+                            handleInputChange("date", e.target.value)
+                          }
+                          className="bg-transparent text-white border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+                        />
+                        <input
+                          type="time"
+                          placeholder="End time"
+                          value={eventData.end_time}
+                          onChange={(e) =>
+                            handleInputChange("end_time", e.target.value)
+                          }
+                          className="bg-transparent text-white border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* End */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-            <span className="text-sm text-gray-300 w-14 shrink-0">End</span>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
-              <input
-                type="date"
-                placeholder="Select end date"
-                value={eventData.date}
-                onChange={(e) => handleInputChange("date", e.target.value)}
-                className="bg-transparent text-white border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
-              />
-              <input
-                type="time"
-                placeholder="End time"
-                value={eventData.end_time}
-                onChange={(e) => handleInputChange("end_time", e.target.value)}
-                className="bg-transparent text-white border-b border-gray-600 focus:outline-none text-sm w-full sm:w-auto"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 
           {/* Description */}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">

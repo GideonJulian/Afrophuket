@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, User, LogOut } from "lucide-react";
+import { Calendar, User, LogOut, ShoppingCart } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const DashboadSidebar = ({ activePath }) => {
@@ -12,6 +12,10 @@ const DashboadSidebar = ({ activePath }) => {
     {
       name: "Account",
       icon: User,
+      path: "account",
+    }, {
+      name: "Shop",
+      icon: ShoppingCart,
       path: "account",
     },
   ];
