@@ -26,7 +26,7 @@ const Navbar = ({ openCart }) => {
         </div>
 
         {/* Desktop Links */}
-        <ul className="hidden md:flex items-center gap-6">
+        <ul className="hidden md:flex items-center justify-center ml-40 gap-6">
           <li>
             <Link
               to="/event"
