@@ -35,28 +35,25 @@ const Dashboard = () => {
   };
 
   // Handle delete
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this event?"
+const handleDelete = async (id) => {
+  try {
+    const res = await fetch(
+      `https://afrophuket-backend.onrender.com/events/${id}/`,
+      {
+        method: "DELETE",
+      }
     );
-    if (!confirmDelete) return;
 
-    try {
-      const res = await fetch(
-        `https://afrophuket-backend.onrender.com/events/${id}/`,
-        {
-          method: "DELETE",
-        }
-      );
+    if (!res.ok) throw new Error("Failed to delete event");
 
-      if (!res.ok) throw new Error("Failed to delete event");
+    // Refresh events after successful delete
+    await fetchEvents();
+  } catch (err) {
+    console.error("Delete error:", err);
+    alert("Failed to delete event. Try again.");
+  }
+};
 
-      setEventData((prev) => prev.filter((event) => event._id !== id));
-    } catch (err) {
-      console.error("Delete error:", err);
-      alert("Failed to delete event. Try again.");
-    }
-  };
 
   if (loading) return <AfroLoader />;
 
