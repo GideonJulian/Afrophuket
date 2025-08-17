@@ -86,7 +86,7 @@ const Events = ({ event, handleDelete }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={() => {
-          handleDelete(event._id);
+          handleDelete(event.id);
           setIsModalOpen(false);
         }}
       />

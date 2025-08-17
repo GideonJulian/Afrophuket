@@ -43,7 +43,7 @@ const Dashboard = () => {
 
     try {
       const res = await fetch(
-        `https://afrophuket-backend.onrender.com/events/${id}`,
+        `https://afrophuket-backend.onrender.com/events/${id}/`,
         {
           method: "DELETE",
         }

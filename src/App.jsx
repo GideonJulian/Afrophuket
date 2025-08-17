@@ -71,6 +71,9 @@ const route = createBrowserRouter([
       },{
         path: 'account',
         element: 'Accont'
+      },{
+        path: 'shop',
+        element: 'shop-products'
       },
       {
         path: 'event/:id',

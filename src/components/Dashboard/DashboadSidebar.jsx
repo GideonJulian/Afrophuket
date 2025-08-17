@@ -16,7 +16,7 @@ const DashboadSidebar = ({ activePath }) => {
     }, {
       name: "Shop",
       icon: ShoppingCart,
-      path: "account",
+      path: "shop",
     },
   ];
 
