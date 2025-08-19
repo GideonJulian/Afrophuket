@@ -22,7 +22,7 @@ const Shop = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token ? `Token ${token}` : "", // ✅ attach token
+        Authorization: token ? `Token ${token}` : "", 
       },
     })
       .then((res) => res.json())
