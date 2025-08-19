@@ -91,7 +91,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
         {
           method: "PATCH",
           headers: {
-            "Authorization": `Token ${token}`, // ✅ send token
+            "Authorization": `Token ${token}`, 
           },
           body: formData,
         }
