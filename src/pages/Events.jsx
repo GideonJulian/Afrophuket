@@ -8,13 +8,13 @@ const Events = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // ✅ get token from localStorage
+    const token = localStorage.getItem("token"); 
 
     fetch("https://afrophuket-backend.onrender.com/events/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token ? `Token ${token}` : "", // ✅ attach token if available
+        Authorization: token ? `Token ${token}` : "",
       },
     })
       .then((res) => {
