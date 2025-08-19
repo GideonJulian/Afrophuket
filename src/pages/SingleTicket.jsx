@@ -15,13 +15,13 @@ const SingleTicket = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-  const token = localStorage.getItem("token"); // 🔑 Get token from localStorage
+  const token = localStorage.getItem("token"); 
 
   fetch(`https://afrophuket-backend.onrender.com/events/${id}/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token ? `Token ${token}` : "", // ✅ Add token if available
+      Authorization: token ? `Token ${token}` : "", 
     },
   })
     .then((res) => {
