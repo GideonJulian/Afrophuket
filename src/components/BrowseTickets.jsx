@@ -20,13 +20,13 @@ const BrowseTickets = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const token = localStorage.getItem("token"); // ✅ get saved token
+  const token = localStorage.getItem("token"); 
 
   fetch("https://afrophuket-backend.onrender.com/events/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token ? `Token ${token}` : "", // ✅ attach token
+      Authorization: token ? `Token ${token}` : "",
     },
   })
     .then((res) => res.json())
