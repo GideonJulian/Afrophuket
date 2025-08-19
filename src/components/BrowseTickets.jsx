@@ -20,19 +20,27 @@ const BrowseTickets = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://afrophuket-backend.onrender.com/events/")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setEventData(data);
-        } else {
-          console.error("Expected array, got:", data);
-        }
-      })
-      .catch((err) => console.error("Fetch error:", err))
-      .finally(() => setLoading(false));
-      console.log(eventData)
-  }, []);
+  const token = localStorage.getItem("token"); // ✅ get saved token
+
+  fetch("https://afrophuket-backend.onrender.com/events/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Token ${token}` : "", // ✅ attach token
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (Array.isArray(data)) {
+        setEventData(data);
+      } else {
+        console.error("Expected array, got:", data);
+      }
+    })
+    .catch((err) => console.error("Fetch error:", err))
+    .finally(() => setLoading(false));
+}, []);
+
 
   const filteredEvents = eventData.filter((event) => {
     const matchesLocation =

@@ -5,94 +5,69 @@ import Shop from "./pages/Shop";
 import About from "./pages/About";
 import SingleTicket from "./pages/SingleTicket";
 import Events from "./pages/Events";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { addToCart } from "./Slice/cartSlice";
-import CheckLayout from "./layouts/CheckLayout";
-import CheckoutTickets from "./pages/CheckoutTickets";
 import ContactUs from "./pages/ContactUs";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import SingleEvent from "./pages/Dashboard/SingleEvent";
 import CreateEvent from "./pages/Dashboard/CreateEvent";
+import CreateTicket from "./pages/Dashboard/CreateTicket";
+import AuthPage from "./pages/Register";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
+import { CreateEventProvider } from "./Context/CreateEventContext";
 
 const route = createBrowserRouter([
   {
     path: "/",
     element: <Layouts />,
     children: [
+      { index: true, element: <Home /> },
+      { path: "shop", element: <Shop /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <ContactUs /> },
+      { path: "ticket/:id", element: <SingleTicket /> },
+      { path: "event", element: <Events /> },
+    ],
+  },
+  {
+    path: "auth",
+    element: <AuthPage />,
+  },
+  {
+    path: "dashboard",
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <Dashboard /> },
+      { path: "account", element: "Account" },
+      { path: "shop", element: "shop-products" },
+      { path: "create-ticket", element: "Create-ticket" },
+      { path: "event/:id", element: <SingleEvent /> },
       {
-        index: true,
-        element: <Home />,
+        path: "create-event",
+        element: (
+          <CreateEventProvider>
+            <CreateEvent />
+          </CreateEventProvider>
+        ),
       },
       {
-        path: "shop",
-        element: <Shop />,
-      },
-      {
-        path: "about",
-        element: <About />,
-      },
-      {
-        path: "contact",
-        element: <ContactUs />,
-      },
-      {
-        path: "ticket/:id",
-        element: <SingleTicket />,
-      },
-      {
-        path: "event",
-        element: <Events />,
+        path: "create-event/create-ticket",
+        element: (
+          <CreateEventProvider>
+            <CreateTicket />
+          </CreateEventProvider>
+        ),
       },
     ],
   },
-  // {
-  //   path: "checkout",
-  //   element: <CheckLayout />,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <CheckoutTickets />,
-  //     },{
-  //       path: 'payment', 
-  //     element: <Payment />
-  //     }
-  //   ],
-  // },
-  {
-    path: 'dashboard',
-    element: <DashboardLayout />,
-    children: [
-      {
-        index: true,
-        element: <Dashboard />
-      },{
-        path: 'account',
-        element: 'Accont'
-      },{
-        path: 'shop',
-        element: 'shop-products'
-      },
-      {
-        path: 'event/:id',
-        element: <SingleEvent />
-      }, {
-        path: 'create-event',
-        element: <CreateEvent />
-      }
-    ]
-  }
 ]);
 
 function App() {
-
-  return (
-    <>
-      <RouterProvider router={route} />
-    </>
-  );
+  return <RouterProvider router={route} />;
 }
 
 export default App;

@@ -2,29 +2,18 @@ import { ChevronLeft, ImagePlus, Menu, BookText, MapPin } from "lucide-react";
 import React, { useState } from "react";
 import hostimg from "../../assets/images/hostimg.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useCreateEvent } from "../../Context/CreateEventContext"; // ✅ context
 
 const CreateEvent = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [saving, setSaving] = useState(false);
 
-  // ✅ Event state aligned with backend schema
-  const [eventData, setEventData] = useState({
-    title: "",
-    description: "",
-    location: "",
-    location_notes: "",
-    after_party: false,
-    after_party_location: "",
-    date: "",
-    start_time: "",
-    end_time: "",
-    thumbnail: null, // file upload
-    tags: [],
-    tickets: [],
-  });
+  // ✅ shared state from context
+  const { eventData, setEventData } = useCreateEvent();
 
-  const [bannerPreview, setBannerPreview] = useState(null);
+  const [bannerPreview, setBannerPreview] = useState(
+    eventData.thumbnail ? URL.createObjectURL(eventData.thumbnail) : null
+  );
 
   const handleInputChange = (field, value) => {
     setEventData((prev) => ({
@@ -37,58 +26,15 @@ const CreateEvent = () => {
     const file = e.target.files[0];
     if (file) {
       setBannerPreview(URL.createObjectURL(file));
-      setEventData((prev) => ({ ...prev, thumbnail: file }));
-    }
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("title", eventData.title);
-      formData.append("description", eventData.description);
-      formData.append("location", eventData.location);
-      formData.append("location_notes", eventData.location_notes);
-      formData.append("after_party", eventData.after_party);
-      formData.append("after_party_location", eventData.after_party_location);
-      formData.append("date", eventData.date);
-      formData.append("start_time", eventData.start_time);
-      formData.append("end_time", eventData.end_time);
-
-      if (eventData.thumbnail) {
-        formData.append("thumbnail", eventData.thumbnail);
-      }
-
-      // Optional: send tags & tickets (array → JSON string for backend parsing)
-      formData.append("tags", JSON.stringify(eventData.tags));
-      formData.append("tickets", JSON.stringify(eventData.tickets));
-
-      const response = await fetch(
-        "https://afrophuket-backend.onrender.com/events/",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (!response.ok) throw new Error("Failed to save event");
-
-      const data = await response.json();
-      console.log("✅ Event saved:", data);
-
-      alert("Event created successfully!");
-      navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
-      alert("❌ Failed to save event");
-    } finally {
-      setSaving(false);
+      setEventData((prev) => ({
+        ...prev,
+        thumbnail: file,
+      }));
     }
   };
 
   return (
-    <div className="p-4 sm:p-6">
+    <div className="p-4 sm:p-3">
       {/* Header */}
       <div className="w-full flex items-center justify-between mt-3">
         <button
@@ -98,6 +44,8 @@ const CreateEvent = () => {
           <ChevronLeft className="text-gray-600" />
           <h1 className="ml-1 text-sm sm:text-base">Back</h1>
         </button>
+
+        {/* Mobile toggle */}
         <div className="md:hidden block">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -108,8 +56,9 @@ const CreateEvent = () => {
         </div>
       </div>
 
+      {/* Main Layout */}
       <div className="mt-10 flex flex-col lg:flex-row items-start gap-10">
-        {/* Left: Banner */}
+        {/* Left: Banner + Host */}
         <div className="w-full lg:w-[442px]">
           <h1 className="font-bold text-xl sm:text-2xl">Event image</h1>
           <p className="text-sm font-extralight">Upload a JPEG or PNG file</p>
@@ -143,6 +92,7 @@ const CreateEvent = () => {
             </div>
           </div>
 
+          {/* Hosted By */}
           <div className="mt-5">
             <h1 className="border-b pb-4 font-medium">Hosted By</h1>
             <div className="flex items-center gap-3 py-4">
@@ -300,8 +250,6 @@ const CreateEvent = () => {
               </div>
             )}
           </div>
-
-          {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full">
             <button
               onClick={() => navigate("/dashboard")}
@@ -312,11 +260,10 @@ const CreateEvent = () => {
             <div className="relative w-full sm:w-auto">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
               <button
-                onClick={handleSave}
-                disabled={saving}
+                onClick={() => navigate("create-ticket")}
                 className="relative w-full text-sm md:text-base font-semibold uppercase px-4 sm:px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-[1.03] transition-all duration-300 disabled:opacity-50"
               >
-                {saving ? "Saving..." : "Save Event"}
+                CREATE TICKETS
               </button>
             </div>
           </div>

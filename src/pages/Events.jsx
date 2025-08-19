@@ -2,13 +2,25 @@ import React, { useEffect, useState } from "react";
 import TicketCard from "../components/ui/TicketCard";
 import FeaturedEvents from "../components/FeaturedEvents";
 import AfroLoader from "../components/AfroLoader";
+
 const Events = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://afrophuket-backend.onrender.com/events/")
-      .then((res) => res.json())
+    const token = localStorage.getItem("token"); // ✅ get token from localStorage
+
+    fetch("https://afrophuket-backend.onrender.com/events/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "", // ✅ attach token if available
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch events");
+        return res.json();
+      })
       .then((data) => {
         if (Array.isArray(data)) {
           setEventData(data);
@@ -49,7 +61,7 @@ const Events = () => {
         <div className="mt-10">
           {loading ? (
             <div className="text-white text-center py-16 animate-pulse">
-             <AfroLoader />
+              <AfroLoader />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

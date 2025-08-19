@@ -17,11 +17,20 @@ const Dashboard = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem("token"); // ✅ Get token
       const res = await fetch(
-        "https://afrophuket-backend.onrender.com/events/"
+        "https://afrophuket-backend.onrender.com/events/",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`, // ✅ Attach token
+          },
+        }
       );
+
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const data = await res.json();
+
       if (Array.isArray(data)) {
         setEventData(data);
       } else {
@@ -35,25 +44,29 @@ const Dashboard = () => {
   };
 
   // Handle delete
-const handleDelete = async (id) => {
-  try {
-    const res = await fetch(
-      `https://afrophuket-backend.onrender.com/events/${id}/`,
-      {
-        method: "DELETE",
-      }
-    );
+  const handleDelete = async (id) => {
+    try {
+      const token = localStorage.getItem("token"); // ✅ Get token
+      const res = await fetch(
+        `https://afrophuket-backend.onrender.com/events/${id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`, // ✅ Attach token
+          },
+        }
+      );
 
-    if (!res.ok) throw new Error("Failed to delete event");
+      if (!res.ok) throw new Error("Failed to delete event");
 
-    // Refresh events after successful delete
-    await fetchEvents();
-  } catch (err) {
-    console.error("Delete error:", err);
-    alert("Failed to delete event. Try again.");
-  }
-};
-
+      // Refresh events after successful delete
+      await fetchEvents();
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("Failed to delete event. Try again.");
+    }
+  };
 
   if (loading) return <AfroLoader />;
 

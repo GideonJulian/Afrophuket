@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
-
 import ProductCard from "../components/ui/ProductCard";
 import { motion } from "framer-motion";
 
@@ -15,8 +14,17 @@ const fadeUp = {
 
 const Shop = () => {
   const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    fetch("https://afrophuket-backend.onrender.com/products/")
+    const token = localStorage.getItem("token"); 
+    fetch("https://afrophuket-backend.onrender.com/products/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "", // ✅ attach token
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -27,7 +35,6 @@ const Shop = () => {
       })
       .catch((err) => console.error("Fetch error:", err))
       .finally(() => setLoading(false));
-    console.log(allProducts);
   }, []);
 
   const [sortBy, setSortBy] = useState("default");
@@ -86,9 +93,7 @@ const Shop = () => {
               onChange={(e) => setSortBy(e.target.value)}
               className="rounded-full px-4 py-2 bg-black text-white border cursor-pointer"
             >
-              <option value="default">
-                Sort by: <span className="text-[#E55934]">T-shirt</span>
-              </option>
+              <option value="default">Sort by: Default</option>
               <option value="lowToHigh">Price: Low to High</option>
               <option value="highToLow">Price: High to Low</option>
             </select>
@@ -99,48 +104,53 @@ const Shop = () => {
               onChange={(e) => setFilterBy(e.target.value)}
               className="rounded-full px-3 py-2 bg-black text-white border cursor-pointer"
             >
-              <option value="All">
-                Filter by: <span className="text-[#E55934]">All</span>
-              </option>
+              <option value="All">Filter by: All</option>
               <option value="T-shirt">T-shirt</option>
               <option value="Hoodie">Hoodie</option>
             </select>
           </div>
 
+          {/* Loading State */}
+          {loading && <p className="mt-5 text-gray-500">Loading products...</p>}
+
           {/* Desktop view - only 3 items */}
-          <motion.div
-            className="hidden sm:flex gap-4 justify-center mt-10"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-          >
-            {displayedProducts.map((item, index) => (
-              <ProductCard
-                key={index}
-                id={item.id}
-                imgSrc={item.image}
-                name={item.title}
-                price={item.price}
-              />
-            ))}
-          </motion.div>
+          {!loading && (
+            <motion.div
+              className="hidden sm:flex gap-4 justify-center mt-10"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+            >
+              {displayedProducts.map((item, index) => (
+                <ProductCard
+                  key={index}
+                  id={item.id}
+                  imgSrc={item.image}
+                  name={item.title}
+                  price={item.price}
+                />
+              ))}
+            </motion.div>
+          )}
 
           {/* Mobile carousel */}
-          <div className="block md:hidden mt-10">
-            <Slider {...mobileSettings}>
-              {displayedProducts.map((item, index) => (
-                <div key={index} className="px-2">
-                  <ProductCard
-                    imgSrc={item.image_url}
-                    id={item.id}
-                    name={item.title}
-                    price={item.price}
-                  />
-                </div>
-              ))}
-            </Slider>
-          </div>
+          {!loading && (
+            <div className="block md:hidden mt-10">
+              <Slider {...mobileSettings}>
+                {displayedProducts.map((item, index) => (
+                  <div key={index} className="px-2">
+                    <ProductCard
+                      imgSrc={item.image_url}
+                      id={item.id}
+                      name={item.title}
+                      price={item.price}
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -15,20 +15,28 @@ const SingleTicket = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`https://afrophuket-backend.onrender.com/events/${id}/`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Event not found");
-        }
-        return res.json();
-      })
-      .then((data) => setEvent(data))
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setError(err.message);
-      })
-      .finally(() => setLoading(false));
-  }, [id]);
+  const token = localStorage.getItem("token"); // 🔑 Get token from localStorage
+
+  fetch(`https://afrophuket-backend.onrender.com/events/${id}/`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Token ${token}` : "", // ✅ Add token if available
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Event not found");
+      }
+      return res.json();
+    })
+    .then((data) => setEvent(data))
+    .catch((err) => {
+      console.error("Fetch error:", err);
+      setError(err.message);
+    })
+    .finally(() => setLoading(false));
+}, [id]);
 
   if (loading)
     return <AfroLoader />

@@ -11,7 +11,15 @@ const FeaturedEvents = () => {
   const eventsPerPage = 3;
 
   useEffect(() => {
-    fetch("https://afrophuket-backend.onrender.com/events/")
+    const token = localStorage.getItem("token"); // ✅ get saved token
+
+    fetch("https://afrophuket-backend.onrender.com/events/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "", // ✅ add token if available
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -70,7 +78,7 @@ const FeaturedEvents = () => {
         {/* Loader or Events */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
-          <AfroLoader />
+            <AfroLoader />
           </div>
         ) : (
           <>
