@@ -6,7 +6,7 @@ import ProductCard from "../../components/Dashboard/ProductCard";
 const Products = () => {
   const { isSidebarOpen, setIsSidebarOpen } = useOutletContext();
   const [productData, setProduct] = useState([]);
-  const [loading, setLoading] = useState(true); // ✅ Added loading state
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const Products = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token"); // ✅ Get token
+      const token = localStorage.getItem("token");
       const res = await fetch(
         "https://afrophuket-backend.onrender.com/products/",
         {
@@ -43,10 +43,10 @@ const Products = () => {
   };
 
   return (
-    <div>
+    <div className="px-4 sm:px-6 md:px-8">
       {/* Header */}
-      <div className="sticky top-0 bg-opacity-80 backdrop-blur-md z-10 border-b-[0.3px] border-gray-600 flex items-center">
-        <div className="flex justify-between w-full items-center relative top-0 p-0">
+      <div className="sticky top-0 bg-opacity-80 backdrop-blur-md z-10 border-b border-gray-600 flex items-center">
+        <div className="flex justify-between w-full items-center p-2 sm:p-3">
           <Header
             buttonText={"ADD NEW PRODUCT"}
             route={"create-product"}
@@ -60,7 +60,7 @@ const Products = () => {
       {loading ? (
         <p className="text-center text-gray-400 mt-5">Loading products...</p>
       ) : productData.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6  mt-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 mt-5">
           {productData.map((item, index) => (
             <ProductCard
               key={index}
@@ -68,19 +68,21 @@ const Products = () => {
               imgSrc={item.image_url || item.image}
               name={item.title}
               price={item.price}
-              quantity={item.length}
+              quantity={item.quantity || 0} // ✅ fixed quantity
             />
           ))}
         </div>
       ) : (
         <p className="text-center text-gray-400 mt-5">No products available.</p>
       )}
-      <div className="mt-4 flex items-center justify-center md:hidden p-7">
+
+      {/* Mobile Add Button */}
+      <div className="mt-6 flex items-center justify-center md:hidden">
         <div className="relative w-full sm:w-auto">
           <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
           <button
             onClick={() => navigate("create-product")}
-            className="relative w-full sm:w-auto text-xs sm:text-sm md:text-base font-semibold uppercase cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-[1.03] transition-all duration-300"
+            className="relative w-full sm:w-auto text-sm sm:text-base font-semibold uppercase cursor-pointer px-4 sm:px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
           >
             CREATE NEW PRODUCT
           </button>
