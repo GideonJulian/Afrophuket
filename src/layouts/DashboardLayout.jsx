@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import DashboadSidebar from "../components/Dashboard/DashboadSidebar";
 import Header from "../components/Dashboard/Header";
-import { Calendar, Menu, User, X, LogOut } from "lucide-react";
+import { Calendar, Menu, User, X, LogOut, ShoppingCart } from "lucide-react";
 import { NavLink, Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 const DashboardLayout = () => {
@@ -22,7 +22,7 @@ const DashboardLayout = () => {
 
       <div
         className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-[#111111] rounded-4xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
-          isSidebarOpen ? "h-[300px] opacity-100 -mt-14" : "h-0 opacity-0"
+          isSidebarOpen ? "h-[350px] opacity-100 -mt-14" : "h-0 opacity-0"
         }`}
       >
         <ul className="flex flex-col gap-2 text-lg pt-4 pb-7 pl-5">
@@ -59,8 +59,23 @@ const DashboardLayout = () => {
             >
               ACCOUNTS
             </NavLink>
+          </div>  <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
+            <ShoppingCart size={33} />
+            <NavLink
+              to="shop"
+              end
+              className={({ isActive }) =>
+                `font-[800] text-2xl ${
+                  isActive
+                    ? "  text-[#E55934]"
+                    : " text-gray-600"
+                }`
+              }
+            >
+              SHOP
+            </NavLink>
           </div>
-          <button className="flex items-center gap-3 text-[#E55934] text-[25px] font-[800] cursor-pointer hover:text-[#E55934] transition-colors duration-200 mt-14 pt-4 pb-7 pl-5">
+          <button className="flex items-center gap-3 text-[#E55934] text-[25px] font-[800] cursor-pointer hover:text-[#E55934] transition-colors duration-200 mt-8 pt-4 pb-7 pl-5">
             <LogOut size={33} color="#E55934" />
             Logout
           </button>

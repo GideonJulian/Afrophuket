@@ -217,7 +217,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
         {" "}
         {/* Left */}{" "}
         <div className="w-full lg:w-[442px]">
-          {" "}
+     
           <h1 className="font-bold text-xl sm:text-2xl">Event image</h1>{" "}
           <p className="text-sm font-extralight">Upload a JPEG or PNG file</p>{" "}
           <div className="mt-6 relative">
@@ -248,7 +248,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
               {" "}
               <Upload className="text-[#E55934] w-5 h-5" />{" "}
             </label>{" "}
-          </div>{" "}
+          </div>
           <div className="mt-5">
             {" "}
             <h1 className="border-b pb-4">Hosted By</h1>{" "}
