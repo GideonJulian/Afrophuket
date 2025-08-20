@@ -273,11 +273,12 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
               className="bg-transparent border-b border-gray-600 focus:outline-none font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-7 w-full"
               value={editableEvent.title}
               onChange={(e) => handleInputChange("title", e.target.value)}
+              placeholder="Enter New Event Name"
             />
           ) : (
             <h1 className="font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-7">
               {" "}
-              {editableEvent.title}{" "}
+              {editableEvent.title}
             </h1>
           )}{" "}
           {/* Timeline + Timezone */}{" "}

@@ -15,6 +15,9 @@ import AuthPage from "./pages/Register";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
 import { CreateEventProvider } from "./Context/CreateEventContext";
+import Products from "./pages/Dashboard/Products";
+import CreateProduct from "./pages/Dashboard/CreateProduct";
+import SingleProduct from "./pages/Dashboard/SingleProduct";
 
 const route = createBrowserRouter([
   {
@@ -43,7 +46,22 @@ const route = createBrowserRouter([
     children: [
       { index: true, element: <Dashboard /> },
       { path: "account", element: "Account" },
-      { path: "shop", element: "shop-products" },
+      {
+        path: "shop",
+        children: [
+          {
+            index: true,
+            element: <Products />,
+          },
+          {
+            path: "create-product",
+            element: <CreateProduct />,
+          },{
+            path: 'product/:id',
+            element: <SingleProduct />
+          }
+        ],
+      },
       { path: "create-ticket", element: "Create-ticket" },
       { path: "event/:id", element: <SingleEvent /> },
       {

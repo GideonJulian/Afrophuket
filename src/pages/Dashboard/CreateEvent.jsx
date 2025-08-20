@@ -1,19 +1,21 @@
-import { ChevronLeft, ImagePlus, Menu, BookText, MapPin } from "lucide-react";
-import React, { useState } from "react";
-import hostimg from "../../assets/images/hostimg.png";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCreateEvent } from "../../Context/CreateEventContext"; // ✅ context
+import { ChevronLeft, Menu, ImagePlus, BookText, MapPin } from "lucide-react";
+import { useCreateEvent } from "../../Context/CreateEventContext";
+import hostimg from "../../assets/images/hostimg.png";
 
 const CreateEvent = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // ✅ shared state from context
   const { eventData, setEventData } = useCreateEvent();
-
   const [bannerPreview, setBannerPreview] = useState(
     eventData.thumbnail ? URL.createObjectURL(eventData.thumbnail) : null
   );
+
+  // modal state
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleInputChange = (field, value) => {
     setEventData((prev) => ({
@@ -33,6 +35,37 @@ const CreateEvent = () => {
     }
   };
 
+  const validateAndProceed = () => {
+    const {
+      title,
+      description,
+      location,
+      date,
+      start_time,
+      end_time,
+      thumbnail,
+      after_party,
+      after_party_location,
+    } = eventData;
+
+    if (!title) return openModal("Event title is required.");
+    if (!description) return openModal("Event description is required.");
+    if (!location) return openModal("Event location is required.");
+    if (!date) return openModal("Event date is required.");
+    if (!start_time) return openModal("Start time is required.");
+    if (!end_time) return openModal("End time is required.");
+    if (!thumbnail) return openModal("Please upload an event banner.");
+    if (after_party && !after_party_location)
+      return openModal("After party location is required.");
+
+    // ✅ Passed all checks
+    navigate("create-ticket");
+  };
+
+  const openModal = (message) => {
+    setModalMessage(message);
+    setShowModal(true);
+  };
   return (
     <div className="p-4 sm:p-3">
       {/* Header */}
@@ -260,8 +293,8 @@ const CreateEvent = () => {
             <div className="relative w-full sm:w-auto">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
               <button
-                onClick={() => navigate("create-ticket")}
-                className="relative w-full text-sm md:text-base font-semibold uppercase px-4 sm:px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-[1.03] transition-all duration-300 disabled:opacity-50"
+                onClick={validateAndProceed}
+                className="relative w-full text-sm md:text-base font-semibold uppercase px-4 sm:px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-[1.03] transition-all duration-300"
               >
                 CREATE TICKETS
               </button>
@@ -269,6 +302,22 @@ const CreateEvent = () => {
           </div>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50  bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-lg">
+            <h2 className="text-lg font-semibold mb-3 text-red-600">
+              Missing Information
+            </h2>
+            <p className="text-gray-700 mb-4">{modalMessage}</p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="px-4 py-2 bg-black text-white rounded-lg w-full"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
