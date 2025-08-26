@@ -17,7 +17,7 @@ const Dashboard = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token"); // ✅ Get token
+      const token = import.meta.env.VITE_API_TOKEN;
       const res = await fetch(
         "https://afrophuket-backend.onrender.com/events/",
         {
@@ -76,8 +76,8 @@ const Dashboard = () => {
       <div className="sticky top-0 bg-opacity-80 backdrop-blur-md z-10 border-b-[0.3px] border-gray-600 flex items-center">
         <div className="flex justify-between w-full items-center relative top-0 p-0">
           <Header
-          buttonText={'  CREATE NEW EVENT'}
-          route={"create-event"}
+            buttonText={"  CREATE NEW EVENT"}
+            route={"create-event"}
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
           />

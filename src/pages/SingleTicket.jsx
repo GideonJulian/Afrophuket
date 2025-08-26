@@ -15,13 +15,13 @@ const SingleTicket = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = import.meta.env.VITE_API_TOKEN;
 
     fetch(`https://afrophuket-backend.onrender.com/events/${id}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token 8b97f16612ac1e9ff989423d6a41904ed804df50`,
+        Authorization: `Token ${token}`,
       },
     })
       .then((res) => {
@@ -152,7 +152,10 @@ const SingleTicket = () => {
 
                   <div>
                     <h1 className="flex items-center gap-2 text-white text-base hover:text-[#E55934] transition-colors duration-300">
-                     <span className="text-lg"> {event.after_party_location}{" "}</span>
+                      <span className="text-lg">
+                        {" "}
+                        {event.after_party_location}{" "}
+                      </span>
                       <ArrowUpRight className="w-4 h-4 " />
                     </h1>
                     {/* <p className="text-sm">{event.location}</p> */}
@@ -165,7 +168,7 @@ const SingleTicket = () => {
             <div className="mt-10">
               <h1 className="text-lg font-semibold mb-4">Event Location</h1>
               <p className="font-semibold mb-2">{event.location}</p>
-           
+
               <p className="text-sm">{event.location_notes}</p>
 
               <div className="mt-4">

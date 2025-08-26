@@ -11,13 +11,13 @@ const FeaturedEvents = () => {
   const eventsPerPage = 3;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = import.meta.env.VITE_API_TOKEN;
 
     fetch("https://afrophuket-backend.onrender.com/events/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-   Authorization: `Token 8b97f16612ac1e9ff989423d6a41904ed804df50`,
+        Authorization: `Token ${token}`,
       },
     })
       .then((res) => res.json())

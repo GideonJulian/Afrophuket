@@ -6,6 +6,7 @@ import AfroLoader from "../components/AfroLoader";
 const Events = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
+const token = import.meta.env.VITE_API_TOKEN;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -14,7 +15,7 @@ const Events = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token 8b97f16612ac1e9ff989423d6a41904ed804df50`,
+        Authorization: `Token ${token}`,
       },
     })
       .then((res) => {

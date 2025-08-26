@@ -88,6 +88,9 @@ const route = createBrowserRouter([
       },
     ],
   },
+  {
+    path: 'payment',
+  }
 ]);
 
 function App() {
