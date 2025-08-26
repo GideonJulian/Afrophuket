@@ -1,6 +1,7 @@
 import { ChevronLeft, Menu, Upload } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import PopupNotification from "../../components/PopupNotification";
 
 const SingleProduct = () => {
   const navigate = useNavigate();
@@ -11,7 +12,11 @@ const SingleProduct = () => {
   const [editableProduct, setEditableProduct] = useState({});
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
-
+  const [popup, setPopup] = useState({
+    show: false,
+    type: "success",
+    message: "",
+  });
   // ✅ Fetch product details
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -65,11 +70,12 @@ const SingleProduct = () => {
         },
         body: formData,
       });
-
+       setPopup({ show: true, type: "success", message: "Product Edited ✅" });
       setProduct(editableProduct);
       setEditing(false);
     } catch (error) {
       console.error("Error saving product:", error);
+       setPopup({ show: true, type: "success", message: "Failed To edit Product  ✅" });
     } finally {
       setSaving(false);
     }
@@ -100,25 +106,7 @@ const SingleProduct = () => {
         <h1 className="font-bold text-lg">Product</h1>
 
         {/* Tabs */}
-        <div className="tabs mt-14 flex items-center gap-8">
-          <h1
-            onClick={() => setActiveTab("details")}
-            className={`cursor-pointer ${
-              activeTab === "details" ? "text-[#E55934]" : ""
-            }`}
-          >
-            Product details
-          </h1>
-          <h1
-            onClick={() => setActiveTab("sales")}
-            className={`cursor-pointer ${
-              activeTab === "sales" ? "text-[#E55934]" : ""
-            }`}
-          >
-            Sales
-          </h1>
-        </div>
-
+      
         {/* Tab content */}
         {activeTab === "details" ? (
           <div className="mt-10 flex flex-col lg:flex-row items-start gap-10">
@@ -240,6 +228,14 @@ const SingleProduct = () => {
             </button>
           </div>
         </div>
+      </div>
+      <div>
+        <PopupNotification
+          type={popup.type}
+          message={popup.message}
+          show={popup.show}
+          onClose={() => setPopup({ ...popup, show: false })}
+        />
       </div>
     </div>
   );

@@ -18,6 +18,9 @@ import { CreateEventProvider } from "./Context/CreateEventContext";
 import Products from "./pages/Dashboard/Products";
 import CreateProduct from "./pages/Dashboard/CreateProduct";
 import SingleProduct from "./pages/Dashboard/SingleProduct";
+import TicketsList from "./pages/Dashboard/TicketsList";
+
+import SalesDetails from "./components/Dashboard/SalesDetails";
 
 const route = createBrowserRouter([
   {
@@ -45,7 +48,9 @@ const route = createBrowserRouter([
     ),
     children: [
       { index: true, element: <Dashboard /> },
-      { path: "account", element: "Account" },
+      { path: "add-ticket", element: "" },
+      { path: "ticket-list", element: <TicketsList /> },
+      { path: "sales-details", element: <SalesDetails /> },
       {
         path: "shop",
         children: [
@@ -56,13 +61,14 @@ const route = createBrowserRouter([
           {
             path: "create-product",
             element: <CreateProduct />,
-          },{
-            path: 'product/:id',
-            element: <SingleProduct />
-          }
+          },
+          {
+            path: "product/:id",
+            element: <SingleProduct />,
+          },
         ],
       },
-      { path: "create-ticket", element: "Create-ticket" },
+
       { path: "event/:id", element: <SingleEvent /> },
       {
         path: "create-event",
@@ -73,7 +79,7 @@ const route = createBrowserRouter([
         ),
       },
       {
-        path: "create-event/create-ticket",
+        path: "event/:id/create-ticket",
         element: (
           <CreateEventProvider>
             <CreateTicket />

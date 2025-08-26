@@ -7,12 +7,15 @@ import {
   Globe,
   MapPin,
   Menu,
+  NotebookPen,
   Upload,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import AfroLoader from "../../components/AfroLoader";
 import hostimg from "../../assets/images/hostimg.png";
+import TicketsList from "./TicketsList";
+import SalesDetails from "../../components/Dashboard/SalesDetails";
 
 const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
   const { id } = useParams();
@@ -20,10 +23,10 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
-
+  const [activeTab, setActiveTab] = useState("tickets");
   const [editableEvent, setEditableEvent] = useState({});
   const [editing, setEditing] = useState(false);
-
+const { id: eventId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,6 +58,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
           endDate: data.end_date || "",
           startTime: data.start_time || "",
           endTime: data.end_time || "",
+          location_notes: data.location_notes || "",
           thumbnail: null,
         });
       } catch (err) {
@@ -76,6 +80,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
       formData.append("description", editableEvent.description);
       formData.append("location", editableEvent.location);
       formData.append("after_party", editableEvent.after_party);
+      formData.append("location_notes", editableEvent.location_notes);
       formData.append(
         "after_party_location",
         editableEvent.after_party_location
@@ -119,6 +124,39 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
 
   const handleInputChange = (field, value) => {
     setEditableEvent((prev) => ({ ...prev, [field]: value }));
+  };
+const handleNavigate = () => {
+  navigate(`/dashboard/event/${id}/create-ticket`);
+};
+
+
+  const handleDelete = async (ticketId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(
+        `https://afrophuket-backend.onrender.com/events/tickets/${ticketId}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to delete ticket");
+      }
+
+      // Update UI after delete
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        tickets: prevEvent.tickets.filter((ticket) => ticket.id !== ticketId),
+      }));
+    } catch (error) {
+      console.error("Error deleting ticket:", error);
+      alert("Failed to delete ticket ❌");
+    }
   };
 
   if (loading) return <AfroLoader />;
@@ -217,7 +255,6 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
         {" "}
         {/* Left */}{" "}
         <div className="w-full lg:w-[442px]">
-     
           <h1 className="font-bold text-xl sm:text-2xl">Event image</h1>{" "}
           <p className="text-sm font-extralight">Upload a JPEG or PNG file</p>{" "}
           <div className="mt-6 relative">
@@ -397,7 +434,24 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
                 onChange={(e) => handleInputChange("location", e.target.value)}
               />{" "}
             </div>{" "}
-          </div>{" "}
+          </div>
+          {/* location desc */}
+          <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
+            {" "}
+            <div className="flex items-center gap-3">
+              {" "}
+              <NotebookPen />
+              <input
+                type="text"
+                className="bg-transparent border-b border-gray-600 focus:outline-none flex-1"
+                placeholder="Describe this event location"
+                value={editableEvent.location_notes}
+                onChange={(e) =>
+                  handleInputChange("location_notes", e.target.value)
+                }
+              />{" "}
+            </div>{" "}
+          </div>
           {/* After Party */}{" "}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
             {" "}
@@ -457,6 +511,43 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
           </div>{" "}
         </div>{" "}
       </div>{" "}
+      <div className="tabs mt-14 flex items-center gap-8">
+        <h1
+          onClick={() => setActiveTab("tickets")}
+          className={`cursor-pointer ${
+            activeTab === "tickets" ? "text-[#E55934]" : ""
+          }`}
+        >
+          Tickets
+        </h1>
+        <h1
+          onClick={() => setActiveTab("sales")}
+          className={`cursor-pointer ${
+            activeTab === "sales" ? "text-[#E55934]" : ""
+          }`}
+        >
+          Sales
+        </h1>
+      </div>
+      {activeTab === "tickets" ? (
+        <div className="mt-10 space-y-12">
+          {event.tickets && event.tickets.length > 0 ? (
+            <TicketsList
+              tickets={event.tickets}
+              handleNavigate={handleNavigate}
+              handleDelete={handleDelete}
+            />
+          ) : (
+            <TicketsList
+              tickets={[]}
+              handleNavigate={handleNavigate}
+              handleDelete={handleDelete}
+            />
+          )}
+        </div>
+      ) : (
+        <SalesDetails />
+      )}
     </div>
   );
 };

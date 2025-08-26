@@ -7,10 +7,9 @@ import { useNavigate } from "react-router-dom";
 const TicketCard = ({ event }) => {
   const navigate = useNavigate();
 
-const handleClick = () => {
-  navigate(`/ticket/${event.id}`);
-};
-
+  const handleClick = () => {
+    navigate(`/ticket/${event.id}`);
+  };
 
   return (
     <motion.div
@@ -30,7 +29,11 @@ const handleClick = () => {
           {event.location}
         </h2>
         <h2 className="mt-6 text-[#FC6435] text-sm font-medium">
-          ${event.ticket_price}
+          {event.tickets.length > 0
+            ? `$${Math.min(
+                ...event.tickets.map((ticket) => parseFloat(ticket.price))
+              )}`
+            : "No tickets"}
         </h2>
       </div>
       <motion.div

@@ -9,11 +9,12 @@ const DashboadSidebar = ({ activePath }) => {
       icon: Calendar,
       path: "", // This should be your exact dashboard path
     },
+    // {
+    //   name: "Account",
+    //   icon: User,
+    //   path: "account",
+    // },
     {
-      name: "Account",
-      icon: User,
-      path: "account",
-    }, {
       name: "Shop",
       icon: ShoppingCart,
       path: "shop",

@@ -152,10 +152,10 @@ const SingleTicket = () => {
 
                   <div>
                     <h1 className="flex items-center gap-2 text-white text-base hover:text-[#E55934] transition-colors duration-300">
-                      {event.after_party_location}{" "}
+                     <span className="text-lg"> {event.after_party_location}{" "}</span>
                       <ArrowUpRight className="w-4 h-4 " />
                     </h1>
-                    <p className="text-sm">{event.location}</p>
+                    {/* <p className="text-sm">{event.location}</p> */}
                   </div>
                 </div>
               </div>
@@ -165,9 +165,7 @@ const SingleTicket = () => {
             <div className="mt-10">
               <h1 className="text-lg font-semibold mb-4">Event Location</h1>
               <p className="font-semibold mb-2">{event.location}</p>
-              <p className="mb-3">
-                4 Norman Williams St, Ikoyi, Lagos 101233, Lagos, Nigeria
-              </p>
+           
               <p className="text-sm">{event.location_notes}</p>
 
               <div className="mt-4">

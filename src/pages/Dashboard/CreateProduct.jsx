@@ -55,7 +55,7 @@ const navigate = useNavigate()
         throw new Error(`HTTP error! status: ${res.status}`);
       }
       if(res.ok) {
-        navigate('dashboard/shop')
+        navigate('/shop')
       }
 
       const data = await res.json();

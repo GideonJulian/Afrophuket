@@ -1,11 +1,25 @@
 import { ChevronLeft, Menu } from "lucide-react";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect,  } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useCreateEvent } from "../../Context/CreateEventContext";
+import PopupNotification from "../../components/PopupNotification";
 
 const CreateTicket = () => {
   const navigate = useNavigate();
+  const { id: eventId } = useParams(); // ✅ Always comes from URL
   const { eventData, setEventData } = useCreateEvent();
+const [searchParams] = useSearchParams();
+  // ✅ Resolve the correct eventId:
+  const stateEventId = location.state?.eventId;
+  const routeEventId = searchParams.get("event");
+  const resolvedEventId = stateEventId || routeEventId;
+
+  // Keep context in sync
+  useEffect(() => {
+    if (eventId) {
+      setEventData((prev) => ({ ...prev, id: eventId }));
+    }
+  }, [eventId, setEventData]);
 
   // ✅ Ticket form state
   const [form, setForm] = useState({
@@ -18,6 +32,11 @@ const CreateTicket = () => {
   });
 
   const [saving, setSaving] = useState(false);
+  const [popup, setPopup] = useState({
+    show: false,
+    type: "success",
+    message: "",
+  });
 
   // ✅ Handle input changes
   const handleChange = (e) => {
@@ -25,62 +44,75 @@ const CreateTicket = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Save tickets + event
   const handleSaveTickets = async () => {
     const token = localStorage.getItem("token");
 
-    // 🛑 Basic validation
     if (!form.name || !form.price) {
-      alert("Please fill at least Ticket Name and Price.");
+      setPopup({
+        show: true,
+        type: "error",
+        message: "Please fill at least Ticket Name and Price.",
+      });
       return;
     }
 
-    // ✅ Format ticket properly
-    const ticketData = {
-      ...form,
-      quantity: form.quantityType === "Unlimited" ? null : form.quantity,
-    };
-
+    if (!eventId) {
+      setPopup({
+        show: true,
+        type: "error",
+        message: "No event selected. Please add ticket from a specific event.",
+      });
+      return;
+    }
     setSaving(true);
     try {
-      // Merge tickets into eventData
-      const updatedEvent = {
-        ...eventData,
-        tickets: [...(eventData.tickets || []), ticketData],
+      // ✅ Always keep context in sync
+      setEventData((prev) => ({ ...prev, id: resolvedEventId }));
+
+      // ✅ Ticket payload
+      const ticketData = {
+        event: eventId,
+        name: form.name,
+        price: form.price,
+        quantity_available:
+          form.quantityType === "Unlimited" ? null : form.quantity,
+        max_per_customer: form.limit || null,
+        description: form.description || "",
+        is_refundable: true,
+        sales_start_date: new Date().toISOString(),
+        sales_end_date: eventData.date
+          ? `${eventData.date}T23:59:59Z`
+          : new Date().toISOString(),
       };
 
-      setEventData(updatedEvent);
-
-      const formData = new FormData();
-      Object.entries(updatedEvent).forEach(([key, value]) => {
-        if (key === "tickets" || key === "tags") {
-          formData.append(key, JSON.stringify(value));
-        } else if (key === "thumbnail" && value) {
-          formData.append("thumbnail", value);
-        } else {
-          formData.append(key, value);
-        }
-      });
-
-      const response = await fetch(
-        "https://afrophuket-backend.onrender.com/events/",
+      // ✅ POST to /tickets/:id/
+      const ticketResponse = await fetch(
+        `https://afrophuket-backend.onrender.com/events/tickets/`,
         {
           method: "POST",
-          body: formData,
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Token ${token}`,
           },
+          body: JSON.stringify(ticketData),
         }
       );
+      if (!ticketResponse.ok) throw new Error("Failed to create ticket");
+      const ticket = await ticketResponse.json();
 
-      if (!response.ok) throw new Error("Failed to save event");
-      const data = await response.json();
-      console.log("✅ Event + Tickets saved:", data);
+      // ✅ Save tickets in context
+      setEventData((prev) => ({
+        ...prev,
+        tickets: [...(prev.tickets || []), ticket],
+      }));
 
-      alert("Event created successfully!");
-      navigate("/dashboard");
+      setPopup({
+        show: true,
+        type: "success",
+        message: "🎉 Ticket added successfully!",
+      });
 
-      // ✅ Reset form for new tickets
+      // ✅ Reset form
       setForm({
         name: "",
         quantityType: "Limited",
@@ -89,9 +121,16 @@ const CreateTicket = () => {
         price: "",
         limit: "",
       });
+
+      // Navigate back after success
+      navigate(-1);
     } catch (error) {
       console.error(error);
-      alert("❌ Failed to save event");
+      setPopup({
+        show: true,
+        type: "error",
+        message: "❌ Failed to add ticket",
+      });
     } finally {
       setSaving(false);
     }
@@ -121,7 +160,7 @@ const CreateTicket = () => {
         </div>
       </div>
 
-      {/* Ticket Form (UI unchanged) */}
+      {/* Ticket Form */}
       <div className="w-full text-white rounded-2xl mt-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           {/* Ticket Name */}
@@ -218,6 +257,16 @@ const CreateTicket = () => {
             {saving ? "Saving..." : "Save Tickets"}
           </button>
         </div>
+      </div>
+
+      {/* ✅ Popup Notification */}
+      <div>
+        <PopupNotification
+          type={popup.type}
+          message={popup.message}
+          show={popup.show}
+          onClose={() => setPopup({ ...popup, show: false })}
+        />
       </div>
     </div>
   );

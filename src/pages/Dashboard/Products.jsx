@@ -41,7 +41,29 @@ const Products = () => {
       setLoading(false);
     }
   };
+const handleDelete = async (id) => {
+    try {
+      const token = localStorage.getItem("token"); // ✅ Get token
+      const res = await fetch(
+        `https://afrophuket-backend.onrender.com/products/${id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`, // ✅ Attach token
+          },
+        }
+      );
 
+      if (!res.ok) throw new Error("Failed to delete event");
+
+      // Refresh events after successful delete
+      await fetchEvents();
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("Failed to delete event. Try again.");
+    }
+  };
   return (
     <div className="px-4 sm:px-6 md:px-8">
       {/* Header */}
@@ -68,7 +90,8 @@ const Products = () => {
               imgSrc={item.image_url || item.image}
               name={item.title}
               price={item.price}
-              quantity={item.quantity || 0} // ✅ fixed quantity
+              quantity={item.quantity || 0} 
+              onDelete={handleDelete}// ✅ fixed quantity
             />
           ))}
         </div>

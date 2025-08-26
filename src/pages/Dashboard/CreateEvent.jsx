@@ -1,19 +1,31 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChevronLeft, Menu, ImagePlus, BookText, MapPin } from "lucide-react";
+import {
+  ChevronLeft,
+  Menu,
+  ImagePlus,
+  BookText,
+  MapPin,
+  NotebookPen,
+} from "lucide-react";
 import { useCreateEvent } from "../../Context/CreateEventContext";
 import hostimg from "../../assets/images/hostimg.png";
+import PopupNotification from "../../components/PopupNotification";
 
 const CreateEvent = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const { eventData, setEventData } = useCreateEvent();
   const [bannerPreview, setBannerPreview] = useState(
     eventData.thumbnail ? URL.createObjectURL(eventData.thumbnail) : null
   );
-
-  // modal state
+  const [popup, setPopup] = useState({
+    show: false,
+    type: "success",
+    message: "",
+  });
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
@@ -35,7 +47,12 @@ const CreateEvent = () => {
     }
   };
 
-  const validateAndProceed = () => {
+  const openModal = (message) => {
+    setModalMessage(message);
+    setShowModal(true);
+  };
+
+  const validateAndProceed = async () => {
     const {
       title,
       description,
@@ -46,6 +63,7 @@ const CreateEvent = () => {
       thumbnail,
       after_party,
       after_party_location,
+      location_notes,
     } = eventData;
 
     if (!title) return openModal("Event title is required.");
@@ -55,17 +73,57 @@ const CreateEvent = () => {
     if (!start_time) return openModal("Start time is required.");
     if (!end_time) return openModal("End time is required.");
     if (!thumbnail) return openModal("Please upload an event banner.");
+    if (!location_notes) return openModal("Please add a location description.");
     if (after_party && !after_party_location)
       return openModal("After party location is required.");
 
-    // ✅ Passed all checks
-    navigate("create-ticket");
+    try {
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      Object.entries(eventData).forEach(([key, value]) => {
+        if (key === "tags") {
+          formData.append("tags", JSON.stringify(value));
+        } else if (key === "thumbnail" && value) {
+          formData.append("thumbnail", value);
+        } else if (key !== "tickets") {
+          formData.append(key, value);
+        }
+      });
+
+      setSaving(true);
+      const response = await fetch(
+        "https://afrophuket-backend.onrender.com/events/",
+        {
+          method: "POST",
+          headers: { Authorization: `Token ${token}` },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to create event");
+      const createdEvent = await response.json();
+
+      // ✅ Save eventId in context
+      setEventData((prev) => ({ ...prev, id: createdEvent.id }));
+
+      // ✅ Navigate to ticket page with eventId passed in state
+      navigate("create-ticket", { state: { eventId: createdEvent.id } });
+
+      setPopup({ show: true, type: "success", message: "Event Created ✅" });
+    } catch (err) {
+      console.error(err);
+      setPopup({
+        show: true,
+        type: "error",
+        message: "Failed to Create Event ❌",
+      });
+      openModal("Failed to create event. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const openModal = (message) => {
-    setModalMessage(message);
-    setShowModal(true);
-  };
+
   return (
     <div className="p-4 sm:p-3">
       {/* Header */}
@@ -148,7 +206,6 @@ const CreateEvent = () => {
             onChange={(e) => handleInputChange("title", e.target.value)}
             className="text-2xl sm:text-3xl font-bold focus:outline-none w-full bg-transparent"
           />
-
           {/* Date & Time */}
           <div className="mt-6">
             <h2 className="text-lg font-semibold mb-3">Date & Time</h2>
@@ -157,14 +214,12 @@ const CreateEvent = () => {
               <div className="flex flex-col gap-6">
                 {/* Timeline UI */}
                 <div className="flex items-start gap-4">
-                  {/* Timeline dots */}
                   <div className="flex flex-col items-center">
                     <span className="w-3 h-3 rounded-full bg-gray-400"></span>
                     <span className="w-px h-22 md:h-12 border-l border-dashed border-gray-400"></span>
                     <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span>
                   </div>
 
-                  {/* Inputs */}
                   <div className="flex flex-col gap-6 w-full">
                     {/* Start */}
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
@@ -174,7 +229,6 @@ const CreateEvent = () => {
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
                         <input
                           type="date"
-                          placeholder="Select start date"
                           value={eventData.date}
                           onChange={(e) =>
                             handleInputChange("date", e.target.value)
@@ -183,7 +237,6 @@ const CreateEvent = () => {
                         />
                         <input
                           type="time"
-                          placeholder="Start time"
                           value={eventData.start_time}
                           onChange={(e) =>
                             handleInputChange("start_time", e.target.value)
@@ -201,7 +254,6 @@ const CreateEvent = () => {
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
                         <input
                           type="date"
-                          placeholder="Select end date"
                           value={eventData.date}
                           onChange={(e) =>
                             handleInputChange("date", e.target.value)
@@ -210,7 +262,6 @@ const CreateEvent = () => {
                         />
                         <input
                           type="time"
-                          placeholder="End time"
                           value={eventData.end_time}
                           onChange={(e) =>
                             handleInputChange("end_time", e.target.value)
@@ -224,7 +275,6 @@ const CreateEvent = () => {
               </div>
             </div>
           </div>
-
           {/* Description */}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
             <div className="flex items-center gap-3">
@@ -240,7 +290,6 @@ const CreateEvent = () => {
               />
             </div>
           </div>
-
           {/* Location */}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
             <div className="flex items-center gap-3">
@@ -254,7 +303,21 @@ const CreateEvent = () => {
               />
             </div>
           </div>
-
+          {/* LOCATION DESC */}
+          <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
+            <div className="flex items-center gap-3">
+              <NotebookPen />
+              <input
+                type="text"
+                placeholder="Describe Location "
+                value={eventData.location_notes}
+                onChange={(e) =>
+                  handleInputChange("location_notes", e.target.value)
+                }
+                className="bg-transparent border-b border-gray-600 focus:outline-none flex-1"
+              />
+            </div>
+          </div>
           {/* After Party */}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
             <label className="flex items-center gap-2 cursor-pointer mb-4">
@@ -283,6 +346,7 @@ const CreateEvent = () => {
               </div>
             )}
           </div>
+          {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full">
             <button
               onClick={() => navigate("/dashboard")}
@@ -294,16 +358,19 @@ const CreateEvent = () => {
               <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
               <button
                 onClick={validateAndProceed}
+                disabled={saving}
                 className="relative w-full text-sm md:text-base font-semibold uppercase px-4 sm:px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-[1.03] transition-all duration-300"
               >
-                CREATE TICKETS
+                {saving ? "Wait..." : "CREATE TICKETS"}
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50  bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-lg">
             <h2 className="text-lg font-semibold mb-3 text-red-600">
               Missing Information
@@ -318,6 +385,14 @@ const CreateEvent = () => {
           </div>
         </div>
       )}
+      <div>
+        <PopupNotification
+          type={popup.type}
+          message={popup.message}
+          show={popup.show}
+          onClose={() => setPopup({ ...popup, show: false })}
+        />
+      </div>
     </div>
   );
 };

@@ -34,9 +34,7 @@ const DashboardLayout = () => {
                 end
                 className={({ isActive }) =>
                   `font-[800] text-2xl ${
-                    isActive
-                      ? "  text-[#E55934]"
-                      : " text-gray-600"
+                    isActive ? "  text-[#E55934]" : " text-gray-600"
                   }`
                 }
               >
@@ -44,31 +42,28 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
           </div>{" "}
-          <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
+          {/* <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
             <User size={33} />
             <NavLink
               to="account"
               end
               className={({ isActive }) =>
                 `font-[800] text-2xl ${
-                  isActive
-                    ? "  text-[#E55934]"
-                    : " text-gray-600"
+                  isActive ? "  text-[#E55934]" : " text-gray-600"
                 }`
               }
             >
               ACCOUNTS
             </NavLink>
-          </div>  <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
+          </div>{" "} */}
+          <div className=" flex items-center gap-3 text-[25px] py-3 px-2 transition-colors duration-200">
             <ShoppingCart size={33} />
             <NavLink
               to="shop"
               end
               className={({ isActive }) =>
                 `font-[800] text-2xl ${
-                  isActive
-                    ? "  text-[#E55934]"
-                    : " text-gray-600"
+                  isActive ? "  text-[#E55934]" : " text-gray-600"
                 }`
               }
             >
@@ -98,11 +93,9 @@ const DashboardLayout = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-screen">
         {/* Header with Menu Button for Mobile */}
-     
 
         <div className="flex-1 overflow-auto px-2">
-          <Outlet context={{ isSidebarOpen, setIsSidebarOpen }}/>
-    
+          <Outlet context={{ isSidebarOpen, setIsSidebarOpen }} />
         </div>
       </div>
     </div>
