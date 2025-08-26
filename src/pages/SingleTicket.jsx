@@ -21,7 +21,7 @@ const SingleTicket = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token ? `Token ${token}` : "",
+        Authorization: `Token 8b97f16612ac1e9ff989423d6a41904ed804df50`,
       },
     })
       .then((res) => {

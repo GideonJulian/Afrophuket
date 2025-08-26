@@ -28,7 +28,7 @@ const SingleProduct = () => {
           {
             method: "GET",
             headers: {
-              Authorization: `Token ${token}`,
+              Authorization: `Token 8b97f16612ac1e9ff989423d6a41904ed804df50`,
               "Content-Type": "application/json",
             },
           }
