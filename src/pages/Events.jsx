@@ -14,7 +14,7 @@ const Events = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token ? `Token ${token}` : "",
+    Authorization: `Token ${token}`
       },
     })
       .then((res) => {
