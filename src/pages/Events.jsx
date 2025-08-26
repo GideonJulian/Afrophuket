@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import TicketCard from "../components/ui/TicketCard";
 import FeaturedEvents from "../components/FeaturedEvents";
 import AfroLoader from "../components/AfroLoader";
-
+const token = import.meta.env.VITE_API_TOKEN;
 const Events = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
-const token = import.meta.env.VITE_API_TOKEN;
+
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+
 
     fetch("https://afrophuket-backend.onrender.com/events/", {
       method: "GET",
