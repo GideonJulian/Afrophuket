@@ -9,7 +9,9 @@ const CheckLayout = () => {
       <div>
         <Navbar />
       </div>
-      <Outlet />
+      <div className="mt-30">
+        <Outlet />
+      </div>
       <div>
         <Footer />
       </div>

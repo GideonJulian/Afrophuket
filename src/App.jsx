@@ -21,6 +21,8 @@ import SingleProduct from "./pages/Dashboard/SingleProduct";
 import TicketsList from "./pages/Dashboard/TicketsList";
 
 import SalesDetails from "./components/Dashboard/SalesDetails";
+import CheckLayout from "./layouts/CheckLayout";
+import Payment from "./pages/Payment";
 
 const route = createBrowserRouter([
   {
@@ -89,7 +91,14 @@ const route = createBrowserRouter([
     ],
   },
   {
-    path: 'payment',
+    path: 'payment/:id',
+    element: <CheckLayout />,
+    children: [
+      {
+        index: true, 
+        element: <Payment />  
+      }
+    ]
   }
 ]);
 
