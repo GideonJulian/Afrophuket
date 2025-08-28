@@ -91,38 +91,41 @@ const Payment = () => {
       {/* Tickets */}
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-6">
-          {ticketsData.map((ticket) => (
-            <div
-              key={ticket.id}
-              className="p-4 border rounded-2xl flex justify-between items-center border-white/10"
-            >
-              <div>
-                <h2 className="font-bold text-xl">{ticket.name}</h2>
-                <p className="text-[#E55934] text-lg my-2">
-                  ₦{ticket.price.toLocaleString()}{" "}
-                  <span className="text-white text-sm">
-                    includes ₦{ticket.fee} fee
-                  </span>
-                </p>
-                <p className="text-sm opacity-70">{ticket.description}</p>
-              </div>
-              <div>
-                <select
-                  className="px-4 py-2 bg-black border rounded-2xl"
-                  value={quantities[ticket.id]}
-                  onChange={(e) =>
-                    handleQuantityChange(ticket.id, Number(e.target.value))
-                  }
-                >
-                  {[...Array(11).keys()].map((n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          ))}
+         {ticketsData.map((ticket) => (
+  <div
+    key={ticket.id}
+    className={`p-4 border rounded-2xl flex justify-between items-center transition-all duration-300 ${
+      quantities[ticket.id] > 0 ? "border-[#E55934]" : "border-white/10"
+    }`}
+  >
+    <div>
+      <h2 className="font-bold text-xl">{ticket.name}</h2>
+      <p className="text-[#E55934] text-lg my-2">
+        ₦{ticket.price.toLocaleString()}{" "}
+        <span className="text-white text-sm">
+          includes ₦{ticket.fee} fee
+        </span>
+      </p>
+      <p className="text-sm opacity-70">{ticket.description}</p>
+    </div>
+    <div>
+      <select
+        className="px-4 py-2 bg-black border rounded-2xl"
+        value={quantities[ticket.id]}
+        onChange={(e) =>
+          handleQuantityChange(ticket.id, Number(e.target.value))
+        }
+      >
+        {[...Array(11).keys()].map((n) => (
+          <option key={n} value={n}>
+            {n}
+          </option>
+        ))}
+      </select>
+    </div>
+  </div>
+))}
+
         </div>
 
         {/* Summary */}
