@@ -22,7 +22,10 @@ import TicketsList from "./pages/Dashboard/TicketsList";
 
 import SalesDetails from "./components/Dashboard/SalesDetails";
 import CheckLayout from "./layouts/CheckLayout";
+
+// 🆕 dummy payment pages
 import Payment from "./pages/Payment";
+import ContactInfo from "./pages/ContactInfo";
 
 const route = createBrowserRouter([
   {
@@ -56,21 +59,11 @@ const route = createBrowserRouter([
       {
         path: "shop",
         children: [
-          {
-            index: true,
-            element: <Products />,
-          },
-          {
-            path: "create-product",
-            element: <CreateProduct />,
-          },
-          {
-            path: "product/:id",
-            element: <SingleProduct />,
-          },
+          { index: true, element: <Products /> },
+          { path: "create-product", element: <CreateProduct /> },
+          { path: "product/:id", element: <SingleProduct /> },
         ],
       },
-
       { path: "event/:id", element: <SingleEvent /> },
       {
         path: "create-event",
@@ -91,15 +84,13 @@ const route = createBrowserRouter([
     ],
   },
   {
-    path: 'payment/:id',
+    path: "payment/:id", // first step (payment details)
     element: <CheckLayout />,
     children: [
-      {
-        index: true, 
-        element: <Payment />  
-      }
-    ]
-  }
+      { index: true, element: <Payment /> },
+      { path: "contactinfo", element: <ContactInfo /> }, // next step
+    ],
+  },
 ]);
 
 function App() {
