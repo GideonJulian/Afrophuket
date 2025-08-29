@@ -97,7 +97,7 @@ const { id: eventId } = useParams();
       const response = await fetch(
         `https://afrophuket-backend.onrender.com/events/${id}/`,
         {
-          method: "PATCH",
+          method: "UPDATE",
           headers: {
             Authorization: `Token ${token}`,
           },

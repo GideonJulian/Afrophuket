@@ -1,38 +1,29 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
-const ticketsData = [
-  {
-    id: 1,
-    name: "Early-Bird Ticket",
-    description: "Limited tickets available",
-    price: 62000,
-    fee: 1000,
-  },
-  {
-    id: 2,
-    name: "Regular Ticket",
-    description: "Standard entry ticket",
-    price: 82000,
-    fee: 1000,
-  },
-  {
-    id: 3,
-    name: "VIP Ticket",
-    description: "VIP experience with perks",
-    price: 150000,
-    fee: 2000,
-  },
-];
-
-const Payment = () => {
+function Payment() {
+  const { id } = useParams(); // get event id from URL
+  const location = useLocation();
   const navigate = useNavigate();
+
+  // event passed from previous page (SingleTicket)
+  const event = location.state?.event;
+
+  if (!event) {
+    return (
+      <div className="p-10 text-center text-red-400">
+        No event data found. Please go back and select an event.
+      </div>
+    );
+  }
+
+  const ticketsData = event.tickets || [];
 
   // Track quantity for each ticket
   const [quantities, setQuantities] = useState(
     ticketsData.reduce((acc, ticket) => {
-      acc[ticket.id] = 0; // start all with 0
+      acc[ticket.id] = 0;
       return acc;
     }, {})
   );
@@ -45,31 +36,31 @@ const Payment = () => {
   };
 
   const handleContinue = () => {
-    // filter only tickets that have quantity > 0
     const selectedTickets = ticketsData
       .filter((ticket) => quantities[ticket.id] > 0)
       .map((ticket) => ({
         ...ticket,
         quantity: quantities[ticket.id],
-        subtotal: (ticket.price + ticket.fee) * quantities[ticket.id],
+        subtotal: parseFloat(ticket.price) * quantities[ticket.id],
       }));
 
     const total = selectedTickets.reduce((sum, t) => sum + t.subtotal, 0);
 
     const selection = {
-      eventName: "Afro Pool Party",
+      eventName: event.title,
       tickets: selectedTickets,
       total,
     };
 
-    navigate("contactinfo", { state: selection });
+    // navigate to contact info page with event + selection
+    navigate(`/payment/${id}/contactinfo`, { state: selection });
   };
 
   const selectedTickets = ticketsData.filter(
     (ticket) => quantities[ticket.id] > 0
   );
   const total = selectedTickets.reduce(
-    (sum, t) => sum + (t.price + t.fee) * quantities[t.id],
+    (sum, t) => sum + parseFloat(t.price) * quantities[t.id],
     0
   );
 
@@ -88,45 +79,54 @@ const Payment = () => {
         <h1 className="ml-2 text-lg md:text-xl font-bold">Choose Tickets</h1>
       </div>
 
-      {/* Tickets */}
+      {/* Tickets + Summary */}
       <div className="grid md:grid-cols-2 gap-6">
+        {/* Tickets */}
         <div className="space-y-6">
-          {ticketsData.map((ticket) => (
-            <div
-              key={ticket.id}
-              className={`p-4 border rounded-2xl flex justify-between items-center transition-all duration-300 ${
-                quantities[ticket.id] > 0
-                  ? "border-[#E55934]"
-                  : "border-white/10"
-              }`}
-            >
-              <div>
-                <h2 className="font-bold text-xl">{ticket.name}</h2>
-                <p className="text-[#E55934] text-lg my-2">
-                  ₦{ticket.price.toLocaleString()}{" "}
-                  <span className="text-white text-sm">
-                    includes ₦{ticket.fee} fee
-                  </span>
-                </p>
-                <p className="text-sm opacity-70">{ticket.description}</p>
+          {ticketsData.length === 0 ? (
+            <p className="text-gray-400">
+              No tickets available for this event.
+            </p>
+          ) : (
+            ticketsData.map((ticket) => (
+              <div
+                key={ticket.id}
+                className={`p-4 border rounded-2xl flex justify-between items-center transition-all duration-300 ${
+                  quantities[ticket.id] > 0
+                    ? "border-[#E55934]"
+                    : "border-white/10"
+                }`}
+              >
+                <div>
+                  <h2 className="font-bold text-xl">{ticket.name}</h2>
+                  <p className="text-[#E55934] text-lg my-2">
+                    ₦{parseFloat(ticket.price).toLocaleString()}{" "}
+                    <span className="text-white text-sm">
+                      max {ticket.max_per_customer} per customer
+                    </span>
+                  </p>
+                  <p className="text-sm opacity-70">
+                    {ticket.description || "No description"}
+                  </p>
+                </div>
+                <div>
+                  <select
+                    className="px-4 py-2 bg-black border rounded-2xl"
+                    value={quantities[ticket.id]}
+                    onChange={(e) =>
+                      handleQuantityChange(ticket.id, Number(e.target.value))
+                    }
+                  >
+                    {[...Array(ticket.max_per_customer + 1).keys()].map((n) => (
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <div>
-                <select
-                  className="px-4 py-2 bg-black border rounded-2xl"
-                  value={quantities[ticket.id]}
-                  onChange={(e) =>
-                    handleQuantityChange(ticket.id, Number(e.target.value))
-                  }
-                >
-                  {[...Array(11).keys()].map((n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         {/* Summary */}
@@ -134,7 +134,7 @@ const Payment = () => {
           <h1 className="font-bold text-2xl mt-6">Summary</h1>
           <div className="bg-black p-6 shadow-lg rounded-2xl">
             <div className="text-center">
-              <h2 className="font-bold text-lg">Afro Pool Party</h2>
+              <h2 className="font-bold text-lg">{event.title}</h2>
             </div>
             <div className="flex flex-col gap-6 mt-8">
               {selectedTickets.length === 0 ? (
@@ -153,8 +153,7 @@ const Payment = () => {
                     <span>
                       ₦
                       {(
-                        (ticket.price + ticket.fee) *
-                        quantities[ticket.id]
+                        parseFloat(ticket.price) * quantities[ticket.id]
                       ).toLocaleString()}
                     </span>
                   </div>
@@ -181,6 +180,6 @@ const Payment = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Payment;
