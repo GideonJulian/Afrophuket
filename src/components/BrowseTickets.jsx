@@ -20,9 +20,8 @@ const BrowseTickets = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const token = localStorage.getItem("token"); 
-
-  fetch("https://afrophuket-backend.onrender.com/events/", {
+    const token = import.meta.env.VITE_API_TOKEN;
+  fetch(  "https://afrophuket-backend-gr4j.onrender.com/events/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

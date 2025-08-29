@@ -24,7 +24,7 @@ const SingleProduct = () => {
     const fetchProduct = async () => {
       try {
         const res = await fetch(
-          `https://afrophuket-backend.onrender.com/products/${id}/`,
+          `https://afrophuket-backend-gr4j.onrender.com/products/${id}/`,
           {
             method: "GET",
             headers: {

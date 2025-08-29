@@ -45,7 +45,7 @@ const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token"); // ✅ Get token
       const res = await fetch(
-        `https://afrophuket-backend.onrender.com/products/${id}/`,
+        `https://afrophuket-backend-gr4j.onrender.com/products/${id}/`,
         {
           method: "DELETE",
           headers: {

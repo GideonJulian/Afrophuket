@@ -11,7 +11,7 @@ import {
 import { useCreateEvent } from "../../Context/CreateEventContext";
 import hostimg from "../../assets/images/hostimg.png";
 import PopupNotification from "../../components/PopupNotification";
-
+    const token = import.meta.env.VITE_API_TOKEN;
 const CreateEvent = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -78,7 +78,7 @@ const CreateEvent = () => {
       return openModal("After party location is required.");
 
     try {
-      const token = localStorage.getItem("token");
+      // const token = localStorage.getItem("token");
       const formData = new FormData();
       Object.entries(eventData).forEach(([key, value]) => {
         if (key === "tags") {
@@ -92,7 +92,7 @@ const CreateEvent = () => {
 
       setSaving(true);
       const response = await fetch(
-        "https://afrophuket-backend.onrender.com/events/",
+        "https://afrophuket-backend-gr4j.onrender.com/events/",
         {
           method: "POST",
           headers: { Authorization: `Token ${token}` },
@@ -107,7 +107,7 @@ const CreateEvent = () => {
       setEventData((prev) => ({ ...prev, id: createdEvent.id }));
 
       // ✅ Navigate to ticket page with eventId passed in state
-      navigate("create-ticket", { state: { eventId: createdEvent.id } });
+      navigate(`${createdEvent.id}/create-ticket`, { state: { eventId: createdEvent.id } });
 
       setPopup({ show: true, type: "success", message: "Event Created ✅" });
     } catch (err) {

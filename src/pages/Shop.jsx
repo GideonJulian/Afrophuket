@@ -18,7 +18,7 @@ const Shop = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token"); 
-    fetch("https://afrophuket-backend.onrender.com/products/", {
+    fetch("https://afrophuket-backend-gr4j.onrender.com/products/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

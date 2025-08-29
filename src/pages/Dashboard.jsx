@@ -19,7 +19,7 @@ const Dashboard = () => {
     try {
       const token = import.meta.env.VITE_API_TOKEN;
       const res = await fetch(
-        "https://afrophuket-backend.onrender.com/events/",
+        "https://afrophuket-backend-gr4j.onrender.com/events/",
         {
           headers: {
             "Content-Type": "application/json",

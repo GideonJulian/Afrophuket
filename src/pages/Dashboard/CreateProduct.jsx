@@ -41,7 +41,7 @@ const navigate = useNavigate()
       formData.append("image", bannerFile);
 
       const res = await fetch(
-        "https://afrophuket-backend.onrender.com/products/",
+        "https://afrophuket-backend-gr4j.onrender.com/products/",
         {
           method: "POST",
           headers: {

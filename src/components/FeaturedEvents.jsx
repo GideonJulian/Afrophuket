@@ -13,7 +13,7 @@ const FeaturedEvents = () => {
   useEffect(() => {
     const token = import.meta.env.VITE_API_TOKEN;
 
-    fetch("https://afrophuket-backend.onrender.com/events/", {
+    fetch("https://afrophuket-backend-gr4j.onrender.com/events/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

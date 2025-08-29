@@ -87,7 +87,7 @@ const [searchParams] = useSearchParams();
 
       // ✅ POST to /tickets/:id/
       const ticketResponse = await fetch(
-        `https://afrophuket-backend.onrender.com/events/tickets/`,
+        `https://afrophuket-backend-gr4j.onrender.com/events/tickets/`,
         {
           method: "POST",
           headers: {

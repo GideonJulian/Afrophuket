@@ -17,7 +17,7 @@ const SingleTicket = () => {
   useEffect(() => {
     const token = import.meta.env.VITE_API_TOKEN;
 
-    fetch(`https://afrophuket-backend.onrender.com/events/${id}/`, {
+    fetch(`https://afrophuket-backend-gr4j.onrender.com/events/${id}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

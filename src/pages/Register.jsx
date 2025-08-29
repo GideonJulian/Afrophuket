@@ -60,12 +60,12 @@ const AuthPage = () => {
       }
 
       const endpoint = isLogin
-        ? "https://afrophuket-backend.onrender.com/auth/login/"
-        : "https://afrophuket-backend.onrender.com/auth/register/";
+        ? "https://afrophuket-backend-gr4j.onrender.com/auth/login/"
+        : "https://afrophuket-backend-gr4j.onrender.com/auth/register/";
 
       const res = await fetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json", 'Authorization': `Token ${token}` },
+        headers: { "Content-Type": "application/json", },
         body: JSON.stringify(bodyData),
       });
 

@@ -30,12 +30,12 @@ const { id: eventId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+       const token = import.meta.env.VITE_API_TOKEN;
 
     const fetchEvent = async () => {
       try {
         const res = await fetch(
-          `https://afrophuket-backend.onrender.com/events/${id}/`,
+          `https://afrophuket-backend-gr4j.onrender.com/events/${id}/`,
           {
             method: "GET",
             headers: {
