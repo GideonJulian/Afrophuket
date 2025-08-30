@@ -157,7 +157,7 @@ const ContactInfo = () => {
           )}
 
           {/* Desktop Pay Now */}
-          <div className="relative  mt-10 w-full hidden md:block">
+          <div className="relative inline-block mt-10 w-full hidden md:block">
             <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
             <button
               type="submit"
