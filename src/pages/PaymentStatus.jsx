@@ -10,6 +10,7 @@ const PaymentStatus = () => {
 
   useEffect(() => {
     const fetchStatus = async () => {
+
       try {
         const transactionId = searchParams.get("transaction_id");
 
@@ -18,6 +19,7 @@ const PaymentStatus = () => {
           sessionStorage.getItem("ticketMeta") || "{}"
         );
         setTicketMeta(storedMeta);
+        console.log(transactionId)
 
         if (!transactionId) {
           setStatus("❌ No transaction ID found.");
