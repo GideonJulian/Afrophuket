@@ -24,7 +24,6 @@ const ContactInfo = () => {
       const email = formData.get("email");
       const phone = formData.get("phone");
 
-      // total amount from state
       const amount = state.total;
 
       const payload = {
@@ -34,16 +33,33 @@ const ContactInfo = () => {
         name,
       };
 
-      const res = await axios.post("https://afrophuket-backend-gr4j.onrender.com/api/payments/initiate/", payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await axios.post(
+        "https://afrophuket-backend-gr4j.onrender.com/api/payments/initiate/",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       console.log("Payment response:", res.data);
 
       if (res.data.payment_link) {
-        // Redirect user to Flutterwave hosted checkout
+        // ✅ Save ticket + user data for later use
+        sessionStorage.setItem(
+          "ticketMeta",
+          JSON.stringify({
+            email,
+            name,
+            phone,
+            tickets: state.tickets,
+            total: amount,
+            eventName: state.eventName,
+          })
+        );
+
+        // Redirect to Flutterwave checkout
         window.location.href = res.data.payment_link;
       } else {
         alert("❌ Payment link not returned. Try again.");
@@ -68,9 +84,7 @@ const ContactInfo = () => {
             <ChevronLeft className="text-black w-4 h-4" />
           </div>
         </button>
-        <h1 className="ml-2 text-lg md:text-xl font-bold">
-          Enter Your Details
-        </h1>
+        <h1 className="ml-2 text-lg md:text-xl font-bold">Enter Your Details</h1>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -110,18 +124,6 @@ const ContactInfo = () => {
               required
             />
           </div>
-
-          {/* Mobile Pay Now */}
-          {/* <div className="relative inline-block mt-10 w-full md:hidden">
-            <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
-            <button
-              type="submit"
-              disabled={loading}
-              className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300 disabled:opacity-50"
-            >
-              {loading ? "Processing..." : "PAY NOW"}
-            </button>
-          </div> */}
         </form>
 
         {/* Summary */}
