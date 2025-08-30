@@ -4,7 +4,7 @@ import axios from "axios";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 
 const PaymentStatus = () => {
-  const { search } = useLocation();
+  const { search, state } = useLocation();
   const navigate = useNavigate();
 
   // Extract query params from Flutterwave redirect
@@ -17,10 +17,34 @@ const PaymentStatus = () => {
   const handleVerify = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/api/payments/verify/${transactionId}/`);
+      // Step 1: Verify with backend
+      const res = await axios.get(`https://afrophuket-backend-gr4j.onrender.com/api/payments/verify/${transactionId}/`);
       console.log("Verification response:", res.data);
 
-      navigate('/')
+      if (res.status === 200 && status === "successful") {
+        // Step 2: Post ticket purchase
+        const payload = {
+          ticket: state?.ticketId || 1, // pass ticketId via navigate state earlier
+          purchase_price: state?.price,
+        };
+
+        const purchaseRes = await axios.post(
+          "https://afrophuket-backend-gr4j.onrender.com/events/ticket-purchases/",
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Ticket purchase response:", purchaseRes.data);
+
+        // Step 3: Redirect to confirmation page
+        navigate("/confirmation", { state: purchaseRes.data });
+      } else {
+        alert("❌ Payment not verified!");
+      }
     } catch (err) {
       console.error("Verification error:", err);
       alert("❌ Error verifying payment.");
@@ -51,20 +75,22 @@ const PaymentStatus = () => {
         </p>
 
         {/* Continue Button */}
-        <button
-          onClick={handleVerify}
-          disabled={loading}
-          className="mt-8 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold 
-          bg-black text-white hover:bg-gray-800 transition-all duration-300 disabled:opacity-50"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" /> Verifying...
-            </>
-          ) : (
-            "Continue"
-          )}
-        </button>
+        {status === "successful" && (
+          <button
+            onClick={handleVerify}
+            disabled={loading}
+            className="mt-8 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold 
+            bg-black text-white hover:bg-gray-800 transition-all duration-300 disabled:opacity-50"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" /> Verifying...
+              </>
+            ) : (
+              "Continue"
+            )}
+          </button>
+        )}
       </div>
     </div>
   );
