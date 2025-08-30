@@ -90,7 +90,7 @@ const PaymentStatus = () => {
             onClick={() => navigate("/")}
             className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-red-700 transition-all"
           >
-            Retry Payment
+            Back To Home
           </button>{" "}
         </div>
       )}
