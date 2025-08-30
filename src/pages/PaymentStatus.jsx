@@ -64,7 +64,7 @@ const PaymentStatus = () => {
 
       {/* Show ticket summary if success */}
       {ticketMeta && status.startsWith("✅") && (
-        <div className="mt-6 bg-gray-100 p-4 rounded-lg inline-block text-left">
+        <div className="mt-6 bg-black p-4 rounded-lg inline-block text-left">
           <h2 className="font-bold">Ticket Summary</h2>
           <p>
             <strong>Name:</strong> {ticketMeta.name}
@@ -78,7 +78,6 @@ const PaymentStatus = () => {
           <p>
             <strong>Total Paid:</strong> ₦{ticketMeta.total?.toLocaleString()}
           </p>
-
           <div className="mt-3">
             <h3 className="font-semibold">Tickets:</h3>
             {ticketMeta.tickets?.map((t, i) => (
@@ -87,6 +86,12 @@ const PaymentStatus = () => {
               </p>
             ))}
           </div>
+          <button
+            onClick={() => navigate("/")}
+            className="px-6 py-3 bg-green-500 text-white rounded-lg shadow hover:bg-red-700 transition-all"
+          >
+            Retry Payment
+          </button>{" "}
         </div>
       )}
 
