@@ -27,6 +27,7 @@ import CheckLayout from "./layouts/CheckLayout";
 // 🆕 dummy payment pages
 import Payment from "./pages/Payment";
 import ContactInfo from "./pages/ContactInfo";
+import Comfirmation from "./pages/Comfirmation";
 
 const route = createBrowserRouter([
   {
@@ -95,7 +96,10 @@ const route = createBrowserRouter([
   {
     path: "payment-status",
     element: <PaymentStatus />,
-  },
+  },{
+    path: 'confirmation',
+    element: <Comfirmation />
+  }
 ]);
 
 function App() {
