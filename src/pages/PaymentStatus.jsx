@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const PaymentStatus = () => {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState("Verifying payment...");
   const [ticketMeta, setTicketMeta] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -13,7 +14,9 @@ const PaymentStatus = () => {
         const transactionId = searchParams.get("transaction_id");
 
         // Load ticket/user data from sessionStorage
-        const storedMeta = JSON.parse(sessionStorage.getItem("ticketMeta") || "{}");
+        const storedMeta = JSON.parse(
+          sessionStorage.getItem("ticketMeta") || "{}"
+        );
         setTicketMeta(storedMeta);
 
         if (!transactionId) {
@@ -21,14 +24,15 @@ const PaymentStatus = () => {
           return;
         }
 
+        // ✅ FIX: use query params
         const res = await axios.get(
-         ' https://afrophuket-backend-gr4j.onrender.com/api/payments/verify/${transactionId}/'
+          " https://afrophuket-backend-gr4j.onrender.com/api/payments/verify/?transaction_id=${transactionId}"
         );
 
         if (res.data.status === "success") {
           setStatus("✅ Payment Successful!");
 
-          // ✅ Call backend to create TicketPurchase + send PDF
+          // ✅ Call backend to finalize ticket purchase
           await axios.post(
             "https://afrophuket-backend-gr4j.onrender.com/api/tickets/complete/",
             {
@@ -53,6 +57,7 @@ const PaymentStatus = () => {
       <h1 className="text-2xl font-bold mb-4">Payment Status</h1>
       <p className="text-lg">{status}</p>
 
+      {/* Show ticket summary if success */}
       {ticketMeta && status.startsWith("✅") && (
         <div className="mt-6 bg-gray-100 p-4 rounded-lg inline-block text-left">
           <h2 className="font-bold">Ticket Summary</h2>
@@ -77,6 +82,18 @@ const PaymentStatus = () => {
               </p>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Retry button if failed */}
+      {status.startsWith("❌") && (
+        <div className="mt-6">
+          <button
+            onClick={() => navigate("/tickets")}
+            className="px-6 py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition-all"
+          >
+            Retry Payment
+          </button>
         </div>
       )}
     </div>
