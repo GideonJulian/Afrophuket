@@ -169,42 +169,6 @@ const PaymentStatus = () => {
             </button>
           </div>
         )}
-
-        {/* Demo Controls */}
-        <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/30 rounded-2xl shadow-xl p-4 mt-6">
-          <p className="text-sm text-gray-400 mb-3 font-medium">
-            Demo Controls:
-          </p>
-          <div className="flex gap-3">
-            <button
-              onClick={() => {
-                setStatus("verifying");
-                setMessage("Verifying payment...");
-              }}
-              className="px-4 py-2 bg-gradient-to-r from-orange-500/20 to-yellow-500/20 text-orange-400 border border-orange-500/30 rounded-lg text-sm font-medium hover:bg-orange-500/30 transition-all"
-            >
-              Loading
-            </button>
-            <button
-              onClick={() => {
-                setStatus("success");
-                setMessage("Payment successful!");
-              }}
-              className="px-4 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border border-green-500/30 rounded-lg text-sm font-medium hover:bg-green-500/30 transition-all"
-            >
-              Success
-            </button>
-            <button
-              onClick={() => {
-                setStatus("failed");
-                setMessage("Payment failed");
-              }}
-              className="px-4 py-2 bg-gradient-to-r from-red-500/20 to-pink-500/20 text-red-400 border border-red-500/30 rounded-lg text-sm font-medium hover:bg-red-500/30 transition-all"
-            >
-              Failed
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
