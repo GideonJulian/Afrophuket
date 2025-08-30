@@ -148,7 +148,7 @@ const PaymentStatus = () => {
             </div>
 
             <button
-              onClick={() => console.log("Navigate to home")}
+              onClick={() => navigate("/")}
               className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105"
             >
               <ArrowLeft className="w-6 h-6" />
