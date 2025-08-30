@@ -19,6 +19,7 @@ import Products from "./pages/Dashboard/Products";
 import CreateProduct from "./pages/Dashboard/CreateProduct";
 import SingleProduct from "./pages/Dashboard/SingleProduct";
 import TicketsList from "./pages/Dashboard/TicketsList";
+import PaymentStatus from "./pages/PaymentStatus";
 
 import SalesDetails from "./components/Dashboard/SalesDetails";
 import CheckLayout from "./layouts/CheckLayout";
@@ -90,6 +91,10 @@ const route = createBrowserRouter([
       { index: true, element: <Payment /> },
       { path: "contactinfo", element: <ContactInfo /> }, // next step
     ],
+  },
+  {
+    path: "payment-status",
+    element: <PaymentStatus />,
   },
 ]);
 

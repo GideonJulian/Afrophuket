@@ -1,40 +1,59 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ChevronLeft, CircleAlert } from "lucide-react";
+import axios from "axios";
 
 const ContactInfo = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  // form state
-  const [formData, setFormData] = useState({ name: "", email: "" });
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   if (!state) {
     return <p className="p-6">No ticket selected. Go back.</p>;
   }
 
-  // handle input change
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  // handle submit
-  const handleSubmit = (e) => {
+  // Handle Form Submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email) {
-      setError("Please fill in your name and email.");
-      return;
+    setLoading(true);
+
+    try {
+      const formData = new FormData(e.target);
+      const name = formData.get("name");
+      const email = formData.get("email");
+      const phone = formData.get("phone");
+
+      // total amount from state
+      const amount = state.total;
+
+      const payload = {
+        amount,
+        email,
+        phone,
+        name,
+      };
+
+      const res = await axios.post("https://afrophuket-backend-gr4j.onrender.com/api/payments/initiate/", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Payment response:", res.data);
+
+      if (res.data.payment_link) {
+        // Redirect user to Flutterwave hosted checkout
+        window.location.href = res.data.payment_link;
+      } else {
+        alert("❌ Payment link not returned. Try again.");
+      }
+    } catch (err) {
+      console.error("Payment error:", err);
+      alert("❌ Payment failed. Try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setError("");
-
-    // 👉 This is where you’ll later call Flutterwave
-    console.log("User Details:", formData);
-    console.log("Tickets:", state.tickets);
-    console.log("Total:", state.total);
-
-    alert("Form submitted successfully! (Flutterwave will come next)");
   };
 
   return (
@@ -56,59 +75,63 @@ const ContactInfo = () => {
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Contact Form */}
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form id="contactForm" className="space-y-4" onSubmit={handleSubmit}>
           <div className="border rounded-xl p-4 flex items-center">
             <CircleAlert className="mr-3" />
             Tickets will only be sent to the email address you provide here.
           </div>
-
-          {error && (
-            <p className="text-red-500 text-sm font-semibold">{error}</p>
-          )}
-
           <div>
-            <label className="block text-sm mb-2">Your Name</label>
+            <label className="block text-sm mb-2">Your name</label>
             <input
               type="text"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="John Doe"
-              className="w-full border-b border-[#C2E7E77D] bg-transparent outline-none py-2"
+              placeholder=" "
+              className="w-full border-b border-[#C2E7E77D] bg-transparent outline-none py-1"
+              required
             />
           </div>
-
-          <div>
-            <label className="block text-sm mb-2">Email</label>
+          <div className="mt-5">
+            <label className="block text-sm mb-2"> Email</label>
             <input
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="example@email.com"
-              className="w-full border-b border-[#C2E7E77D] bg-transparent outline-none py-2"
+              placeholder=" "
+              className="w-full border-b border-[#C2E7E77D] bg-transparent outline-none py-1"
+              required
+            />
+          </div>
+          <div className="mt-5">
+            <label className="block text-sm mb-2">Phone Number</label>
+            <input
+              type="tel"
+              name="phone"
+              placeholder="08012345678"
+              className="w-full border-b border-[#C2E7E77D] bg-transparent outline-none py-1"
+              required
             />
           </div>
 
-          {/* Mobile PAY NOW button */}
-          <div className="block md:hidden mt-8">
+          {/* Mobile Pay Now */}
+          {/* <div className="relative inline-block mt-10 w-full md:hidden">
+            <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
             <button
               type="submit"
-              className="w-full text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-black text-white rounded-lg border-2 border-black shadow-md hover:scale-105 transition-all duration-300"
+              disabled={loading}
+              className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300 disabled:opacity-50"
             >
-              PAY NOW
+              {loading ? "Processing..." : "PAY NOW"}
             </button>
-          </div>
+          </div> */}
         </form>
 
         {/* Summary */}
         <div className="bg-black p-6 shadow-lg rounded-2xl">
-          <h2 className="font-bold text-lg text-center text-white">
+          <h2 className="font-bold text-lg text-center">
             {state?.eventName || "Event"}
           </h2>
 
           {state?.tickets && state.tickets.length > 0 ? (
-            <div className="flex flex-col gap-6 mt-8 text-white">
+            <div className="flex flex-col gap-6 mt-8">
               {state.tickets.map((ticket) => (
                 <div key={ticket.id} className="flex justify-between">
                   <span>
@@ -129,15 +152,16 @@ const ContactInfo = () => {
             </p>
           )}
 
-          {/* Desktop PAY NOW button */}
-          <div className="hidden md:block relative inline-block mt-10 w-full">
+          {/* Desktop Pay Now */}
+          <div className="relative inline-block mt-10 w-full hidden md:block">
             <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
             <button
               type="submit"
               form="contactForm"
-              className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300"
+              disabled={loading}
+              className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300 disabled:opacity-50"
             >
-              PAY NOW
+              {loading ? "Processing..." : "PAY NOW"}
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { CalendarDays, MapPin, ArrowUpRight } from "lucide-react";
+import { CalendarDays, MapPin, ArrowUpRight, Copy } from "lucide-react"; // add Copy icon
 import { motion } from "framer-motion";
 import hostimg from "../assets/images/hostimg.png";
 import AfroLoader from "../components/AfroLoader";
@@ -13,6 +13,7 @@ const SingleTicket = () => {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false); // track copy state
 
   useEffect(() => {
     const token = import.meta.env.VITE_API_TOKEN;
@@ -37,6 +38,14 @@ const SingleTicket = () => {
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  // Copy to clipboard handler
+  const handleCopyLocation = () => {
+    navigator.clipboard.writeText(event.location).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // reset after 2s
+    });
+  };
 
   if (loading) return <AfroLoader />;
   if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
@@ -68,7 +77,7 @@ const SingleTicket = () => {
             <div className="relative inline-block mt-10 w-full">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
               <button
-                  onClick={() => navigate(`/payment/${event.id}`, { state: { event } })}
+                onClick={() => navigate(`/payment/${event.id}`, { state: { event } })}
                 className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300"
               >
                 GET A TICKET
@@ -118,12 +127,24 @@ const SingleTicket = () => {
                 </div>
               </div>
 
+              {/* Location with Copy Button */}
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-lg bg-white/10">
                   <MapPin />
                 </div>
-                <h1 className="text-lg">{event.location}</h1>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-lg">{event.location}</h1>
+                  <button
+                    onClick={handleCopyLocation}
+                    className="text-sm cursor-pointer text-[#E55934] flex items-center gap-1 hover:underline"
+                  >
+                    <Copy size={16} /> {copied ? "Copied!" : "Copy"}
+                  </button>
+                </div>
               </div>
+              <p className="text-xs text-gray-400">
+                Copy and paste into Google Maps to get directions.
+              </p>
             </div>
 
             {/* About the Event */}
@@ -153,18 +174,16 @@ const SingleTicket = () => {
                   <div>
                     <h1 className="flex items-center gap-2 text-white text-base hover:text-[#E55934] transition-colors duration-300">
                       <span className="text-lg">
-                        {" "}
-                        {event.after_party_location}{" "}
+                        {event.after_party_location}
                       </span>
                       <ArrowUpRight className="w-4 h-4 " />
                     </h1>
-                    {/* <p className="text-sm">{event.location}</p> */}
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Event Location */}
+            {/* Event Location Section */}
             <div className="mt-10">
               <h1 className="text-lg font-semibold mb-4">Event Location</h1>
               <p className="font-semibold mb-2">{event.location}</p>
@@ -176,16 +195,6 @@ const SingleTicket = () => {
               </div>
             </div>
           </motion.div>
-        </div>
-
-        {/* Recommended Events */}
-        <div className="mt-20">
-          <h1 className="border-b pb-5 text-[#ffffff]">
-            Other events you may like
-          </h1>
-          <h1 className="text-center mt-17">
-            Recommended events will show here
-          </h1>
         </div>
       </div>
     </div>
