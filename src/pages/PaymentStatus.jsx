@@ -5,12 +5,11 @@ import axios from "axios";
 const PaymentStatus = () => {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState("Verifying payment...");
-  const [ticketMeta, setTicketMeta] = useState(null);
+  const [ticketMeta, setTicketMeta] = useState(null); // ✅ fixed
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStatus = async () => {
-
       try {
         const transactionId = searchParams.get("transaction_id");
 
@@ -19,19 +18,23 @@ const PaymentStatus = () => {
           sessionStorage.getItem("ticketMeta") || "{}"
         );
         setTicketMeta(storedMeta);
-        console.log(transactionId)
+
+        console.log("Transaction ID from URL:", transactionId);
 
         if (!transactionId) {
           setStatus("❌ No transaction ID found.");
           return;
         }
 
-        // ✅ FIX: use query params
+        // ✅ Correct verify endpoint with query params
         const res = await axios.get(
-          ` https://afrophuket-backend-gr4j.onrender.com/api/payments/verify/?transaction_id=${transactionId}`
+          "https://afrophuket-backend-gr4j.onrender.com/api/payments/verify/",
+          { params: { transaction_id: transactionId } }
         );
 
-        if (res.data.status === "success") {
+        console.log("Verification response:", res.data);
+
+        if (res.data.verified) {
           setStatus("✅ Payment Successful!");
 
           // ✅ Call backend to finalize ticket purchase
