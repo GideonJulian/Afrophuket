@@ -46,7 +46,7 @@ const ContactInfo = () => {
       console.log("Payment response:", res.data);
 
       if (res.data.payment_link) {
-        // ✅ Save ticket + user data for later use
+        // Save ticket + user data for later use
         sessionStorage.setItem(
           "ticketMeta",
           JSON.stringify({
@@ -107,7 +107,7 @@ const ContactInfo = () => {
             />
           </div>
           <div className="mt-5">
-            <label className="block text-sm mb-2"> Email</label>
+            <label className="block text-sm mb-2">Email</label>
             <input
               type="email"
               name="email"
@@ -125,6 +125,17 @@ const ContactInfo = () => {
               className="w-full border-b border-[#C2E7E77D] bg-transparent outline-none py-1"
               required
             />
+          </div>
+
+          {/* Mobile / default Pay Now button */}
+          <div className="mt-6 md:hidden">
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-6 py-3 bg-white text-black font-semibold uppercase rounded-lg border-2 border-black shadow-md hover:scale-105 transition-all duration-300 disabled:opacity-50"
+            >
+              {loading ? "Processing..." : "PAY NOW"}
+            </button>
           </div>
         </form>
 
