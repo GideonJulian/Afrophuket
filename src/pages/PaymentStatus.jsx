@@ -20,7 +20,7 @@ const PaymentStatus = () => {
       const res = await axios.get(`/api/payments/verify/${transactionId}/`);
       console.log("Verification response:", res.data);
 
-      if (res.data.status === "success") {
+      if (res.data.status === 200) {
         navigate("/", { state: res.data });
       } else {
         alert("❌ Payment not verified!");
