@@ -21,7 +21,7 @@ const PaymentStatus = () => {
       console.log("Verification response:", res.data);
 
       if (res.data.status === "success") {
-        navigate("/confirmation", { state: res.data });
+        navigate("/", { state: res.data });
       } else {
         alert("❌ Payment not verified!");
       }
