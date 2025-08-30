@@ -26,7 +26,7 @@ const PaymentStatus = () => {
 
         // ✅ FIX: use query params
         const res = await axios.get(
-          " https://afrophuket-backend-gr4j.onrender.com/api/payments/verify/?transaction_id=${transactionId}"
+          ` https://afrophuket-backend-gr4j.onrender.com/api/payments/verify/?transaction_id=${transactionId}`
         );
 
         if (res.data.status === "success") {
