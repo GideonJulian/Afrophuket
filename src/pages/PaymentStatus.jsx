@@ -39,7 +39,7 @@ const PaymentStatus = () => {
 
           // ✅ Call backend to finalize ticket purchase
           await axios.post(
-            "https://afrophuket-backend-gr4j.onrender.com/api/tickets/complete/",
+            "https://afrophuket-backend-gr4j.onrender.com/events/tickets/complete/",
             {
               transaction_id: transactionId,
               ...storedMeta,
