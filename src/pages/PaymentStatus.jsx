@@ -70,6 +70,7 @@ const PaymentStatus = () => {
           <h1 className="text-3xl font-bold text-white mb-2">
             AFRO<span className="text-orange-500">PHUKET</span>
           </h1>
+
           <p className="text-gray-400">Payment Processing</p>
         </div>
 
@@ -82,6 +83,7 @@ const PaymentStatus = () => {
           <p className={`text-xl font-semibold ${getStatusColor()}`}>
             {message}
           </p>
+          <p>Please check Your email for Your Tickets </p>
         </div>
 
         {/* Success - Ticket Summary */}
