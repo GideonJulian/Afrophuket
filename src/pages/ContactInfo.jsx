@@ -58,6 +58,9 @@ const ContactInfo = () => {
       const payload = {
         amount: state.total,
         type,
+        name,
+        email,
+        phone,
         metadata,
       };
 
