@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 function Payment() {
   const { id } = useParams();
@@ -32,10 +33,10 @@ function Payment() {
     0
   );
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (selectedTickets.length === 0) return;
 
-    const selected = selectedTickets.map((ticket) => ({
+    const items = selectedTickets.map((ticket) => ({
       ticket_id: ticket.id,
       name: ticket.name,
       price: ticket.price,
@@ -43,18 +44,35 @@ function Payment() {
       subtotal: parseFloat(ticket.price) * quantities[ticket.id],
     }));
 
-    const selection = {
-      source: event ? "event" : "cart",
-      eventId: event?.id || null,
-      eventName: event ? event.title : "Cart Checkout",
-      tickets: selected,
-      total,
+    const payload = {
+      amount: total,
+      name: location.state?.customerName || "Guest",
+      email: location.state?.customerEmail || "guest@example.com",
+      phone: location.state?.customerPhone || "",
+      type: event ? "ticket" : "product",
+      metadata: event
+        ? { event_id: event.id, tickets: items }
+        : { products: items },
     };
 
-    if (event) {
-      navigate(`/payment/${id}/contactinfo`, { state: selection });
-    } else {
-      navigate(`/checkout/contactinfo`, { state: selection });
+    try {
+      // Call backend to create Flutterwave payment session
+      const res = await axios.post(
+        "https://afrophuket-backend-gr4j.onrender.com/api/payments/initiate/",
+        payload
+      );
+
+      const { payment_url } = res.data;
+
+      if (payment_url) {
+        // Redirect user to Flutterwave checkout
+        window.location.href = payment_url;
+      } else {
+        alert("Failed to initiate payment. Please try again.");
+      }
+    } catch (err) {
+      console.error("Payment initiation error:", err);
+      alert("Error initiating payment. Check console for details.");
     }
   };
 
@@ -173,7 +191,7 @@ function Payment() {
                   disabled={selectedTickets.length === 0}
                   className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  CONTINUE
+                  PAY NOW
                 </button>
               </div>
             </div>
