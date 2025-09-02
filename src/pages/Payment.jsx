@@ -37,15 +37,20 @@ function Payment() {
       return;
     }
 
+    // Determine type: ticket vs product
+    const type = event ? "ticket" : "product";
+
+    const payloadItems = selectedItems.map((item) => ({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: quantities[item.id],
+      subtotal: parseFloat(item.price) * quantities[item.id],
+    }));
+
     navigate(`contactinfo`, {
       state: {
-        tickets: selectedItems.map((t) => ({
-          ticket_id: t.id,
-          name: t.name,
-          price: t.price,
-          quantity: quantities[t.id],
-          subtotal: parseFloat(t.price) * quantities[t.id],
-        })),
+        [type === "ticket" ? "tickets" : "products"]: payloadItems,
         total,
         eventId: event?.id || null,
         eventName: event?.title || "Your Purchase",

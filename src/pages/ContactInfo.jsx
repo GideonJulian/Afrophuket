@@ -8,11 +8,14 @@ const ContactInfo = () => {
   const { state } = useLocation();
   const [loading, setLoading] = useState(false);
 
-  if (!state || !state.tickets || state.tickets.length === 0) {
+  if (!state || (!state.tickets && !state.products)) {
     return (
       <p className="p-6">No payment data found. Please return to checkout.</p>
     );
   }
+
+  const items = state.tickets || state.products || [];
+  const type = state.tickets ? "ticket" : "product";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,14 +27,12 @@ const ContactInfo = () => {
       const email = formData.get("email");
       const phone = formData.get("phone");
 
-      const type = state.eventId ? "ticket" : "product";
-
       const metadata =
         type === "ticket"
           ? {
               event_id: state.eventId,
-              tickets: state.tickets.map((t) => ({
-                ticket_id: t.ticket_id,
+              tickets: items.map((t) => ({
+                id: t.id,
                 name: t.name,
                 price: t.price,
                 quantity: t.quantity,
@@ -39,8 +40,8 @@ const ContactInfo = () => {
               })),
             }
           : {
-              products: state.tickets.map((p) => ({
-                product_id: p.ticket_id,
+              products: items.map((p) => ({
+                id: p.id,
                 name: p.name,
                 price: p.price,
                 quantity: p.quantity,
@@ -67,12 +68,12 @@ const ContactInfo = () => {
 
       if (paymentLink) {
         sessionStorage.setItem(
-          "ticketMeta",
+          "paymentMeta",
           JSON.stringify({
             name,
             email,
             phone,
-            tickets: state.tickets,
+            items,
             total: state.total,
             eventName: state.eventName,
           })
@@ -110,7 +111,7 @@ const ContactInfo = () => {
         <form id="contactForm" className="space-y-4" onSubmit={handleSubmit}>
           <div className="border rounded-xl p-4 flex items-center">
             <CircleAlert className="mr-3" />
-            Tickets will only be sent to the email address you provide here.
+            Items will only be sent to the email address you provide here.
           </div>
 
           <div>
@@ -159,15 +160,15 @@ const ContactInfo = () => {
         {/* Summary */}
         <div className="bg-black p-6 shadow-lg rounded-2xl">
           <h2 className="font-bold text-lg text-center">
-            {state?.eventName || "Event"}
+            {state?.eventName || "Your Purchase"}
           </h2>
           <div className="flex flex-col gap-6 mt-8">
-            {state.tickets.map((ticket) => (
-              <div key={ticket.ticket_id} className="flex justify-between">
+            {items.map((item) => (
+              <div key={item.id} className="flex justify-between">
                 <span>
-                  {ticket.quantity} × {ticket.name}
+                  {item.quantity} × {item.name}
                 </span>
-                <span>₦{ticket.subtotal.toLocaleString()}</span>
+                <span>₦{item.subtotal.toLocaleString()}</span>
               </div>
             ))}
             <div className="flex justify-between font-bold mt-4">

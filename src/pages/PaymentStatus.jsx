@@ -34,11 +34,13 @@ const PaymentStatus = () => {
           setStatus("success");
           setMessage("Payment successful!");
 
+          const items = data.metadata?.tickets || data.metadata?.products || [];
+
           setSelection({
             name: data.buyer_name || "",
             email: data.buyer_email || "",
             phone: data.buyer_phone || "",
-            tickets: data.metadata?.tickets || data.metadata?.products || [],
+            items,
             total: data.amount,
             eventName: data.metadata?.event_id
               ? `Event #${data.metadata.event_id}`
@@ -116,19 +118,19 @@ const PaymentStatus = () => {
               </div>
             )}
 
-            {selection.tickets.length > 0 && (
+            {selection.items.length > 0 && (
               <div className="mb-6">
                 <h3 className="font-bold text-white mb-4 text-lg">
                   Your Items
                 </h3>
                 <div className="space-y-3">
-                  {selection.tickets.map((item, i) => (
+                  {selection.items.map((item, i) => (
                     <div
                       key={i}
                       className="flex justify-between items-center py-3 px-4 bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/20"
                     >
                       <span className="text-gray-300 font-medium">
-                        {item.quantity} × {item.name || item.product_name}
+                        {item.quantity} × {item.name}
                       </span>
                       <span className="font-bold text-white text-lg">
                         ₦
