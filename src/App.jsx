@@ -96,10 +96,26 @@ const route = createBrowserRouter([
   {
     path: "payment-status",
     element: <PaymentStatus />,
-  },{
-    path: 'confirmation',
-    element: <Comfirmation />
-  }
+  },
+  {
+    path: "confirmation",
+    element: <Comfirmation />,
+  },
+
+  // Cart based check out
+  {
+    path: "checkout",
+    element: <CheckLayo ut />,
+    children: [
+      { index: true, element: <Payment /> }, // step 1
+      { path: "contactinfo", element: <ContactInfo /> }, // step 2
+      { path: "confirmation", element: <Comfirmation /> }, // step 3
+    ],
+  },
+  {
+    path: "payment-status",
+    element: <PaymentStatus />,
+  },
 ]);
 
 function App() {
