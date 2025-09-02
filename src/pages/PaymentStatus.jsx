@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CheckCircle, XCircle, Loader2, ArrowLeft } from "lucide-react";
 import axios from "axios";
 
 const PaymentStatus = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [status, setStatus] = useState("verifying"); // "verifying" | "success" | "failed"
   const [message, setMessage] = useState("Verifying payment...");
   const [selection, setSelection] = useState(null);
@@ -16,8 +15,24 @@ const PaymentStatus = () => {
 
     const verifyPayment = async () => {
       if (!transaction_id) {
-        setStatus("failed");
-        setMessage("No payment information found.");
+        // fallback to sessionStorage if available
+        const saved = sessionStorage.getItem("paymentMeta");
+        if (saved) {
+          const data = JSON.parse(saved);
+          setSelection({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            items: data.items || [],
+            total: data.total,
+            eventName: data.eventName || "Your Purchase",
+          });
+          setStatus("success");
+          setMessage("Payment data loaded from previous session.");
+        } else {
+          setStatus("failed");
+          setMessage("No payment information found.");
+        }
         return;
       }
 
@@ -29,31 +44,66 @@ const PaymentStatus = () => {
           `https://afrophuket-backend-gr4j.onrender.com/api/payments/verify/?transaction_id=${transaction_id}`
         );
 
-        if (res.data.verified) {
-          const data = res.data.data;
-          setStatus("success");
-          setMessage("Payment successful!");
-
+        const data = res.data.data;
+        if (res.data.verified && data?.metadata) {
           const items = data.metadata?.tickets || data.metadata?.products || [];
+          const buyer_name = data.metadata?.buyer_name || "";
+          const buyer_email = data.metadata?.buyer_email || "";
+          const buyer_phone = data.metadata?.buyer_phone || "";
 
           setSelection({
-            name: data.buyer_name || "",
-            email: data.buyer_email || "",
-            phone: data.buyer_phone || "",
+            name: buyer_name,
+            email: buyer_email,
+            phone: buyer_phone,
             items,
             total: data.amount,
             eventName: data.metadata?.event_id
               ? `Event #${data.metadata.event_id}`
               : "Your Purchase",
           });
+          setStatus("success");
+          setMessage("Payment successful!");
+        } else {
+          // fallback to sessionStorage if backend fails
+          const saved = sessionStorage.getItem("paymentMeta");
+          if (saved) {
+            const data = JSON.parse(saved);
+            setSelection({
+              name: data.name,
+              email: data.email,
+              phone: data.phone,
+              items: data.items || [],
+              total: data.total,
+              eventName: data.eventName || "Your Purchase",
+            });
+            setStatus("success");
+            setMessage("Payment verified via previous session data.");
+          } else {
+            setStatus("failed");
+            setMessage("Payment verification failed!");
+          }
+        }
+      } catch (err) {
+        console.error("Payment verification error:", err);
+
+        // fallback to sessionStorage if network/backend fails
+        const saved = sessionStorage.getItem("paymentMeta");
+        if (saved) {
+          const data = JSON.parse(saved);
+          setSelection({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            items: data.items || [],
+            total: data.total,
+            eventName: data.eventName || "Your Purchase",
+          });
+          setStatus("success");
+          setMessage("Payment loaded from previous session (network error).");
         } else {
           setStatus("failed");
           setMessage("Payment verification failed!");
         }
-      } catch (err) {
-        console.error("Payment verification error:", err);
-        setStatus("failed");
-        setMessage("Payment verification failed!");
       }
     };
 

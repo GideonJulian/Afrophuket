@@ -38,6 +38,9 @@ const ContactInfo = () => {
                 quantity: t.quantity,
                 subtotal: t.subtotal,
               })),
+              buyer_name: name,
+              buyer_email: email,
+              buyer_phone: phone,
             }
           : {
               products: items.map((p) => ({
@@ -47,13 +50,13 @@ const ContactInfo = () => {
                 quantity: p.quantity,
                 subtotal: p.subtotal,
               })),
+              buyer_name: name,
+              buyer_email: email,
+              buyer_phone: phone,
             };
 
       const payload = {
         amount: state.total,
-        name,
-        email,
-        phone,
         type,
         metadata,
       };
@@ -64,7 +67,7 @@ const ContactInfo = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      const paymentLink = res.data.payment_url || res.data.payment_link;
+      const paymentLink = res.data.payment_link || res.data.payment_url;
 
       if (paymentLink) {
         sessionStorage.setItem(
@@ -107,7 +110,6 @@ const ContactInfo = () => {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Contact Form */}
         <form id="contactForm" className="space-y-4" onSubmit={handleSubmit}>
           <div className="border rounded-xl p-4 flex items-center">
             <CircleAlert className="mr-3" />
@@ -145,7 +147,6 @@ const ContactInfo = () => {
             />
           </div>
 
-          {/* Mobile Button */}
           <div className="mt-6 md:hidden">
             <button
               type="submit"
@@ -157,7 +158,6 @@ const ContactInfo = () => {
           </div>
         </form>
 
-        {/* Summary */}
         <div className="bg-black p-6 shadow-lg rounded-2xl">
           <h2 className="font-bold text-lg text-center">
             {state?.eventName || "Your Purchase"}
@@ -176,7 +176,6 @@ const ContactInfo = () => {
               <span>₦{state.total.toLocaleString()}</span>
             </div>
 
-            {/* Desktop Button */}
             <div className="relative inline-block mt-10 w-full hidden md:block">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
               <button
