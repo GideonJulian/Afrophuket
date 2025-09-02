@@ -35,6 +35,7 @@ function Payment() {
   const selectedTickets = ticketsData.filter(
     (ticket) => quantities[ticket.id] > 0
   );
+
   const total = selectedTickets.reduce(
     (sum, t) => sum + parseFloat(t.price) * quantities[t.id],
     0
@@ -49,12 +50,13 @@ function Payment() {
 
     const selection = {
       source: event ? "event" : "cart",
+      eventId: event ? event.id : null, // send event ID for ticket payments
       eventName: event ? event.title : "Cart Checkout",
       tickets: selected,
       total,
     };
 
-    // If from SingleTicket, keep event id in URL
+    // Navigate to contact info page
     if (event) {
       navigate(`/payment/${id}/contactinfo`, { state: selection });
     } else {
@@ -80,7 +82,7 @@ function Payment() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Tickets */}
+        {/* Tickets / Products */}
         <div className="space-y-6">
           {ticketsData.length === 0 ? (
             <p className="text-gray-400">

@@ -22,26 +22,44 @@ const ContactInfo = () => {
       const email = formData.get("email");
       const phone = formData.get("phone");
 
-      // Prepare payload for backend initiate
+      // Determine payment type
+      const paymentType = state.source === "cart" ? "product" : "ticket";
+
+      // Build metadata
+      const metadata =
+        paymentType === "cart"
+          ? {
+              products: state.tickets.map((t) => ({
+                product_id: t.id,
+                quantity: t.quantity,
+              })),
+            }
+          : {
+              event_id: state.eventId,
+              tickets: state.tickets.map((t) => ({
+                ticket_id: t.id,
+                quantity: t.quantity,
+              })),
+            };
+
+      // Prepare payload
       const payload = {
         amount: state.total,
         email,
         phone,
         name,
-        tickets: state.tickets, // send full ticket data
-        event_name: state.eventName,
+        type: paymentType,
+        metadata,
       };
 
       const res = await axios.post(
         "https://afrophuket-backend-gr4j.onrender.com/api/payments/initiate/",
         payload,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        { headers: { "Content-Type": "application/json" } }
       );
 
       if (res.data.payment_link) {
-        // Optionally save minimal metadata for client-side UX
+        // Save minimal metadata for client-side UX
         sessionStorage.setItem(
           "ticketMeta",
           JSON.stringify({
@@ -89,7 +107,8 @@ const ContactInfo = () => {
         <form id="contactForm" className="space-y-4" onSubmit={handleSubmit}>
           <div className="border rounded-xl p-4 flex items-center">
             <CircleAlert className="mr-3" />
-            Tickets will only be sent to the email address you provide here.
+            Tickets or products will only be sent to the email address you
+            provide here.
           </div>
           <div>
             <label className="block text-sm mb-2">Your name</label>
@@ -135,7 +154,7 @@ const ContactInfo = () => {
         {/* Summary */}
         <div className="bg-black p-6 shadow-lg rounded-2xl">
           <h2 className="font-bold text-lg text-center">
-            {state?.eventName || "Event"}
+            {state?.eventName || "Summary"}
           </h2>
 
           {state?.tickets?.length > 0 ? (
@@ -156,7 +175,7 @@ const ContactInfo = () => {
             </div>
           ) : (
             <p className="text-center text-gray-400 mt-6">
-              No ticket data available
+              No ticket or product data available
             </p>
           )}
 
