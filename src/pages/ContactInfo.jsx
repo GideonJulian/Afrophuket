@@ -6,14 +6,12 @@ import axios from "axios";
 const ContactInfo = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-
   const [loading, setLoading] = useState(false);
 
   if (!state) {
     return <p className="p-6">No ticket selected. Go back.</p>;
   }
 
-  // Handle Form Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -24,29 +22,26 @@ const ContactInfo = () => {
       const email = formData.get("email");
       const phone = formData.get("phone");
 
-      const amount = state.total;
-
+      // Prepare payload for backend initiate
       const payload = {
-        amount,
+        amount: state.total,
         email,
         phone,
         name,
+        tickets: state.tickets, // send full ticket data
+        event_name: state.eventName,
       };
 
       const res = await axios.post(
         "https://afrophuket-backend-gr4j.onrender.com/api/payments/initiate/",
         payload,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
-      console.log("Payment response:", res.data);
-
       if (res.data.payment_link) {
-        // Save ticket + user data for later use
+        // Optionally save minimal metadata for client-side UX
         sessionStorage.setItem(
           "ticketMeta",
           JSON.stringify({
@@ -54,7 +49,7 @@ const ContactInfo = () => {
             name,
             phone,
             tickets: state.tickets,
-            total: amount,
+            total: state.total,
             eventName: state.eventName,
           })
         );
@@ -101,7 +96,6 @@ const ContactInfo = () => {
             <input
               type="text"
               name="name"
-              placeholder=" "
               className="w-full border-b border-[#C2E7E77D] bg-transparent outline-none py-1"
               required
             />
@@ -111,7 +105,6 @@ const ContactInfo = () => {
             <input
               type="email"
               name="email"
-              placeholder=" "
               className="w-full border-b border-[#C2E7E77D] bg-transparent outline-none py-1"
               required
             />
@@ -127,7 +120,7 @@ const ContactInfo = () => {
             />
           </div>
 
-          {/* Mobile / default Pay Now button */}
+          {/* Mobile button */}
           <div className="mt-6 md:hidden">
             <button
               type="submit"
@@ -145,7 +138,7 @@ const ContactInfo = () => {
             {state?.eventName || "Event"}
           </h2>
 
-          {state?.tickets && state.tickets.length > 0 ? (
+          {state?.tickets?.length > 0 ? (
             <div className="flex flex-col gap-6 mt-8">
               {state.tickets.map((ticket) => (
                 <div key={ticket.id} className="flex justify-between">
@@ -167,7 +160,7 @@ const ContactInfo = () => {
             </p>
           )}
 
-          {/* Desktop Pay Now */}
+          {/* Desktop button */}
           <div className="relative inline-block mt-10 w-full hidden md:block">
             <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
             <button

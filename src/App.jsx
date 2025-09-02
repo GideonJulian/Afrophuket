@@ -105,7 +105,7 @@ const route = createBrowserRouter([
   // Cart based check out
   {
     path: "checkout",
-    element: <CheckLayo ut />,
+    element: <CheckLayout />,
     children: [
       { index: true, element: <Payment /> }, // step 1
       { path: "contactinfo", element: <ContactInfo /> }, // step 2
