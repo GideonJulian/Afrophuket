@@ -50,9 +50,19 @@ function Payment() {
       email: location.state?.customerEmail || "guest@example.com",
       phone: location.state?.customerPhone || "",
       type: event ? "ticket" : "product",
-      metadata: event
-        ? { event_id: event.id, tickets: items }
-        : { products: items },
+      metadata: {
+        user_name: location.state?.customerName || "Guest",
+        user_email: location.state?.customerEmail || "guest@example.com",
+        user_phone: location.state?.customerPhone || "",
+        tickets: selectedTickets.map((ticket) => ({
+          ticket_id: ticket.id,
+          name: ticket.name,
+          price: ticket.price,
+          quantity: quantities[ticket.id],
+          subtotal: parseFloat(ticket.price) * quantities[ticket.id],
+        })),
+        event_id: event?.id || null,
+      },
     };
 
     try {
