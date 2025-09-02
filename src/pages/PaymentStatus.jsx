@@ -35,9 +35,9 @@ const PaymentStatus = () => {
           setMessage("Payment successful!");
 
           setSelection({
-            name: data.buyer_name || data.customer?.name || "",
-            email: data.buyer_email || data.customer?.email || "",
-            phone: data.buyer_phone || data.customer?.phone || "",
+            name: data.buyer_name || "",
+            email: data.buyer_email || "",
+            phone: data.buyer_phone || "",
             tickets: data.metadata?.tickets || data.metadata?.products || [],
             total: data.amount,
             eventName: data.metadata?.event_id
