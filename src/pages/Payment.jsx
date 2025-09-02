@@ -31,61 +31,26 @@ function Payment() {
     0
   );
 
-  const handleContinue = async () => {
-    if (selectedItems.length === 0) return;
-
-    const type = event ? "ticket" : "product";
-
-    const payload = {
-      amount: total,
-      name: location.state?.customerName || "Guest",
-      email: location.state?.customerEmail || "guest@example.com",
-      phone: location.state?.customerPhone || "",
-      type,
-      metadata: {
-        user_name: location.state?.customerName || "Guest",
-        user_email: location.state?.customerEmail || "guest@example.com",
-        user_phone: location.state?.customerPhone || "",
-        ...(type === "ticket"
-          ? {
-              tickets: selectedItems.map((t) => ({
-                ticket_id: t.id,
-                name: t.name,
-                price: t.price,
-                quantity: quantities[t.id],
-                subtotal: parseFloat(t.price) * quantities[t.id],
-              })),
-              event_id: event?.id || null,
-            }
-          : {
-              products: selectedItems.map((p) => ({
-                product_id: p.id,
-                name: p.name,
-                price: p.price,
-                quantity: quantities[p.id],
-                subtotal: parseFloat(p.price) * quantities[p.id],
-              })),
-            }),
-      },
-    };
-
-    try {
-      const res = await axios.post(
-        "https://afrophuket-backend-gr4j.onrender.com/api/payments/initiate/",
-        payload
-      );
-
-      const payment_url = res.data.payment_url || res.data.payment_link;
-
-      if (payment_url) {
-        window.location.href = payment_url;
-      } else {
-        alert("❌ Failed to initiate payment. Try again.");
-      }
-    } catch (err) {
-      console.error("Payment initiation error:", err);
-      alert("❌ Error initiating payment. Check console for details.");
+  const handleContinue = () => {
+    if (selectedItems.length === 0) {
+      alert("❌ Please select at least one item to proceed.");
+      return;
     }
+
+    navigate(`contactinfo`, {
+      state: {
+        tickets: selectedItems.map((t) => ({
+          ticket_id: t.id,
+          name: t.name,
+          price: t.price,
+          quantity: quantities[t.id],
+          subtotal: parseFloat(t.price) * quantities[t.id],
+        })),
+        total,
+        eventId: event?.id || null,
+        eventName: event?.title || "Your Purchase",
+      },
+    });
   };
 
   return (
