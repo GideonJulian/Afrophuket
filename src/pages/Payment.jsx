@@ -11,84 +11,85 @@ function Payment() {
   const cart = useSelector((state) => state.cart.items);
 
   const event = location.state?.event;
-  const ticketsData = event ? event.tickets || [] : cart || [];
+  const itemsData = event ? event.tickets || [] : cart || [];
 
   const [quantities, setQuantities] = useState(
-    ticketsData.reduce((acc, ticket) => {
-      acc[ticket.id] = ticket.quantity || 0;
+    itemsData.reduce((acc, item) => {
+      acc[item.id] = item.quantity || 0;
       return acc;
     }, {})
   );
 
-  const handleQuantityChange = (ticketId, value) => {
-    setQuantities((prev) => ({ ...prev, [ticketId]: value }));
+  const handleQuantityChange = (itemId, value) => {
+    setQuantities((prev) => ({ ...prev, [itemId]: value }));
   };
 
-  const selectedTickets = ticketsData.filter(
-    (ticket) => quantities[ticket.id] > 0
-  );
+  const selectedItems = itemsData.filter((item) => quantities[item.id] > 0);
 
-  const total = selectedTickets.reduce(
+  const total = selectedItems.reduce(
     (sum, t) => sum + parseFloat(t.price) * quantities[t.id],
     0
   );
 
   const handleContinue = async () => {
-    if (selectedTickets.length === 0) return;
+    if (selectedItems.length === 0) return;
 
-    const items = selectedTickets.map((ticket) => ({
-      ticket_id: ticket.id,
-      name: ticket.name,
-      price: ticket.price,
-      quantity: quantities[ticket.id],
-      subtotal: parseFloat(ticket.price) * quantities[ticket.id],
-    }));
+    const type = event ? "ticket" : "product";
 
     const payload = {
       amount: total,
       name: location.state?.customerName || "Guest",
       email: location.state?.customerEmail || "guest@example.com",
       phone: location.state?.customerPhone || "",
-      type: event ? "ticket" : "product",
+      type,
       metadata: {
         user_name: location.state?.customerName || "Guest",
         user_email: location.state?.customerEmail || "guest@example.com",
         user_phone: location.state?.customerPhone || "",
-        tickets: selectedTickets.map((ticket) => ({
-          ticket_id: ticket.id,
-          name: ticket.name,
-          price: ticket.price,
-          quantity: quantities[ticket.id],
-          subtotal: parseFloat(ticket.price) * quantities[ticket.id],
-        })),
-        event_id: event?.id || null,
+        ...(type === "ticket"
+          ? {
+              tickets: selectedItems.map((t) => ({
+                ticket_id: t.id,
+                name: t.name,
+                price: t.price,
+                quantity: quantities[t.id],
+                subtotal: parseFloat(t.price) * quantities[t.id],
+              })),
+              event_id: event?.id || null,
+            }
+          : {
+              products: selectedItems.map((p) => ({
+                product_id: p.id,
+                name: p.name,
+                price: p.price,
+                quantity: quantities[p.id],
+                subtotal: parseFloat(p.price) * quantities[p.id],
+              })),
+            }),
       },
     };
 
     try {
-      // Call backend to create Flutterwave payment session
       const res = await axios.post(
         "https://afrophuket-backend-gr4j.onrender.com/api/payments/initiate/",
         payload
       );
 
-      const { payment_url } = res.data;
+      const payment_url = res.data.payment_url || res.data.payment_link;
 
       if (payment_url) {
-        // Redirect user to Flutterwave checkout
         window.location.href = payment_url;
       } else {
-        alert("Failed to initiate payment. Please try again.");
+        alert("❌ Failed to initiate payment. Try again.");
       }
     } catch (err) {
       console.error("Payment initiation error:", err);
-      alert("Error initiating payment. Check console for details.");
+      alert("❌ Error initiating payment. Check console for details.");
     }
   };
 
   return (
     <div className="p-4 md:p-8">
-      {/* Header */}
       <div className="flex items-center mb-6">
         <button onClick={() => navigate(-1)} className="flex items-center">
           <div className="flex items-center justify-center h-6 w-6 rounded-md bg-[#E55934]">
@@ -101,47 +102,46 @@ function Payment() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Tickets */}
         <div className="space-y-6">
-          {ticketsData.length === 0 ? (
+          {itemsData.length === 0 ? (
             <p className="text-gray-400">
               {event
                 ? "No tickets available for this event."
                 : "Cart is empty."}
             </p>
           ) : (
-            ticketsData.map((ticket) => (
+            itemsData.map((item) => (
               <div
-                key={ticket.id}
+                key={item.id}
                 className={`p-4 border rounded-2xl flex justify-between items-center transition-all duration-300 ${
-                  quantities[ticket.id] > 0
+                  quantities[item.id] > 0
                     ? "border-[#E55934]"
                     : "border-white/10"
                 }`}
               >
                 <div>
-                  <h2 className="font-bold text-xl">{ticket.name}</h2>
+                  <h2 className="font-bold text-xl">{item.name}</h2>
                   <p className="text-[#E55934] text-lg my-2">
-                    ₦{parseFloat(ticket.price).toLocaleString()}{" "}
-                    {ticket.max_per_customer && (
+                    ₦{parseFloat(item.price).toLocaleString()}{" "}
+                    {item.max_per_customer && (
                       <span className="text-white text-sm">
-                        max {ticket.max_per_customer} per customer
+                        max {item.max_per_customer} per customer
                       </span>
                     )}
                   </p>
-                  {ticket.description && (
-                    <p className="text-sm opacity-70">{ticket.description}</p>
+                  {item.description && (
+                    <p className="text-sm opacity-70">{item.description}</p>
                   )}
                 </div>
                 <div>
                   <select
                     className="px-4 py-2 bg-black border rounded-2xl"
-                    value={quantities[ticket.id]}
+                    value={quantities[item.id]}
                     onChange={(e) =>
-                      handleQuantityChange(ticket.id, Number(e.target.value))
+                      handleQuantityChange(item.id, Number(e.target.value))
                     }
                   >
-                    {[...Array((ticket.max_per_customer || 10) + 1).keys()].map(
+                    {[...Array((item.max_per_customer || 10) + 1).keys()].map(
                       (n) => (
                         <option key={n} value={n}>
                           {n}
@@ -155,7 +155,6 @@ function Payment() {
           )}
         </div>
 
-        {/* Summary */}
         <div className="space-y-4">
           <h1 className="font-bold text-2xl mt-6">Summary</h1>
           <div className="bg-black p-6 shadow-lg rounded-2xl">
@@ -166,23 +165,23 @@ function Payment() {
             </div>
 
             <div className="flex flex-col gap-6 mt-8">
-              {selectedTickets.length === 0 ? (
+              {selectedItems.length === 0 ? (
                 <p className="text-center text-gray-400">
                   Nothing selected yet
                 </p>
               ) : (
-                selectedTickets.map((ticket) => (
+                selectedItems.map((item) => (
                   <div
-                    key={ticket.id}
+                    key={item.id}
                     className="flex justify-between border-b border-white/10 pb-2"
                   >
                     <span>
-                      {quantities[ticket.id]} × {ticket.name}
+                      {quantities[item.id]} × {item.name}
                     </span>
                     <span>
                       ₦
                       {(
-                        parseFloat(ticket.price) * quantities[ticket.id]
+                        parseFloat(item.price) * quantities[item.id]
                       ).toLocaleString()}
                     </span>
                   </div>
@@ -198,7 +197,7 @@ function Payment() {
                 <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
                 <button
                   onClick={handleContinue}
-                  disabled={selectedTickets.length === 0}
+                  disabled={selectedItems.length === 0}
                   className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   PAY NOW

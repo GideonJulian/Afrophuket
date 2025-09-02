@@ -24,31 +24,35 @@ const ContactInfo = () => {
       const email = formData.get("email");
       const phone = formData.get("phone");
 
-      // Determine type
       const type = state.eventId ? "ticket" : "product";
 
-      // Prepare metadata
       const metadata =
         type === "ticket"
           ? {
               event_id: state.eventId,
               tickets: state.tickets.map((t) => ({
                 ticket_id: t.ticket_id,
+                name: t.name,
+                price: t.price,
                 quantity: t.quantity,
+                subtotal: t.subtotal,
               })),
             }
           : {
-              products: state.tickets.map((t) => ({
-                product_id: t.ticket_id,
-                quantity: t.quantity,
+              products: state.tickets.map((p) => ({
+                product_id: p.ticket_id,
+                name: p.name,
+                price: p.price,
+                quantity: p.quantity,
+                subtotal: p.subtotal,
               })),
             };
 
       const payload = {
         amount: state.total,
+        name,
         email,
         phone,
-        name,
         type,
         metadata,
       };
@@ -59,19 +63,21 @@ const ContactInfo = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      if (res.data.payment_link) {
+      const paymentLink = res.data.payment_url || res.data.payment_link;
+
+      if (paymentLink) {
         sessionStorage.setItem(
           "ticketMeta",
           JSON.stringify({
-            email,
             name,
+            email,
             phone,
             tickets: state.tickets,
             total: state.total,
             eventName: state.eventName,
           })
         );
-        window.location.href = res.data.payment_link;
+        window.location.href = paymentLink;
       } else {
         alert("❌ Payment link not returned. Try again.");
       }
@@ -108,7 +114,7 @@ const ContactInfo = () => {
           </div>
 
           <div>
-            <label className="block text-sm mb-2">Your name</label>
+            <label className="block text-sm mb-2">Your Name</label>
             <input
               type="text"
               name="name"
@@ -116,6 +122,7 @@ const ContactInfo = () => {
               required
             />
           </div>
+
           <div className="mt-5">
             <label className="block text-sm mb-2">Email</label>
             <input
@@ -125,6 +132,7 @@ const ContactInfo = () => {
               required
             />
           </div>
+
           <div className="mt-5">
             <label className="block text-sm mb-2">Phone Number</label>
             <input
@@ -136,7 +144,7 @@ const ContactInfo = () => {
             />
           </div>
 
-          {/* Mobile button */}
+          {/* Mobile Button */}
           <div className="mt-6 md:hidden">
             <button
               type="submit"
@@ -167,7 +175,7 @@ const ContactInfo = () => {
               <span>₦{state.total.toLocaleString()}</span>
             </div>
 
-            {/* Desktop button */}
+            {/* Desktop Button */}
             <div className="relative inline-block mt-10 w-full hidden md:block">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
               <button
