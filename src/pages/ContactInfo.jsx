@@ -1,16 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ChevronLeft, CircleAlert } from "lucide-react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const ContactInfo = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const location = useLocation();
+  const cart = useSelector((state) => state.cart.items);
+
   const [loading, setLoading] = useState(false);
 
-  if (!state) {
-    return <p className="p-6">No ticket selected. Go back.</p>;
-  }
+  // Use location state or fallback to cart
+  const state =
+    location.state ||
+    (cart.length
+      ? {
+          source: "cart",
+          eventName: "Cart Checkout",
+          tickets: cart.map((t) => ({
+            ticket_id: t.id,
+            name: t.name,
+            price: t.price,
+            quantity: t.quantity,
+            subtotal: parseFloat(t.price) * t.quantity,
+          })),
+          total: cart.reduce((sum, t) => sum + t.price * t.quantity, 0),
+        }
+      : null);
+
+  useEffect(() => {
+    if (!state || !state.tickets || state.tickets.length === 0) {
+      alert("No payment data found. Please return to checkout.");
+      navigate(-1);
+    }
+  }, [state, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,34 +46,27 @@ const ContactInfo = () => {
       const email = formData.get("email");
       const phone = formData.get("phone");
 
-      // Determine payment type
-      const paymentType = state.source === "cart" ? "product" : "ticket";
-
-      // Build metadata
-      const metadata =
-        paymentType === "cart"
-          ? {
-              products: state.tickets.map((t) => ({
-                product_id: t.id,
-                quantity: t.quantity,
-              })),
-            }
-          : {
-              event_id: state.eventId,
-              tickets: state.tickets.map((t) => ({
-                ticket_id: t.id,
-                quantity: t.quantity,
-              })),
-            };
-
-      // Prepare payload
       const payload = {
         amount: state.total,
         email,
         phone,
         name,
-        type: paymentType,
-        metadata,
+        type: state.source === "cart" ? "product" : "ticket",
+        metadata:
+          state.source === "cart"
+            ? {
+                products: state.tickets.map((t) => ({
+                  product_id: t.ticket_id,
+                  quantity: t.quantity,
+                })),
+              }
+            : {
+                event_id: state.eventId,
+                tickets: state.tickets.map((t) => ({
+                  ticket_id: t.ticket_id,
+                  quantity: t.quantity,
+                })),
+              },
       };
 
       const res = await axios.post(
@@ -59,7 +76,6 @@ const ContactInfo = () => {
       );
 
       if (res.data.payment_link) {
-        // Save minimal metadata for client-side UX
         sessionStorage.setItem(
           "ticketMeta",
           JSON.stringify({
@@ -71,8 +87,6 @@ const ContactInfo = () => {
             eventName: state.eventName,
           })
         );
-
-        // Redirect to Flutterwave checkout
         window.location.href = res.data.payment_link;
       } else {
         alert("❌ Payment link not returned. Try again.");
@@ -85,9 +99,10 @@ const ContactInfo = () => {
     }
   };
 
+  if (!state) return null;
+
   return (
     <div className="p-4 md:p-8">
-      {/* Header */}
       <div className="flex items-center mb-6">
         <button
           onClick={() => navigate(-1)}
@@ -103,12 +118,10 @@ const ContactInfo = () => {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Contact Form */}
         <form id="contactForm" className="space-y-4" onSubmit={handleSubmit}>
           <div className="border rounded-xl p-4 flex items-center">
             <CircleAlert className="mr-3" />
-            Tickets or products will only be sent to the email address you
-            provide here.
+            Tickets will only be sent to the email address you provide here.
           </div>
           <div>
             <label className="block text-sm mb-2">Your name</label>
@@ -139,7 +152,6 @@ const ContactInfo = () => {
             />
           </div>
 
-          {/* Mobile button */}
           <div className="mt-6 md:hidden">
             <button
               type="submit"
@@ -151,35 +163,23 @@ const ContactInfo = () => {
           </div>
         </form>
 
-        {/* Summary */}
         <div className="bg-black p-6 shadow-lg rounded-2xl">
           <h2 className="font-bold text-lg text-center">
-            {state?.eventName || "Summary"}
+            {state.eventName || "Event"}
           </h2>
-
-          {state?.tickets?.length > 0 ? (
-            <div className="flex flex-col gap-6 mt-8">
-              {state.tickets.map((ticket) => (
-                <div key={ticket.id} className="flex justify-between">
-                  <span>
-                    {ticket.quantity} × {ticket.name}
-                  </span>
-                  <span>₦{ticket.subtotal.toLocaleString()}</span>
-                </div>
-              ))}
-
-              <div className="flex justify-between font-bold mt-4">
-                <span>Total</span>
-                <span>₦{state.total.toLocaleString()}</span>
-              </div>
+          {state.tickets.map((ticket) => (
+            <div key={ticket.ticket_id} className="flex justify-between mt-4">
+              <span>
+                {ticket.quantity} × {ticket.name}
+              </span>
+              <span>₦{ticket.subtotal.toLocaleString()}</span>
             </div>
-          ) : (
-            <p className="text-center text-gray-400 mt-6">
-              No ticket or product data available
-            </p>
-          )}
+          ))}
+          <div className="flex justify-between font-bold mt-4">
+            <span>Total</span>
+            <span>₦{state.total.toLocaleString()}</span>
+          </div>
 
-          {/* Desktop button */}
           <div className="relative inline-block mt-10 w-full hidden md:block">
             <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
             <button

@@ -7,29 +7,20 @@ function Payment() {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-
-  // Case 1: coming from SingleTicket
-  const event = location.state?.event;
-
-  // Case 2: coming from Cart/Checkout
   const cart = useSelector((state) => state.cart.items);
 
-  // Choose the data source
-  const ticketsData = event ? event.tickets || [] : cart;
+  const event = location.state?.event;
+  const ticketsData = event ? event.tickets || [] : cart || [];
 
-  // Track quantity for each ticket
   const [quantities, setQuantities] = useState(
     ticketsData.reduce((acc, ticket) => {
-      acc[ticket.id] = ticket.quantity || 0; // preload cart quantities
+      acc[ticket.id] = ticket.quantity || 0;
       return acc;
     }, {})
   );
 
   const handleQuantityChange = (ticketId, value) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [ticketId]: value,
-    }));
+    setQuantities((prev) => ({ ...prev, [ticketId]: value }));
   };
 
   const selectedTickets = ticketsData.filter(
@@ -42,21 +33,24 @@ function Payment() {
   );
 
   const handleContinue = () => {
+    if (selectedTickets.length === 0) return;
+
     const selected = selectedTickets.map((ticket) => ({
-      ...ticket,
+      ticket_id: ticket.id,
+      name: ticket.name,
+      price: ticket.price,
       quantity: quantities[ticket.id],
       subtotal: parseFloat(ticket.price) * quantities[ticket.id],
     }));
 
     const selection = {
       source: event ? "event" : "cart",
-      eventId: event ? event.id : null, // send event ID for ticket payments
+      eventId: event?.id || null,
       eventName: event ? event.title : "Cart Checkout",
       tickets: selected,
       total,
     };
 
-    // Navigate to contact info page
     if (event) {
       navigate(`/payment/${id}/contactinfo`, { state: selection });
     } else {
@@ -68,10 +62,7 @@ function Payment() {
     <div className="p-4 md:p-8">
       {/* Header */}
       <div className="flex items-center mb-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center cursor-pointer"
-        >
+        <button onClick={() => navigate(-1)} className="flex items-center">
           <div className="flex items-center justify-center h-6 w-6 rounded-md bg-[#E55934]">
             <ChevronLeft className="text-black w-4 h-4" />
           </div>
@@ -82,7 +73,7 @@ function Payment() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Tickets / Products */}
+        {/* Tickets */}
         <div className="space-y-6">
           {ticketsData.length === 0 ? (
             <p className="text-gray-400">
@@ -145,6 +136,7 @@ function Payment() {
                 {event ? event.title : "Your Cart"}
               </h2>
             </div>
+
             <div className="flex flex-col gap-6 mt-8">
               {selectedTickets.length === 0 ? (
                 <p className="text-center text-gray-400">
