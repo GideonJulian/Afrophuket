@@ -26,11 +26,15 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState("tickets");
   const [editableEvent, setEditableEvent] = useState({});
   const [editing, setEditing] = useState(false);
-const { id: eventId } = useParams();
-  const navigate = useNavigate();
+  const [sales, setSales] = useState(null);
+  const [salesLoading, setSalesLoading] = useState(false);
+  const [salesError, setSalesError] = useState(null);
 
+  const { id: eventId } = useParams();
+  const navigate = useNavigate();
+  const token = import.meta.env.VITE_API_TOKEN;
   useEffect(() => {
-       const token = import.meta.env.VITE_API_TOKEN;
+    const token = import.meta.env.VITE_API_TOKEN;
 
     const fetchEvent = async () => {
       try {
@@ -68,11 +72,11 @@ const { id: eventId } = useParams();
       }
     };
     fetchEvent();
+    fetchSales();
   }, [id]);
 
   // ✅ Save handler
   const handleSave = async () => {
-    const token = localStorage.getItem("token");
     setSaving(true);
     try {
       const formData = new FormData();
@@ -125,10 +129,9 @@ const { id: eventId } = useParams();
   const handleInputChange = (field, value) => {
     setEditableEvent((prev) => ({ ...prev, [field]: value }));
   };
-const handleNavigate = () => {
-  navigate(`/dashboard/event/${id}/create-ticket`);
-};
-
+  const handleNavigate = () => {
+    navigate(`/dashboard/event/${id}/create-ticket`);
+  };
 
   const handleDelete = async (ticketId) => {
     const token = localStorage.getItem("token");
@@ -159,6 +162,37 @@ const handleNavigate = () => {
     }
   };
 
+  const fetchSales = async () => {
+    setSalesLoading(true);
+    try {
+      const res = await fetch(
+        `https://afrophuket-backend-gr4j.onrender.com/events/ticket-purchases/`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch ticket sales");
+      const data = await res.json();
+
+      const totalSold = data.length;
+      const scanned = data.filter((d) => d.is_scanned).length;
+      const notScanned = totalSold - scanned;
+
+      setSales({
+        ticketSold: totalSold,
+        ticketScanned: scanned,
+        notScanned: notScanned,
+      });
+    } catch (err) {
+      setSalesError(err.message);
+    } finally {
+      setSalesLoading(false);
+    }
+  };
   if (loading) return <AfroLoader />;
   if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
   if (!event)
@@ -546,7 +580,7 @@ const handleNavigate = () => {
           )}
         </div>
       ) : (
-        <SalesDetails />
+        <SalesDetails loading={salesLoading} error={salesError} data={sales} />
       )}
     </div>
   );

@@ -67,6 +67,7 @@ const TicketsList = ({
                 <div className="flex justify-between items-center relative">
                   <span className="text-sm text-gray-300">
                     {ticket?.quantity_sold}/{ticket?.quantity_available} Sold
+
                   </span>
                   <div className="flex items-center gap-2">
                     <button className="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded">
