@@ -107,7 +107,7 @@ const CreateEvent = () => {
       setEventData((prev) => ({ ...prev, id: createdEvent.id }));
 
       // ✅ Navigate to ticket page with eventId passed in state
-      navigate(`${createdEvent.id}/create-ticket`, { state: { eventId: createdEvent.id } });
+      navigate(`/${createdEvent.id}/create-ticket`, { state: { eventId: createdEvent.id } });
 
       setPopup({ show: true, type: "success", message: "Event Created ✅" });
     } catch (err) {
