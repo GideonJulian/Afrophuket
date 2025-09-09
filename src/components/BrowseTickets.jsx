@@ -9,6 +9,7 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
+
 const BrowseTickets = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -130,7 +131,7 @@ const BrowseTickets = () => {
             </motion.div>
 
             {/* View All Button */}
-            {!showAll && filteredEvents.length > 4 && (
+           
               <motion.div
                 className="flex items-center justify-center mt-10"
                 initial="hidden"
@@ -140,14 +141,14 @@ const BrowseTickets = () => {
                 <div className="relative inline-block m">
                   <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
                   <button
-                    onClick={() => setShowAll(true)}
+                    onClick={() => navigate('/event')}
                     className="relative text-sm font-semibold uppercase px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
                   >
                     VIEW ALL EVENTS
                   </button>
                 </div>
               </motion.div>
-            )}
+      
 
             {/* No Events Message */}
             {filteredEvents.length === 0 && (
