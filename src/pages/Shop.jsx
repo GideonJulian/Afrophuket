@@ -50,7 +50,7 @@ const Shop = () => {
     return 0;
   });
 
-  const displayedProducts = sortedProducts.slice(0, 3); // only 3
+  const displayedProducts = sortedProducts.slice(0, 4); // only 3
 
   const mobileSettings = {
     dots: true,
@@ -116,7 +116,7 @@ const Shop = () => {
           {/* Desktop view - only 3 items */}
           {!loading && (
             <motion.div
-              className="hidden sm:flex gap-4 justify-center mt-10"
+              className="hidden sm:grid grid-cols-3  justify-center mt-10"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}

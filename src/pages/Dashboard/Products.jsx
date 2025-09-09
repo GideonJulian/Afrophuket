@@ -18,7 +18,7 @@ const Products = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        "https://afrophuket-backend.onrender.com/products/",
+        "https://afrophuket-backend-gr4j.onrender.com/products/",
         {
           headers: {
             "Content-Type": "application/json",
