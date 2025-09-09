@@ -53,11 +53,16 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen, buttonText, route }) => {
         </div>
 
         {/* Button on Right Side */}
-        <div className="relative hidden md:block w-[280px]">
-          <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
+        <div className="relative inline-block group">
+          <span
+            className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 
+               transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+          ></span>
           <button
             onClick={handleNavigate}
-            className="relative w-[350px] sm:w-auto text-xs sm:text-sm md:text-base font-semibold uppercase cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-[1.03] transition-all duration-300"
+            className="relative inline-block whitespace-nowrap text-sm font-semibold uppercase 
+               px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md 
+               scale-105 transition-all duration-300 group-hover:scale-100"
           >
             {buttonText}
           </button>

@@ -355,12 +355,19 @@ const CreateEvent = () => {
             >
               Cancel
             </button>
-            <div className="relative w-full sm:w-auto">
-              <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
+            <div className="relative inline-block w-full sm:w-auto group">
+              <span
+                className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2
+               transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+              ></span>
               <button
                 onClick={validateAndProceed}
                 disabled={saving}
-                className="relative w-full text-sm md:text-base font-semibold uppercase px-4 sm:px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-[1.03] transition-all duration-300"
+                className="relative inline-block whitespace-nowrap w-full sm:w-auto 
+               text-sm md:text-base font-semibold uppercase px-4 sm:px-6 py-3 
+               bg-white text-black rounded-lg border-2 border-black shadow-md 
+               scale-105 transition-all duration-300 group-hover:scale-100
+               disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? "Wait..." : "CREATE TICKETS"}
               </button>
