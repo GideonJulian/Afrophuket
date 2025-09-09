@@ -48,7 +48,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem("token"); // ✅ Get token
       const res = await fetch(
-        `https://afrophuket-backend.onrender.com/events/${id}/`,
+        `https://afrophuket-backend-gr4j.onrender.com/events/${id}/`,
         {
           method: "DELETE",
           headers: {

@@ -5,6 +5,7 @@ import {
   CircleAlert,
   Clock,
   Globe,
+  ImagePlus,
   MapPin,
   Menu,
   NotebookPen,
@@ -99,7 +100,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
       }
 
       const response = await fetch(
-        `https://afrophuket-backend.onrender.com/events/${id}/`,
+        `https://afrophuket-backend-gr4j.onrender.com/events/${id}/`,
         {
           method: "UPDATE",
           headers: {
@@ -137,7 +138,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
     const token = localStorage.getItem("token");
     try {
       const res = await fetch(
-        `https://afrophuket-backend.onrender.com/events/tickets/${ticketId}/`,
+        `https://afrophuket-backend-gr4j.onrender.com/events/tickets/${ticketId}/`,
         {
           method: "DELETE",
           headers: {
@@ -292,7 +293,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
           <h1 className="font-bold text-xl sm:text-2xl">Event image</h1>{" "}
           <p className="text-sm font-extralight">Upload a JPEG or PNG file</p>{" "}
           <div className="mt-6 relative">
-            {" "}
+            {/* Event Image */}
             <img
               src={
                 editableEvent.thumbnail
@@ -301,7 +302,9 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
               }
               className="rounded-2xl w-full object-cover max-h-80 sm:max-h-[400px]"
               alt="Event thumbnail"
-            />{" "}
+            />
+
+            {/* Hidden File Input */}
             <input
               type="file"
               accept="image/*"
@@ -311,14 +314,17 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
                 const file = e.target.files[0];
                 if (file) handleInputChange("thumbnail", file);
               }}
-            />{" "}
+            />
+
+            {/* Centered Image Icon */}
             <label
               htmlFor="thumbnail-upload"
-              className="absolute bottom-4 right-4 bg-[#fff] p-3 rounded-full shadow-md hover:scale-105 transition cursor-pointer"
+              className="absolute inset-0 flex items-center justify-center cursor-pointer group"
             >
-              {" "}
-              <Upload className="text-[#E55934] w-5 h-5" />{" "}
-            </label>{" "}
+              <div className="bg-black/50 p-4 rounded-full  transition duration-300">
+                <ImagePlus className="text-white w-18 h-18" />
+              </div>
+            </label>
           </div>
           <div className="mt-5">
             {" "}
