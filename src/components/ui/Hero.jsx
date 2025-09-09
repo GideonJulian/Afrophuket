@@ -47,13 +47,18 @@ const Hero = () => {
           >
             World's best Afrobeat and Amapiano events
           </motion.p>
-          <div className="relative inline-block mt-10">
-            <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
+          <div className="relative inline-block m group">
+            <span
+              className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 
+               transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+            ></span>
             <button
-              onClick={() => navigate('/event')}
-              className="relative text-sm font-semibold cursor-pointer uppercase px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
+              onClick={() => navigate("/event")}
+              className="relative text-sm font-semibold uppercase px-6 py-3 
+               bg-white text-black rounded-lg border-2 border-black shadow-md 
+               scale-105 transition-all duration-300 group-hover:scale-100"
             >
-              Discover Events
+              DISCOVER EVENTS
             </button>
           </div>
         </motion.div>

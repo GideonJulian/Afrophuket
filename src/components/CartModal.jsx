@@ -93,7 +93,6 @@ const CartModal = ({ isOpen, onClose }) => {
                             </button>
                           </div>
                         </div>
-
                       </div>
                       {/* Remove Button */}
                       <div className="mt-3 md:mt-0 md:absolute md:right-0">
@@ -120,11 +119,16 @@ const CartModal = ({ isOpen, onClose }) => {
                   </button>
 
                   {/* Checkout Button */}
-                  <div className="relative md:w-1/2 w-full">
-                    <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 border-white"></span>
+                  <div className="relative md:w-1/2 w-full group">
+                    <span
+                      className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 
+               transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+                    ></span>
                     <button
                       onClick={() => navigate("/checkout")}
-                      className="relative w-full text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-105 transition-all duration-300"
+                      className="relative w-full text-sm font-semibold uppercase px-6 py-3 
+               bg-white text-black rounded-lg border-2 border-black shadow-md 
+               scale-103 transition-all duration-300 group-hover:scale-100"
                     >
                       Checkout (${getSubtotal().toFixed(2)})
                     </button>

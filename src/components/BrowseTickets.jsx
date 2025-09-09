@@ -9,38 +9,36 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-
 const BrowseTickets = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [locationFilter, setLocationFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [showAll, setShowAll] = useState(false);
-  const [toShow, setToShow] = useState(true)
+  const [toShow, setToShow] = useState(true);
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = import.meta.env.VITE_API_TOKEN;
-  fetch(  "https://afrophuket-backend-gr4j.onrender.com/events/", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token ? `Token ${token}` : "",
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (Array.isArray(data)) {
-        setEventData(data);
-      } else {
-        console.error("Expected array, got:", data);
-      }
+    fetch("https://afrophuket-backend-gr4j.onrender.com/events/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Token ${token}` : "",
+      },
     })
-    .catch((err) => console.error("Fetch error:", err))
-    .finally(() => setLoading(false));
-}, []);
-
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setEventData(data);
+        } else {
+          console.error("Expected array, got:", data);
+        }
+      })
+      .catch((err) => console.error("Fetch error:", err))
+      .finally(() => setLoading(false));
+  }, []);
 
   const filteredEvents = eventData.filter((event) => {
     const matchesLocation =
@@ -72,7 +70,12 @@ const BrowseTickets = () => {
     <div className="w-full">
       <div className="max-w-[1296px] mx-auto px-4">
         {/* Filter Section */}
-        <motion.div initial="hidden" animate="visible" variants={fadeUp} className="mb-6">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+          className="mb-6"
+        >
           <p className="text-[#F7F6F2]">Browse Events</p>
           <h1 className="font-bold text-2xl py-3">
             {locationFilter === "All" || locationFilter === ""
@@ -131,24 +134,28 @@ const BrowseTickets = () => {
             </motion.div>
 
             {/* View All Button */}
-           
-              <motion.div
-                className="flex items-center justify-center mt-10"
-                initial="hidden"
-                whileInView="visible"
-                variants={fadeUp}
-              >
-                <div className="relative inline-block m">
-                  <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 "></span>
-                  <button
-                    onClick={() => navigate('/event')}
-                    className="relative text-sm font-semibold uppercase px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md scale-105 hover:scale-110 transition-all duration-300"
-                  >
-                    VIEW ALL EVENTS
-                  </button>
-                </div>
-              </motion.div>
-      
+
+            <motion.div
+              className="flex items-center justify-center mt-10"
+              initial="hidden"
+              whileInView="visible"
+              variants={fadeUp}
+            >
+              <div className="relative inline-block m group">
+                <span
+                  className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 
+               transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+                ></span>
+                <button
+                  onClick={() => navigate("/event")}
+                  className="relative text-sm font-semibold uppercase px-6 py-3 
+               bg-white text-black rounded-lg border-2 border-black shadow-md 
+               scale-105 transition-all duration-300 group-hover:scale-100"
+                >
+                  VIEW ALL EVENTS
+                </button>
+              </div>
+            </motion.div>
 
             {/* No Events Message */}
             {filteredEvents.length === 0 && (
