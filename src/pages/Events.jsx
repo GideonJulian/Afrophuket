@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TicketCard from "../components/ui/TicketCard";
 import FeaturedEvents from "../components/FeaturedEvents";
 import AfroLoader from "../components/AfroLoader";
+import BrowseTickets from "../components/BrowseTickets";
 const token = import.meta.env.VITE_API_TOKEN;
 const Events = () => {
   const [eventData, setEventData] = useState([]);
@@ -65,17 +66,18 @@ const Events = () => {
               <AfroLoader />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {eventData.length > 0 ? (
-                eventData.map((event, idx) => (
-                  <TicketCard key={idx} event={event} />
-                ))
-              ) : (
-                <p className="text-white text-center">
-                  No events found or error loading.
-                </p>
-              )}
-            </div>
+            // <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            //   {eventData.length > 0 ? (
+            //     eventData.map((event, idx) => (
+            //       <TicketCard key={idx} event={event} />
+            //     ))
+            //   ) : (
+            //     <p className="text-white text-center">
+            //       No events found or error loading.
+            //     </p>
+            //   )}
+            // </div>
+            <BrowseTickets toShow={false}/>
           )}
         </div>
       </div>

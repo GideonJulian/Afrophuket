@@ -16,7 +16,7 @@ const BrowseTickets = () => {
   const [locationFilter, setLocationFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [showAll, setShowAll] = useState(false);
-
+  const [toShow, setToShow] = useState(true)
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const navigate = useNavigate();
 
