@@ -1,5 +1,5 @@
 import { ChevronLeft, Menu } from "lucide-react";
-import React, { useState, useEffect,  } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useCreateEvent } from "../../Context/CreateEventContext";
 import PopupNotification from "../../components/PopupNotification";
@@ -8,7 +8,7 @@ const CreateTicket = () => {
   const navigate = useNavigate();
   const { id: eventId } = useParams(); // ✅ Always comes from URL
   const { eventData, setEventData } = useCreateEvent();
-const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   // ✅ Resolve the correct eventId:
   const stateEventId = location.state?.eventId;
   const routeEventId = searchParams.get("event");
@@ -26,7 +26,7 @@ const [searchParams] = useSearchParams();
     name: "",
     quantityType: "Limited",
     quantity: "",
-    currency: "USD",
+    // currency: "USD",
     price: "",
     limit: "",
   });
@@ -123,7 +123,8 @@ const [searchParams] = useSearchParams();
       });
 
       // Navigate back after success
-      navigate(-1);
+      // Navigate back after success
+      navigate(`/dashboard/event/${eventId}`);
     } catch (error) {
       console.error(error);
       setPopup({
@@ -204,7 +205,7 @@ const [searchParams] = useSearchParams();
           </div>
 
           {/* Ticket Currency */}
-          <div>
+          {/* <div>
             <label className="block text-sm mb-1">Ticket Currency</label>
             <select
               name="currency"
@@ -217,7 +218,7 @@ const [searchParams] = useSearchParams();
               <option value="EUR">€ EUR</option>
               <option value="GBP">£ GBP</option>
             </select>
-          </div>
+          </div> */}
 
           {/* Ticket Price */}
           <div>

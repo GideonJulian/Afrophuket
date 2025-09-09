@@ -11,7 +11,7 @@ import {
 import { useCreateEvent } from "../../Context/CreateEventContext";
 import hostimg from "../../assets/images/hostimg.png";
 import PopupNotification from "../../components/PopupNotification";
-    const token = import.meta.env.VITE_API_TOKEN;
+const token = import.meta.env.VITE_API_TOKEN;
 const CreateEvent = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -107,7 +107,9 @@ const CreateEvent = () => {
       setEventData((prev) => ({ ...prev, id: createdEvent.id }));
 
       // ✅ Navigate to ticket page with eventId passed in state
-      navigate(`/${createdEvent.id}/create-ticket`, { state: { eventId: createdEvent.id } });
+      navigate(`/dashboard/event/${createdEvent.id}/create-ticket`, {
+        state: { eventId: createdEvent.id },
+      });
 
       setPopup({ show: true, type: "success", message: "Event Created ✅" });
     } catch (err) {
@@ -122,7 +124,6 @@ const CreateEvent = () => {
       setSaving(false);
     }
   };
-
 
   return (
     <div className="p-4 sm:p-3">
