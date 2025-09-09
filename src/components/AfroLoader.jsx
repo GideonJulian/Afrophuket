@@ -35,7 +35,7 @@ const AfroLoader = () => {
         className="mt-6 text-lg sm:text-xl font-medium tracking-wide"
         style={{ color: "#E55934" }}
       >
-        Loading Events
+        Loading 
       </h1>
     </div>
   );

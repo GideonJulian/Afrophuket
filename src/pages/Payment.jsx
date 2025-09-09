@@ -85,8 +85,7 @@ function Payment() {
                 key={item.id}
                 className={`p-4 border rounded-2xl flex justify-between items-center transition-all duration-300 ${
                   quantities[item.id] > 0
-                    ? "border-[#E55934]"
-                    : "border-white/10"
+                    
                 }`}
               >
                 <div>
