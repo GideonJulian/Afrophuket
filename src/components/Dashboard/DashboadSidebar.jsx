@@ -43,7 +43,7 @@ const DashboadSidebar = ({ activePath }) => {
     ${
       isActive
         ? "border-r-[5px] border-[#E55934] text-[#E55934]"
-        : "border-r-0 text-gray-600 hover:text-[#E55934]"
+        : "border-r-0 white hover:text-[#E55934]"
     }
     `
               }
