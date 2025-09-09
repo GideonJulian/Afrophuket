@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import ProductCard from "../components/ui/ProductCard";
 import { motion } from "framer-motion";
-
+import { useCurrency } from "../Hooks/useCurrency";
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: {
@@ -15,14 +15,14 @@ const fadeUp = {
 const Shop = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { convert, symbol } = useCurrency();
   useEffect(() => {
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
     fetch("https://afrophuket-backend-gr4j.onrender.com/products/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token ? `Token ${token}` : "", 
+        Authorization: token ? `Token ${token}` : "",
       },
     })
       .then((res) => res.json())
@@ -128,7 +128,8 @@ const Shop = () => {
                   id={item.id}
                   imgSrc={item.image}
                   name={item.title}
-                  price={item.price}
+                  // ✅ convert raw USD into actual currency value
+                  price={`${symbol}${convert(item.price)}`}
                 />
               ))}
             </motion.div>
@@ -144,7 +145,7 @@ const Shop = () => {
                       imgSrc={item.image_url}
                       id={item.id}
                       name={item.title}
-                      price={item.price}
+                      price={`${symbol}${convert(item.price)}`}
                     />
                   </div>
                 ))}

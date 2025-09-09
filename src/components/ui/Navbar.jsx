@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search, ShoppingCart, X } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrency } from "../../Slice/currencySlice"; 
 
 const Navbar = ({ openCart }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
-  const totalItems = cartItems.length
+  const totalItems = cartItems.length;
+
+  const dispatch = useDispatch();
+  const { selected } = useSelector((state) => state.currency);
 
   const navLinks = [
     { text: "DISCOVER EVENTS", path: "/event" },
@@ -14,6 +18,7 @@ const Navbar = ({ openCart }) => {
     { text: "CONTACT US", path: "/contact" },
     { text: "SHOP", path: "/shop" },
   ];
+
   return (
     <>
       {/* Top Navbar */}
@@ -27,44 +32,23 @@ const Navbar = ({ openCart }) => {
 
         {/* Desktop Links */}
         <ul className="hidden md:flex items-center justify-center ml-40 gap-6">
-          <li>
-            <Link
-              to="/event"
-              className="hover:text-[#E55934] transition-colors duration-300"
-            >
-              Discover Events
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/about"
-              className="hover:text-[#E55934] transition-colors duration-300"
-            >
-              About Us
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/contact"
-              className="hover:text-[#E55934] transition-colors duration-300"
-            >
-              Contact Us
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/shop"
-              className="hover:text-[#E55934] transition-colors duration-300"
-            >
-              Shop
-            </Link>
-          </li>
+          {navLinks.map(({ text, path }) => (
+            <li key={text}>
+              <Link
+                to={path}
+                className="hover:text-[#E55934] transition-colors duration-300"
+              >
+                {text}
+              </Link>
+            </li>
+          ))}
         </ul>
 
-        {/* Right Side Buttons */}
+        {/* Right Side */}
         <div className="flex items-center gap-4">
-          {/* Desktop: Button + Cart */}
+          {/* Desktop: Cart + Search + Currency */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Cart */}
             <div className="relative">
               <ShoppingCart
                 color="#ffffff"
@@ -83,6 +67,7 @@ const Navbar = ({ openCart }) => {
               )}
             </div>
 
+            {/* Search */}
             <div className="relative">
               <Search className="absolute top-[13px] left-3" size={18} />
               <input
@@ -90,9 +75,21 @@ const Navbar = ({ openCart }) => {
                 placeholder="Find events..."
               />
             </div>
+
+            {/* Currency Dropdown */}
+            <select
+              value={selected}
+              onChange={(e) => dispatch(setCurrency(e.target.value))}
+              className="bg-black text-white border border-white px-2 py-1 rounded cursor-pointer"
+            >
+              <option value="USD">USD ($)</option>
+              <option value="NGN">NGN (₦)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+            </select>
           </div>
 
-          {/* Mobile: Cart + Menu Toggle */}
+          {/* Mobile: Cart + Menu */}
           <div className="md:hidden flex items-center gap-3">
             <div className="relative">
               <ShoppingCart

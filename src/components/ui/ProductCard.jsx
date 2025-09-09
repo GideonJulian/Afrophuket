@@ -10,7 +10,7 @@ const ProductCard = ({ imgSrc, name, price, id }) => {
     const product = {
       id,
       name,
-      price: Number(price),
+      price, // ✅ already converted before passing in
       image: imgSrc,
     };
 
@@ -39,7 +39,7 @@ const ProductCard = ({ imgSrc, name, price, id }) => {
       </div>
       <div className="text-center mt-4">
         <h1 className="font-bold text-white text-lg">{name}</h1>
-        <h1 className="font-bold text-white text-lg">${price}</h1>
+        <h1 className="font-bold text-white text-lg">{price}</h1>
       </div>
     </div>
   );

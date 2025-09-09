@@ -3,13 +3,21 @@ import React from "react";
 import { Calendar, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useCurrency } from "../../Hooks/useCurrency"; // 👈 import the hook
 
 const TicketCard = ({ event }) => {
   const navigate = useNavigate();
+  const { convert, symbol } = useCurrency(); // 👈 get conversion + symbol
 
   const handleClick = () => {
     navigate(`/ticket/${event.id}`);
   };
+
+  // Find the lowest ticket price in USD
+  const lowestPriceUSD =
+    event.tickets.length > 0
+      ? Math.min(...event.tickets.map((ticket) => parseFloat(ticket.price)))
+      : null;
 
   return (
     <motion.div
@@ -28,14 +36,15 @@ const TicketCard = ({ event }) => {
           <MapPin className="w-4 h-4" />
           {event.location}
         </h2>
+
+        {/* 👇 Show converted price */}
         <h2 className="mt-6 text-[#FC6435] text-sm font-medium">
-          {event.tickets.length > 0
-            ? `$${Math.min(
-                ...event.tickets.map((ticket) => parseFloat(ticket.price))
-              )}`
+          {lowestPriceUSD !== null
+            ? `${symbol} ${convert(lowestPriceUSD)}`
             : "No tickets"}
         </h2>
       </div>
+
       <motion.div
         className="w-24 h-24 flex-shrink-0"
         initial={{ scale: 0.9 }}

@@ -8,11 +8,13 @@ import {
 } from "../Slice/cartSlice";
 import { Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useCurrency } from "../Hooks/useCurrency";
 
 const CartModal = ({ isOpen, onClose }) => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { convert, format, symbol } = useCurrency();
 
   const getSubtotal = () =>
     cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -41,7 +43,7 @@ const CartModal = ({ isOpen, onClose }) => {
               <p className="text-gray-400">Your cart is currently empty.</p>
             ) : (
               <>
-                <div className="space-y-6 max-h-[320px] overflow-y-auto  pr-2">
+                <div className="space-y-6 max-h-[320px] overflow-y-auto pr-2">
                   {cartItems.map((item) => (
                     <div
                       key={item.id}
@@ -57,7 +59,8 @@ const CartModal = ({ isOpen, onClose }) => {
                       <div className="flex-1 ">
                         <h3 className="text-lg font-semibold">{item.name}</h3>
                         <p className="text-sm mt-1">
-                          {item.quantity} x ${Number(item.price).toFixed(2)}
+                          {item.quantity} x {symbol}
+                          {format(convert(item.price))}
                         </p>
 
                         {/* Size and Quantity */}
@@ -130,7 +133,8 @@ const CartModal = ({ isOpen, onClose }) => {
                bg-white text-black rounded-lg border-2 border-black shadow-md 
                scale-103 transition-all duration-300 group-hover:scale-100"
                     >
-                      Checkout (${getSubtotal().toFixed(2)})
+                      Checkout ({symbol}
+                      {format(convert(getSubtotal()))})
                     </button>
                   </div>
                 </div>
