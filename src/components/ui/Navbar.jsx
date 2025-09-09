@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const Navbar = ({ openCart }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalItems = cartItems.length
 
   const navLinks = [
     { text: "DISCOVER EVENTS", path: "/event" },
