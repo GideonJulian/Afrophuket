@@ -1,10 +1,11 @@
+// currencySlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Fetch exchange rates (base: USD)
 export const fetchRates = createAsyncThunk("currency/fetchRates", async () => {
-  const res = await axios.get("https://api.exchangerate.host/latest?base=USD");
-  return res.data.rates;
+  const res = await axios.get("https://api.frankfurter.app/latest?from=USD");
+  return res.data.rates; // returns { EUR: 0.92, GBP: 0.78, NGN: 1600, ... }
 });
 
 const currencySlice = createSlice({
@@ -26,7 +27,8 @@ const currencySlice = createSlice({
       })
       .addCase(fetchRates.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.rates = action.payload;
+        // add USD:1 since API only returns other currencies
+        state.rates = { USD: 1, ...action.payload };
       })
       .addCase(fetchRates.rejected, (state) => {
         state.status = "failed";

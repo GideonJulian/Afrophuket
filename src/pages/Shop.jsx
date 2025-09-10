@@ -15,7 +15,7 @@ const fadeUp = {
 const Shop = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { convert, symbol } = useCurrency();
+  const { convert, symbol, format } = useCurrency();
   useEffect(() => {
     const token = localStorage.getItem("token");
     fetch("https://afrophuket-backend-gr4j.onrender.com/products/", {
@@ -128,8 +128,8 @@ const Shop = () => {
                   id={item.id}
                   imgSrc={item.image}
                   name={item.title}
-                  // ✅ convert raw USD into actual currency value
-                  price={`${symbol}${convert(item.price)}`}
+                  rawPrice={item.price}
+                  price={`${symbol}${format(convert(item.price))}`}
                 />
               ))}
             </motion.div>
@@ -142,10 +142,12 @@ const Shop = () => {
                 {displayedProducts.map((item, index) => (
                   <div key={index} className="px-2">
                     <ProductCard
-                      imgSrc={item.image_url}
+                      key={index}
                       id={item.id}
+                      imgSrc={item.image}
                       name={item.title}
-                      price={`${symbol}${convert(item.price)}`}
+                      rawPrice={item.price}
+                      price={`${symbol}${format(convert(item.price))}`}
                     />
                   </div>
                 ))}

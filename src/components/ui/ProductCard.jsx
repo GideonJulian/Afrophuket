@@ -3,14 +3,14 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Slice/cartSlice";
 
-const ProductCard = ({ imgSrc, name, price, id }) => {
+const ProductCard = ({ imgSrc, name, price, id, rawPrice }) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
     const product = {
       id,
       name,
-      price, // ✅ already converted before passing in
+      price: Number(rawPrice), // store raw USD price
       image: imgSrc,
     };
 

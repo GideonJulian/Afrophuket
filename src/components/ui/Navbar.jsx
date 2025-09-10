@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search, ShoppingCart, X } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrency } from "../../Slice/currencySlice"; 
+import { setCurrency } from "../../Slice/currencySlice";
 
 const Navbar = ({ openCart }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -139,9 +139,10 @@ const Navbar = ({ openCart }) => {
       )}
 
       {/* Mobile Menu */}
+      {/* Mobile Menu */}
       <div
         className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
-          menuOpen ? "h-[400px] opacity-100 -mt-14" : "h-0 opacity-0"
+          menuOpen ? "h-[480px] opacity-100 -mt-4" : "h-0 opacity-0"
         }`}
       >
         <div
@@ -149,6 +150,7 @@ const Navbar = ({ openCart }) => {
             menuOpen ? "opacity-100" : "opacity-0"
           } p-6 py-7`}
         >
+          {/* Search Input */}
           <div className="mt-8 relative">
             <Search className="absolute top-3 left-2" size={24} />
             <input
@@ -157,6 +159,7 @@ const Navbar = ({ openCart }) => {
             />
           </div>
 
+          {/* Navigation Links */}
           <ul className="flex flex-col gap-4 text-lg pt-4 pb-7">
             {navLinks.map(({ text, path }) => (
               <li key={text}>
@@ -170,6 +173,23 @@ const Navbar = ({ openCart }) => {
               </li>
             ))}
           </ul>
+
+          {/* Currency Dropdown for Mobile */}
+          <div className="pt-4">
+            <select
+              value={selected}
+              onChange={(e) => {
+                dispatch(setCurrency(e.target.value));
+                setMenuOpen(false);
+              }}
+              className="w-full bg-black text-white border border-white px-3 py-2 rounded cursor-pointer text-lg"
+            >
+              <option value="USD">USD ($)</option>
+              <option value="NGN">NGN (₦)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+            </select>
+          </div>
         </div>
       </div>
     </>

@@ -1,4 +1,9 @@
+import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchRates } from "./Slice/currencySlice"; // ✅ import fetchRates
+
+// layouts & pages
 import Layouts from "./layouts/Layouts";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -13,22 +18,19 @@ import CreateEvent from "./pages/Dashboard/CreateEvent";
 import CreateTicket from "./pages/Dashboard/CreateTicket";
 import AuthPage from "./pages/Register";
 import ProtectedRoute from "./utils/ProtectedRoute";
-
 import { CreateEventProvider } from "./Context/CreateEventContext";
 import Products from "./pages/Dashboard/Products";
 import CreateProduct from "./pages/Dashboard/CreateProduct";
 import SingleProduct from "./pages/Dashboard/SingleProduct";
 import TicketsList from "./pages/Dashboard/TicketsList";
 import PaymentStatus from "./pages/PaymentStatus";
-
 import SalesDetails from "./components/Dashboard/SalesDetails";
 import CheckLayout from "./layouts/CheckLayout";
-
-// 🆕 dummy payment pages
 import Payment from "./pages/Payment";
 import ContactInfo from "./pages/ContactInfo";
 import Comfirmation from "./pages/Comfirmation";
 
+// ✅ define routes
 const route = createBrowserRouter([
   {
     path: "/",
@@ -42,10 +44,7 @@ const route = createBrowserRouter([
       { path: "event", element: <Events /> },
     ],
   },
-  {
-    path: "auth",
-    element: <AuthPage />,
-  },
+  { path: "auth", element: <AuthPage /> },
   {
     path: "dashboard",
     element: (
@@ -86,39 +85,34 @@ const route = createBrowserRouter([
     ],
   },
   {
-    path: "payment/:id", // first step (payment details)
+    path: "payment/:id",
     element: <CheckLayout />,
     children: [
       { index: true, element: <Payment /> },
-      { path: "contactinfo", element: <ContactInfo /> }, // next step
+      { path: "contactinfo", element: <ContactInfo /> },
     ],
   },
-  {
-    path: "payment-status",
-    element: <PaymentStatus />,
-  },
-  {
-    path: "confirmation",
-    element: <Comfirmation />,
-  },
-
-  // Cart based check out
+  { path: "payment-status", element: <PaymentStatus /> },
+  { path: "confirmation", element: <Comfirmation /> },
   {
     path: "checkout",
     element: <CheckLayout />,
     children: [
-      { index: true, element: <Payment /> }, // step 1
-      { path: "contactinfo", element: <ContactInfo /> }, // step 2
-      { path: "confirmation", element: <Comfirmation /> }, // step 3
+      { index: true, element: <Payment /> },
+      { path: "contactinfo", element: <ContactInfo /> },
+      { path: "confirmation", element: <Comfirmation /> },
     ],
-  },
-  {
-    path: "payment-status",
-    element: <PaymentStatus />,
   },
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+
+  // ✅ fetch exchange rates when app starts
+  useEffect(() => {
+    dispatch(fetchRates());
+  }, [dispatch]);
+
   return <RouterProvider router={route} />;
 }
 
