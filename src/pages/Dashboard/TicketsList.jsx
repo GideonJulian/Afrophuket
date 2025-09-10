@@ -55,7 +55,7 @@ const TicketsList = ({
                 {/* Row 1: Name + Price */}
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
-                    <Menu className="w-5 h-5 text-gray-400 shrink-0" />
+                    {/* <Menu className="w-5 h-5 text-gray-400 shrink-0" /> */}
                     <span className="text-sm font-medium">{ticket?.name}</span>
                   </div>
                   <span className="text-sm font-semibold">

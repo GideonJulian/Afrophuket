@@ -56,11 +56,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
         );
 
         if (!res.ok) throw new Error("Failed to fetch event");
-        setPopup({
-          show: true,
-          type: "error",
-          message: "Failed to fetch event",
-        });
+
         const data = await res.json();
         setEvent(data);
         setEditableEvent({
@@ -77,7 +73,11 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
           thumbnail: null,
         });
       } catch (err) {
-        setError(err.message);
+        setPopup({
+          show: true,
+          type: "error",
+          message: "Failed to fetch event",
+        });
       } finally {
         setLoading(false);
       }
@@ -178,7 +178,11 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
       }));
     } catch (error) {
       console.error("Error deleting ticket:", error);
-      alert("Failed to delete ticket ❌");
+      setPopup({
+        show: true,
+        type: "error",
+        message: "Failed to Delete Ticket",
+      });
     }
   };
 
@@ -214,7 +218,54 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
     }
   };
   if (loading) return <AfroLoader />;
-  if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
+  if (error)
+    return (
+      <div className="flex flex-col items-center justify-center text-center py-20 px-4">
+        {/* Error Icon */}
+        <div className="bg-[#E55934]/10 text-[#E55934] p-6 rounded-full mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 
+               9-9 9 4.03 9 9z"
+            />
+          </svg>
+        </div>
+
+        {/* Error Message */}
+        <h1 className="text-2xl font-bold text-white mb-2">
+          Oops! Something went wrong
+        </h1>
+        <p className="text-gray-400 max-w-md">
+          {error ||
+            "It Seems somthing went wrong please try again ."}
+        </p>
+
+        {/* Action Button */}
+        {/* <div className="relative inline-block group mt-8">
+          <span
+            className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 
+           transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+          ></span>
+          <button
+            onClick={() => navigate("/event")}
+            className="relative w-full inline-block whitespace-nowrap text-sm font-semibold uppercase 
+           px-6 py-3 bg-[#fff] text-black rounded-lg border-2 border-black shadow-md 
+           scale-103 transition-all duration-300 group-hover:scale-100"
+          >
+            Discover More Events
+          </button>
+        </div> */}
+      </div>
+    );
   if (!event)
     return <p className="text-white text-center py-20">Event not found.</p>;
 
