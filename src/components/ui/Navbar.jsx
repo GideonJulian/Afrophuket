@@ -141,7 +141,7 @@ const Navbar = ({ openCart }) => {
       {/* Mobile Menu */}
       {/* Mobile Menu */}
       <div
-        className={`fixed left-1/2 top-[20vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
+        className={`fixed left-1/2 top-[18vh] z-50 w-[95%] sm:w-[79%] md:w-[55%] max-w-[760px] -translate-x-1/2 bg-black rounded-2xl text-white overflow-hidden origin-top transition-all duration-500 ease-in-out ${
           menuOpen ? "h-[480px] opacity-100 -mt-4" : "h-0 opacity-0"
         }`}
       >

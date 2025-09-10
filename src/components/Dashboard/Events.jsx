@@ -54,7 +54,7 @@ const Events = ({ event, handleDelete }) => {
                 className="hover:text-[#FC6435] text-gray-400 transition-colors duration-300 cursor-pointer"
                 onClick={(e) => e.stopPropagation()} // prevent navigation
               >
-                <SquarePen className="w-4 h-4 sm:w- sm:h- md:w-5 md:h-5" />
+                <SquarePen className="w-4 h-4 sm:w- sm:h- md:w-5 md:h-5"  />
               </div>
 
               {/* Delete Icon */}
