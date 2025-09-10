@@ -102,7 +102,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
       const response = await fetch(
         `https://afrophuket-backend-gr4j.onrender.com/events/${id}/`,
         {
-          method: "UPDATE",
+          method: "PATCH",
           headers: {
             Authorization: `Token ${token}`,
           },
