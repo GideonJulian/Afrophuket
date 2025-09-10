@@ -48,9 +48,30 @@ const SingleTicket = () => {
   };
 
   if (loading) return <AfroLoader />;
-  if (error) return <p className="text-red-400 text-center py-20">{error}</p>;
+  if (error)
+    return (
+      <p className="text-red-400 text-center py-20">
+        {error}{" "}
+        <div className="text-white text-center py-20">
+          <div className="relative hidden  md:inline-block group mt-4">
+            <span
+              className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 
+               transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+            ></span>
+            <button
+              onClick={() => navigate(-1)}
+              className="relative w-full  inline-block whitespace-nowrap text-sm font-semibold uppercase 
+               px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md 
+               scale-103 transition-all duration-300 group-hover:scale-100"
+            >
+              DISCOVER MORE
+            </button>
+          </div>
+        </div>
+      </p>
+    );
   if (!event)
-    return <p className="text-white text-center py-20">Event not found.</p>;
+    return <p className="text-red-400 text-center py-20">event not found </p>;
 
   return (
     <div className="w-full text-white">
@@ -74,13 +95,18 @@ const SingleTicket = () => {
             />
 
             {/* Ticket Button (Desktop only) */}
-            <div className="relative md:inline-block mt-10 w-full hidden lg:block">
-              <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
+            <div className="relative hidden w-full md:inline-block group mt-4">
+              <span
+                className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 
+               transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+              ></span>
               <button
                 onClick={() =>
                   navigate(`/payment/${event.id}`, { state: { event } })
                 }
-                className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300"
+                className="relative w-full  inline-block whitespace-nowrap text-sm font-semibold uppercase 
+               px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md 
+               scale-103 transition-all duration-300 group-hover:scale-100"
               >
                 GET A TICKET
               </button>
@@ -189,21 +215,24 @@ const SingleTicket = () => {
             <div className="mt-10">
               <h1 className="text-lg font-semibold mb-4">Event Location</h1>
               <p className="font-semibold mb-2">{event.location}</p>
-
               <p className="text-sm">{event.location_notes}</p>
-
               <div className="mt-4">
                 <EventMap location={event.location} />
               </div>
 
               {/* Ticket Button (Mobile only) */}
-              <div className="relative inline-block mt-6 w-full block lg:hidden">
-                <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
+              <div className="relative md:hidden w-full inline-block group mt-4">
+                <span
+                  className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2 
+               transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
+                ></span>
                 <button
                   onClick={() =>
                     navigate(`/payment/${event.id}`, { state: { event } })
                   }
-                  className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300"
+                  className="relative w-full  inline-block whitespace-nowrap text-sm font-semibold uppercase 
+               px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md 
+               scale-103 transition-all duration-300 group-hover:scale-100"
                 >
                   GET A TICKET
                 </button>

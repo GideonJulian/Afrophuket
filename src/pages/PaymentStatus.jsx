@@ -148,6 +148,9 @@ const PaymentStatus = () => {
           <p className={`text-xl font-semibold ${getStatusColor()}`}>
             {message}
           </p>
+          {
+            
+          }
         </div>
 
         {status === "success" && selection && (
