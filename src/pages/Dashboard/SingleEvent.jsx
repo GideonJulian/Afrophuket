@@ -121,7 +121,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
       );
 
       if (!response.ok) throw new Error("Failed to save changes");
-     
+
       const updated = await response.json();
       setEvent(updated);
       setEditableEvent({
@@ -130,13 +130,13 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
         thumbnail: null,
       });
       setEditing(false);
-       setPopup({
+      setPopup({
         show: true,
         type: "success",
         message: "Event Edited",
       });
     } catch (err) {
-       setPopup({
+      setPopup({
         show: true,
         type: "error",
         message: "Failed to save changes",
@@ -547,27 +547,24 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
           </div>{" "}
           {/* Actions */}{" "}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-6 w-full">
-            {" "}
             <button
               onClick={() => setEditing(!editing)}
               className="border rounded-lg px-6 py-3 cursor-pointer font-semibold text-center w-full sm:w-auto"
             >
-              {" "}
-              {editing ? "Cancel" : "Edit"}{" "}
-            </button>{" "}
+              {editing ? "Cancel" : "Edit"}
+            </button>
+
             <div className="relative w-full sm:w-auto">
-              {" "}
-              <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>{" "}
+              <span className="absolute inset-0 bg-black rounded-lg translate-x-1.5 translate-y-1.5 border-2"></span>
               <button
                 onClick={handleSave}
-                disabled={saving}
-                className="relative w-full text-sm md:text-base font-semibold uppercase cursor-pointer px-4 sm:px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-[1.03] transition-all duration-300 disabled:opacity-50"
+                disabled={!editing || saving} // ✅ disabled if not editing or currently saving
+                className="relative w-full text-sm md:text-base font-semibold uppercase cursor-pointer px-4 sm:px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md hover:scale-[1.03] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {" "}
-                {saving ? "Saving..." : "Save Changes"}{" "}
-              </button>{" "}
-            </div>{" "}
-          </div>{" "}
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
         </div>{" "}
       </div>{" "}
       <div className="tabs mt-14 flex items-center gap-8">
