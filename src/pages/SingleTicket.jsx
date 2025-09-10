@@ -59,7 +59,7 @@ const SingleTicket = () => {
                transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0"
             ></span>
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate('/event')}
               className="relative w-full  inline-block whitespace-nowrap text-sm font-semibold uppercase 
                px-6 py-3 bg-white text-black rounded-lg border-2 border-black shadow-md 
                scale-103 transition-all duration-300 group-hover:scale-100"
