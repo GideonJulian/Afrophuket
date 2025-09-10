@@ -115,7 +115,7 @@ const TicketsList = ({
               {/* --- Desktop Layout --- */}
               <div className="hidden sm:contents">
                 <div className="flex items-center gap-3 col-span-2">
-                  <Menu className="w-5 h-5 text-gray-400 shrink-0" />
+                  {/* <Menu className="w-5 h-5 text-gray-400 shrink-0" /> */}
                   <span className="text-sm font-medium">{ticket?.name}</span>
                 </div>
                 <span className="text-sm text-gray-300 sm:text-center">

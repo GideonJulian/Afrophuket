@@ -371,7 +371,7 @@ const CreateEvent = () => {
               ></span>
               <button
                 onClick={validateAndProceed}
-                disabled={saving}
+                disabled={!saving || saving}
                 className="relative inline-block whitespace-nowrap w-full sm:w-auto 
                text-sm md:text-base font-semibold uppercase px-4 sm:px-6 py-3 
                bg-white text-black rounded-lg border-2 border-black shadow-md 
