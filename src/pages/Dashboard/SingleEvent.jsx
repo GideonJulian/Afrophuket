@@ -17,6 +17,7 @@ import AfroLoader from "../../components/AfroLoader";
 import hostimg from "../../assets/images/hostimg.png";
 import TicketsList from "./TicketsList";
 import SalesDetails from "../../components/Dashboard/SalesDetails";
+import PopupNotification from "../../components/PopupNotification";
 
 const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
   const { id } = useParams();
@@ -30,7 +31,11 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
   const [sales, setSales] = useState(null);
   const [salesLoading, setSalesLoading] = useState(false);
   const [salesError, setSalesError] = useState(null);
-
+  const [popup, setPopup] = useState({
+    show: false,
+    type: "success",
+    message: "",
+  });
   const { id: eventId } = useParams();
   const navigate = useNavigate();
   const token = import.meta.env.VITE_API_TOKEN;
@@ -51,6 +56,11 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
         );
 
         if (!res.ok) throw new Error("Failed to fetch event");
+        setPopup({
+          show: true,
+          type: "error",
+          message: "Failed to fetch event",
+        });
         const data = await res.json();
         setEvent(data);
         setEditableEvent({
@@ -111,7 +121,7 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
       );
 
       if (!response.ok) throw new Error("Failed to save changes");
-
+     
       const updated = await response.json();
       setEvent(updated);
       setEditableEvent({
@@ -120,8 +130,17 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
         thumbnail: null,
       });
       setEditing(false);
+       setPopup({
+        show: true,
+        type: "success",
+        message: "Event Edited",
+      });
     } catch (err) {
-      alert("Error saving event: " + err.message);
+       setPopup({
+        show: true,
+        type: "error",
+        message: "Failed to save changes",
+      });
     } finally {
       setSaving(false);
     }
@@ -588,6 +607,14 @@ const SingleEvent = ({ setIsSidebarOpen, isSidebarOpen }) => {
       ) : (
         <SalesDetails loading={salesLoading} error={salesError} data={sales} />
       )}
+      <div>
+        <PopupNotification
+          type={popup.type}
+          message={popup.message}
+          show={popup.show}
+          onClose={() => setPopup({ ...popup, show: false })}
+        />
+      </div>
     </div>
   );
 };
