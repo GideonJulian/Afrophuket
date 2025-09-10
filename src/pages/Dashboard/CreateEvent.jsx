@@ -187,12 +187,20 @@ const CreateEvent = () => {
           {/* Hosted By */}
           <div className="mt-5">
             <h1 className="border-b pb-4 font-medium">Hosted By</h1>
-            <div className="flex items-center gap-3 py-4">
-              <img src={hostimg} className="w-10 h-10 rounded-full" />
-              <h1 className="font-medium">GAB USA</h1>
-              <Link className="ml-auto text-[#E55934] text-sm">
-                Contact the Host
-              </Link>
+            {/* Host Name */}
+            <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
+              <div className="flex items-center gap-3">
+                <NotebookPen />
+                <input
+                  type="text"
+                  placeholder="Enter Host Name"
+                  value={eventData.hosted_by}
+                  onChange={(e) =>
+                    handleInputChange("hosted_by", e.target.value)
+                  }
+                  className="bg-transparent border-b border-gray-600 focus:outline-none flex-1"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -319,6 +327,7 @@ const CreateEvent = () => {
               />
             </div>
           </div>
+
           {/* After Party */}
           <div className="bg-black text-white p-6 rounded-xl w-full mt-5">
             <label className="flex items-center gap-2 cursor-pointer mb-4">

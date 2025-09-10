@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { CalendarDays, MapPin, ArrowUpRight, Copy } from "lucide-react"; // add Copy icon
+import { CalendarDays, MapPin, ArrowUpRight, Copy } from "lucide-react";
 import { motion } from "framer-motion";
 import hostimg from "../assets/images/hostimg.png";
 import AfroLoader from "../components/AfroLoader";
@@ -13,7 +13,7 @@ const SingleTicket = () => {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [copied, setCopied] = useState(false); // track copy state
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const token = import.meta.env.VITE_API_TOKEN;
@@ -43,7 +43,7 @@ const SingleTicket = () => {
   const handleCopyLocation = () => {
     navigator.clipboard.writeText(event.location).then(() => {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000); // reset after 2s
+      setTimeout(() => setCopied(false), 2000);
     });
   };
 
@@ -73,11 +73,13 @@ const SingleTicket = () => {
               transition={{ duration: 0.4 }}
             />
 
-            {/* Ticket Button */}
-            <div className="relative inline-block mt-10 w-full">
+            {/* Ticket Button (Desktop only) */}
+            <div className="relative md:inline-block mt-10 w-full hidden lg:block">
               <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
               <button
-                onClick={() => navigate(`/payment/${event.id}`, { state: { event } })}
+                onClick={() =>
+                  navigate(`/payment/${event.id}`, { state: { event } })
+                }
                 className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300"
               >
                 GET A TICKET
@@ -89,7 +91,7 @@ const SingleTicket = () => {
               <h1 className="text-lg font-semibold">Hosted By</h1>
               <div className="flex items-center gap-3 py-4">
                 <img src={hostimg} className="w-10 h-10 rounded-full" />
-                <h1>GAB USA</h1>
+                <h1>{event.hosted_by}</h1>
                 <Link className="ml-auto text-[#E55934] text-sm">
                   Contact the Host
                 </Link>
@@ -192,6 +194,19 @@ const SingleTicket = () => {
 
               <div className="mt-4">
                 <EventMap location={event.location} />
+              </div>
+
+              {/* Ticket Button (Mobile only) */}
+              <div className="relative inline-block mt-6 w-full block lg:hidden">
+                <span className="absolute inset-0 bg-black rounded-lg translate-x-2 translate-y-2 border-2"></span>
+                <button
+                  onClick={() =>
+                    navigate(`/payment/${event.id}`, { state: { event } })
+                  }
+                  className="relative text-sm font-semibold uppercase cursor-pointer px-6 py-3 bg-white text-black rounded-lg w-full border-2 border-black shadow-md scale-100 hover:scale-105 transition-all duration-300"
+                >
+                  GET A TICKET
+                </button>
               </div>
             </div>
           </motion.div>
