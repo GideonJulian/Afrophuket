@@ -29,6 +29,7 @@ import CheckLayout from "./layouts/CheckLayout";
 import Payment from "./pages/Payment";
 import ContactInfo from "./pages/ContactInfo";
 import Comfirmation from "./pages/Comfirmation";
+import NotFound from "./pages/NotFound";
 
 // ✅ define routes
 const route = createBrowserRouter([
@@ -103,6 +104,10 @@ const route = createBrowserRouter([
       { path: "confirmation", element: <Comfirmation /> },
     ],
   },
+  {
+    path: '*',
+    element: <NotFound />
+  }
 ]);
 
 function App() {
